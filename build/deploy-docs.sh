@@ -10,6 +10,6 @@ git init
 git add -A
 git commit -m 'Deploy'
 
-git push -f https://github.com/jonataw/labox master:gh-pages
+git push -f https://github.com/larmbox/labox master:gh-pages
 
 cd -

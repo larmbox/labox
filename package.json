@@ -23,7 +23,7 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "lint": "eslint --fix .",
-    "publish:npm": "npm i && npm run build && npm publish"
+    "publish:npm": "npm i && npm run build && npm publish --access public"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.12.11",

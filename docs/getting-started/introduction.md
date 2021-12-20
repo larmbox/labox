@@ -8,14 +8,14 @@ Labox is a Vue 3 component library.
   <CodeGroupItem title="npm" active>
 
 ```bash:no-line-numbers
-npm install vuelr
+npm install labox
 ```
 
   </CodeGroupItem>
   <CodeGroupItem title="Yarn">
   
 ```bash:no-line-numbers
-yarn add vuelr
+yarn add labox
 ```
 
   </CodeGroupItem>
