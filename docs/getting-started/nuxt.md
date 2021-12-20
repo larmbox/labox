@@ -9,7 +9,7 @@ import { defineNuxtPlugin } from '#app';
 import {
   createLabox,
   LButton /* Add all components you would like to use here. */,
-} from 'labox';
+} from '@larmbox/labox';
 
 const Labox = createLabox({
   components: [LButton /* Add all components you would like to use here. */],

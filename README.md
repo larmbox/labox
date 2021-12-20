@@ -8,10 +8,10 @@ Labox is a component library.
 
 ```sh
 # npm
-npm i labox
+npm i @larmbox/labox
 
 # Yarn
-yarn add labox
+yarn add @larmbox/labox
 ```
 
 Import Labox in your Vue entry file:
@@ -21,7 +21,7 @@ import { createApp } from 'vue';
 import {
   createLabox,
   LButton /* Add all components you would like to use here. */,
-} from 'labox';
+} from '@larmbox/labox';
 
 createApp(App)
   .use(

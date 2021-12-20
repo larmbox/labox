@@ -23,7 +23,7 @@ You can also use the create-palette function to automatically create variations 
 </div>
 
 ```scss
-@import 'labox/dist/theme/create-palette';
+@import '@larmbox/labox/dist/theme/create-palette';
 
 $lb-themes: (
   'default': (
@@ -48,5 +48,5 @@ $lb-themes: (
 );
 
 // Then, import the labox.scss stylesheet:
-@import 'labox/dist/theme/labox';
+@import '@larmbox/labox/dist/theme/labox';
 ```

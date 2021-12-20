@@ -28,7 +28,7 @@ import { createApp } from 'vue';
 import {
   createLabox,
   LButton /* Add all components you would like to use here. */,
-} from 'labox';
+} from '@larmbox/labox';
 
 createApp(App)
   .use(
@@ -46,7 +46,7 @@ createApp(App)
 Import the `labox.scss` file with Sass:
 
 ```scss
-@import 'labox/dist/theme/labox';
+@import '@larmbox/labox/dist/theme/labox';
 ```
 
 :::warning
@@ -57,9 +57,9 @@ To only import the required stylesheets:
 
 ```scss
 // The 'labox-base' stylesheet is always required:
-@import 'labox/dist/theme/labox-base';
+@import '@larmbox/labox/dist/theme/labox-base';
 
-@import 'labox/dist/components/button';
-@import 'labox/dist/modal/modal';
+@import '@larmbox/labox/dist/components/button';
+@import '@larmbox/labox/dist/modal/modal';
 // ...
 ```

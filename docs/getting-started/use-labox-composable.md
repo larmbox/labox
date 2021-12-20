@@ -7,14 +7,14 @@ This can be used to interact with Labox within your component setup function, or
 To import useLabox:
 
 ```ts
-import { useLabox } from 'labox';
+import { useLabox } from '@larmbox/labox';
 ```
 
 You can then use it:
 
 ```vue
 <script lang="ts">
-import { useLabox } from 'labox';
+import { useLabox } from '@larmbox/labox';
 
 export default defineComponent({
   setup() {
