@@ -23,9 +23,9 @@
     </LFormLabel>
 
     <LFormDescription
-      :aria="ariaDescribedby"
       :description="description"
       :use-slot="hasSlot('description')"
+      :aria="ariaDescribedby"
     >
       <slot name="description" />
     </LFormDescription>
@@ -58,8 +58,7 @@
               'type',
               'name',
               'disabled',
-              'readonly',
-              'value'
+              'readonly'
             )
           "
         />
@@ -85,9 +84,9 @@
     </LFormFeedback>
 
     <LFormHelp
-      :aria="!description ?? ariaDescribedby"
       :help="help"
       :use-slot="hasSlot('help')"
+      :aria="!description ? ariaDescribedby : undefined"
     >
       <slot name="help" />
     </LFormHelp>

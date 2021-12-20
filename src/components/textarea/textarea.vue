@@ -63,7 +63,7 @@
     <LFormHelp
       :help="help"
       :use-slot="hasSlot('help')"
-      :aria="!description ?? ariaDescribedby"
+      :aria="!description ? ariaDescribedby : undefined"
     >
       <slot name="help" />
     </LFormHelp>

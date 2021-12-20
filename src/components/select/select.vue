@@ -16,6 +16,7 @@
     <LFormDescription
       :description="description"
       :use-slot="hasSlot('description')"
+      :aria="ariaDescribedby"
     >
       <slot name="description" />
     </LFormDescription>
@@ -58,7 +59,11 @@ c0.4-0.4,1-0.4,1.4,0l4.3,4.3c0.4,0.4,0.4,1,0,1.4C12.9,6.4,12.3,6.4,11.9,6z"
       <slot name="feedback" />
     </LFormFeedback>
 
-    <LFormHelp :help="help" :use-slot="hasSlot('help')">
+    <LFormHelp
+      :help="help"
+      :use-slot="hasSlot('help')"
+      :aria="!description ? ariaDescribedby : undefined"
+    >
       <slot name="help" />
     </LFormHelp>
   </LFormControl>
@@ -112,7 +117,7 @@ export default defineComponent({
     const { sizeClass } = useSize();
     const { variantClass, themeClass } = useVariantWithOutline();
     const { blockClass } = useBlock();
-    const { feedbackClass } = useInput();
+    const { feedbackClass, ariaDescribedby, ariaLabelledby } = useInput();
 
     return {
       ...component,
@@ -122,6 +127,8 @@ export default defineComponent({
       sizeClass,
       blockClass,
       feedbackClass,
+      ariaDescribedby,
+      ariaLabelledby,
     };
   },
 });
