@@ -1,0 +1,95 @@
+@use 'sass:math';
+@use 'sass:color';
+@import 'variables';
+
+@function c($key) {
+  @return $lb-class-prefix + map-get($lb-components, $key);
+}
+
+@function color2($variant, $key, $theme: $lb-default-theme) {
+  @return map-get($lb-themes, $theme, $variant, $key);
+}
+
+@function color($variant, $key, $theme: $lb-default-theme) {
+  @if $lb-use-css-variables {
+    @return var(--l-#{$variant}-#{$key});
+  } @else {
+    @return map-get($lb-themes, $theme, $variant, $key);
+  }
+}
+
+// @function l-create-theme($name, $palette) {
+//   $theme: map-merge($lb-themes, (#{$name}: $palette));
+//   $lb-themes: $theme !global;
+//   @return null;
+// }
+
+@function index-to-key($index) {
+  $keys: map-keys($lb-themes);
+
+  @return nth($keys, $index);
+}
+
+@function _linear-channel-value($channel-value) {
+  $normalized-channel-value: math.div($channel-value, 255);
+  @if $normalized-channel-value < 0.03928 {
+    @return math.div($normalized-channel-value, 12.92);
+  }
+
+  @return math.pow(math.div($normalized-channel-value + 0.055, 1.055), 2.4);
+}
+
+// Calculate the luminance for a color.
+// See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests
+@function luminance($color) {
+  $red: _linear-channel-value(color.red($color));
+  $green: _linear-channel-value(color.green($color));
+  $blue: _linear-channel-value(color.blue($color));
+
+  @return 0.2126 * $red + 0.7152 * $green + 0.0722 * $blue;
+}
+
+// Calculate the contrast ratio between two colors.
+// See https://www.w3.org/TR/WCAG20-TECHS/G17.html#G17-tests
+@function contrast($back, $front) {
+  $backLum: luminance($back) + 0.05;
+  $foreLum: luminance($front) + 0.05;
+
+  @return math.div(math.max($backLum, $foreLum), math.min($backLum, $foreLum));
+}
+
+// Determine whether the color is 'light' or 'dark'.
+@function tone($color) {
+  @if $color == 'dark' or $color == 'light' {
+    @return $color;
+  }
+
+  $minimumContrast: 3.1;
+
+  $lightContrast: contrast($color, white);
+  $darkContrast: contrast($color, rgba(black, 0.87));
+
+  @if ($lightContrast < $minimumContrast) and ($darkContrast > $lightContrast) {
+    @return 'light';
+  } @else {
+    @return 'dark';
+  }
+}
+
+// Determine whether to use dark or light text on top of given color to meet accessibility standards for contrast.
+// Returns 'dark' if the given color is light and 'light' if the given color is dark.
+@function contrast-tone($color, $color1: #fff, $color2: '#000') {
+  @return if(tone($color) == 'dark', $color1, $color2);
+}
+
+@function css-vars() {
+  @return $lb-use-css-variables;
+}
+
+@function lb-themes() {
+  @if css-vars() {
+    @return map-get($lb-themes, index-to-key(1));
+  } @else {
+    @return $lb-themes;
+  }
+}

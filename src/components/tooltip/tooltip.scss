@@ -1,0 +1,101 @@
+@use 'sass:math';
+@import '../../theme/imports';
+
+$lb-tooltip-border-radius: $lb-border-radius !default;
+$lb-tooltip-text-size: $lb-text-sm !default;
+$lb-tooltip-background-color: color('gray', 12) !default;
+$lb-tooltip-text-color: #fff !default;
+$lb-tooltip-max-width: 250px !default;
+$lb-tooltip-padding: $lb-spacing-xs * 2 !default;
+$lb-tooltip-arrow-size: 8px !default;
+
+@mixin tooltip-color($color, $theme: $lb-default-theme) {
+  .#{c('LTooltip')}-inner {
+    background-color: color($color, 8, $theme);
+    color: contrast-tone(color2($color, 8, $theme));
+  }
+}
+
+.#{c('LTooltip')} {
+  display: inline-flex;
+
+  @mixin tooltip-variants($variant, $theme: $lb-default-theme) {
+    &.#{c('LTooltip')}-#{$variant} {
+      @include tooltip-color($variant, $theme);
+    }
+  }
+
+  @each $name, $variant-map in lb-themes() {
+    @if css-vars() {
+      @include tooltip-variants($name);
+    } @else {
+      &.#{$lb-theme-prefix}#{$name} {
+        @each $variant, $_ in $variant-map {
+          @include tooltip-variants($variant, $name);
+        }
+      }
+    }
+  }
+
+  .#{c('LTooltip')}-arrow,
+  .#{c('LTooltip')}-arrow::before {
+    position: absolute;
+    width: $lb-tooltip-arrow-size;
+    height: $lb-tooltip-arrow-size;
+    background: inherit;
+  }
+
+  .#{c('LTooltip')}-arrow::before {
+    visibility: visible;
+    content: '';
+    transform: rotate(45deg);
+  }
+
+  .#{c('LTooltip')}-arrow {
+    visibility: hidden;
+  }
+
+  // .#{c('LTooltip')}-trigger {
+  // }
+
+  .#{c('LTooltip')}-inner {
+    border-radius: $lb-tooltip-border-radius;
+    color: $lb-tooltip-text-color;
+    padding: $lb-tooltip-padding;
+
+    .#{c('LTooltip')}-content {
+      font-size: $lb-tooltip-text-size;
+      max-width: $lb-tooltip-max-width;
+    }
+  }
+}
+
+.lb-tooltip-animation-enter-active,
+.lb-tooltip-animation-leave-active {
+  transition: transform 0.075s ease, opacity 0.075s ease;
+}
+
+.lb-tooltip-animation-enter-from,
+.lb-tooltip-animation-leave-to {
+  transform: scale(0.9);
+  opacity: 0;
+}
+
+.#{c('LTooltip')}-popper[data-popper-placement^='top'] .#{c('LTooltip')}-arrow {
+  bottom: -4px;
+}
+
+.#{c('LTooltip')}-popper[data-popper-placement^='bottom']
+  .#{c('LTooltip')}-arrow {
+  top: -4px;
+}
+
+.#{c('LTooltip')}-popper[data-popper-placement^='left']
+  .#{c('LTooltip')}-arrow {
+  right: -4px;
+}
+
+.#{c('LTooltip')}-popper[data-popper-placement^='right']
+  .#{c('LTooltip')}-arrow {
+  left: -4px;
+}

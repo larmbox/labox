@@ -1,0 +1,65 @@
+/// Incrementally lighten a color in a more effective way than with lighten()
+/// @param {Color} $color - color to tint
+/// @param {Number} $percentage - Percentage of white in the returned color
+/// @return {Color} - The lightened color
+@function tint($color, $percentage) {
+  @return mix(#fff, $color, $percentage);
+}
+
+/// Incrementally darken a color in a more effective way than with darken()
+/// @param {Color} $color - Color to shade
+/// @param {Number} $percentage - Percentage of black in the returned color
+/// @return {Color} - The darkened color
+@function shade($color, $percentage) {
+  @return mix(#000, $color, $percentage);
+}
+
+@function create-palette($color) {
+  $cpc: 13.6%;
+  $palette: (
+    1: tint($color, ($cpc * 7)),
+    2: tint($color, ($cpc * 6)),
+    3: tint($color, ($cpc * 5)),
+    4: tint($color, ($cpc * 4)),
+    5: tint($color, ($cpc * 3)),
+    6: tint($color, ($cpc * 2)),
+    7: tint($color, ($cpc * 1)),
+    8: $color,
+    9: shade($color, ($cpc * 1)),
+    10: shade($color, ($cpc * 2)),
+    11: shade($color, ($cpc * 3)),
+    12: shade($color, ($cpc * 4)),
+    13: shade($color, ($cpc * 5)),
+    14: shade($color, ($cpc * 6)),
+    15: shade($color, ($cpc * 7)),
+    T25: rgba($color, 0.25),
+    T50: rgba($color, 0.50),
+    T75: rgba($color, 0.75)
+  );
+  @return $palette;
+}
+
+@function create-palette-reverse($color) {
+  $cpc: 13.6%;
+  $palette: (
+    1: shade($color, ($cpc * 7)),
+    2: shade($color, ($cpc * 6)),
+    3: shade($color, ($cpc * 5)),
+    4: shade($color, ($cpc * 4)),
+    5: shade($color, ($cpc * 3)),
+    6: shade($color, ($cpc * 2)),
+    7: shade($color, ($cpc * 1)),
+    8: $color,
+    9: tint($color, ($cpc * 1)),
+    10: tint($color, ($cpc * 2)),
+    11: tint($color, ($cpc * 3)),
+    12: tint($color, ($cpc * 4)),
+    13: tint($color, ($cpc * 5)),
+    14: tint($color, ($cpc * 6)),
+    15: tint($color, ($cpc * 7)),
+    T25: rgba($color, 0.25),
+    T50: rgba($color, 0.50),
+    T75: rgba($color, 0.75)
+  );
+  @return $palette;
+}

@@ -1,0 +1,171 @@
+@import '../../theme/imports';
+
+$lb-button-border-radius: $lb-border-radius !default;
+$lb-button-font-weight: $lb-font-weight-normal !default;
+$lb-button-focus-shadow-size: $lb-focus-shadow-size !default;
+
+$lb-button-padding: $lb-spacing * 0.4375 $lb-spacing * 0.75 !default;
+$lb-button-font-size: $lb-text-md !default;
+$lb-button-line-height: $lb-line-height !default;
+
+$lb-button-padding-sm: $lb-spacing * 0.25 $lb-spacing * 0.5 !default;
+$lb-button-font-size-sm: $lb-text-sm !default;
+$lb-button-line-height-sm: $lb-line-height-sm !default;
+
+$lb-button-padding-lg: $lb-spacing * 0.625 $lb-spacing !default;
+$lb-button-font-size-lg: $lb-text-lg !default;
+$lb-button-line-height-lg: $lb-line-height-lg !default;
+
+@mixin button-color($color, $theme: $lb-default-theme) {
+  background-color: color($color, 8, $theme);
+  border-color: color($color, 9, $theme);
+  color: contrast-tone(color2($color, 8, $theme));
+  box-shadow: 0 0 0 $lb-button-focus-shadow-size transparent;
+
+  &:not(:disabled):not(:focus):hover {
+    background-color: color($color, 9, $theme);
+    border-color: color($color, 10, $theme);
+  }
+
+  &:not(:disabled):active {
+    background-color: color($color, 8, $theme);
+    border-color: color($color, 9, $theme);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 $lb-button-focus-shadow-size color($color, 'T50', $theme);
+  }
+
+  &:disabled {
+    background-color: color($color, 5, $theme);
+    border-color: color($color, 5, $theme);
+  }
+
+  &.#{c('LButton')}-loading .#{c('LLoading')} {
+    color: color($color, 1, $theme);
+  }
+}
+
+@mixin button-color-outline($color, $theme: $lb-default-theme) {
+  background-color: transparent;
+  border-color: color($color, 8, $theme);
+  color: color($color, 8, $theme);
+
+  &.#{c('LButton')}-loading .#{c('LLoading')} {
+    color: color($color, 8, $theme);
+  }
+
+  &:not(:disabled):hover {
+    background-color: color($color, 1, $theme);
+  }
+
+  &:not(:disabled):active {
+    background-color: transparent;
+    color: color($color, 9, $theme);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 $lb-button-focus-shadow-size color($color, 'T25', $theme);
+  }
+
+  &:disabled {
+    border-color: color($color, 3, $theme);
+    color: color($color, 4, $theme);
+  }
+}
+
+.#{c('LButton')} {
+  transition: background-color $lb-animation-time ease-in-out,
+    box-shadow $lb-animation-time ease-in-out;
+  justify-content: center;
+  display: inline-flex;
+  border-style: solid;
+  border-width: $lb-border-width;
+  outline: none;
+  text-align: center;
+  white-space: nowrap;
+  position: relative;
+  padding: $lb-button-padding;
+  font-family: inherit;
+  line-height: $lb-button-line-height;
+  font-weight: $lb-button-font-weight;
+  border-radius: $lb-button-border-radius;
+  font-size: $lb-button-font-size;
+
+  text-decoration: none !important;
+
+  cursor: pointer;
+  text-decoration: none;
+
+  .#{c(LButton)}-content {
+    display: flex;
+    align-items: center;
+  }
+
+  @mixin button-variants($variant, $theme: $lb-default-theme) {
+    &.#{c(LButton)}-#{$variant} {
+      &:not(.#{c('LButton')}-outline) {
+        @include button-color($variant, $theme);
+      }
+      &.#{c('LButton')}-outline {
+        @include button-color-outline($variant, $theme);
+      }
+    }
+  }
+
+  @each $name, $variant-map in lb-themes() {
+    @if css-vars() {
+      @include button-variants($name);
+    } @else {
+      &.#{$lb-theme-prefix}#{$name} {
+        @each $variant, $_ in $variant-map {
+          @include button-variants($variant, $name);
+        }
+      }
+    }
+  }
+
+  &.#{c('LButton')}-icon-right {
+    .#{c('LIcon')}:last-of-type {
+      padding-left: $lb-spacing * 0.5;
+    }
+  }
+
+  &.#{c('LButton')}-icon-left {
+    .#{c('LIcon')}:first-of-type {
+      padding-right: $lb-spacing * 0.5;
+    }
+  }
+
+  &.#{c('LButton')}-block {
+    display: flex;
+    min-width: 100%;
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+
+  &.#{c(LButton)}-sm {
+    padding: $lb-button-padding-sm;
+    font-size: $lb-button-font-size-sm;
+    line-height: $lb-button-line-height-sm;
+  }
+
+  &.#{c(LButton)}-lg {
+    padding: $lb-button-padding-lg;
+    font-size: $lb-button-font-size-lg;
+    line-height: $lb-button-line-height-lg;
+  }
+
+  &.#{c('LButton')}-loading {
+    align-items: center;
+    .#{c('LLoading')} {
+      position: absolute;
+    }
+    .#{c('LButton')}-content {
+      visibility: hidden;
+      opacity: 0;
+    }
+  }
+}

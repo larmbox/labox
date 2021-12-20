@@ -1,0 +1,172 @@
+@use 'sass:math';
+@import '../../theme/imports';
+
+$lb-radio-border-radius: 50% !default;
+$lb-radio-focus-shadow-size: $lb-focus-shadow-size !default;
+$lb-radio-text-color: $lb-text-color !default;
+$lb-radio-border-color: $lb-border-color !default;
+$lb-radio-border-color-disabled: $lb-border-color !default;
+$lb-radio-border-width: $lb-border-width !default;
+
+$lb-radio-size: 1.5rem !default;
+
+$lb-radio-size-sm: 1.25rem !default;
+
+$lb-radio-size-lg: 1.75rem !default;
+
+@mixin checkbox-size($suffix, $size) {
+  &.#{c('LRadio')}-#{$suffix} {
+    .#{c('LRadio')}-inner .#{c('LRadio')}-descriptors {
+      min-height: $size;
+    }
+    .#{c('LRadio')}-box {
+      width: $size;
+      height: $size;
+      .#{c('LRadio')}-box2 {
+        border: $size * 0.25 solid transparent;
+        min-width: $size;
+        min-height: $size;
+      }
+    }
+    input {
+      width: $size;
+      height: $size;
+    }
+  }
+}
+
+@mixin checkbox-color($color, $theme: $lb-default-theme) {
+  input {
+    &:checked {
+      + .#{c('LRadio')}-box {
+        border-color: color($color, 8, $theme);
+        .#{c('LRadio')}-box2 {
+          border-color: color($color, 8, $theme);
+        }
+      }
+    }
+
+    &:focus {
+      + .#{c('LRadio')}-box {
+        border-color: color($color, 8, $theme);
+        box-shadow: 0 0 0 $lb-radio-focus-shadow-size
+          color($color, 'T25', $theme);
+      }
+    }
+
+    &:disabled:checked {
+      + .#{c('LRadio')}-box {
+        border-color: color($color, 6, $theme);
+        background-color: color($color, 6, $theme);
+      }
+    }
+
+    &:disabled:not(:checked) {
+      + .#{c('LRadio')}-box {
+        border-color: color($color, 3, $theme);
+      }
+    }
+  }
+}
+
+.#{c('LRadio')} {
+  display: inline-flex;
+  position: relative;
+  margin-bottom: 1rem;
+  align-items: center;
+
+  &.#{c('LRadio')}-block {
+    width: 100%;
+    display: flex;
+  }
+
+  @mixin checkbox-variants($variant, $theme: $lb-default-theme) {
+    &.#{c(LRadio)}-#{$variant} {
+      @include checkbox-color($variant, $theme);
+    }
+  }
+
+  @each $name, $variant-map in lb-themes() {
+    @if css-vars() {
+      @include checkbox-variants($name);
+    } @else {
+      &.#{$lb-theme-prefix}#{$name} {
+        @each $variant, $_ in $variant-map {
+          @include checkbox-variants($variant, $name);
+        }
+      }
+    }
+  }
+
+  .#{c('LRadio')}-box {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: $lb-radio-border-width solid $lb-radio-border-color;
+    border-radius: $lb-radio-border-radius;
+    box-shadow: 0 0 0 $lb-button-focus-shadow-size transparent;
+    transition: border-color $lb-animation-time ease-in-out,
+      background-color $lb-animation-time ease-in-out,
+      box-shadow $lb-animation-time ease-in-out;
+
+    .#{c('LRadio')}-box2 {
+      transition: border-color $lb-animation-time ease-in-out;
+      background-color: transparent;
+      border-radius: $lb-radio-border-radius;
+    }
+  }
+
+  .#{c('LRadio')}-inner {
+    display: flex;
+    flex: 1;
+    .#{c('LRadio')}-descriptors {
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-left: $lb-spacing-xs * 2;
+      .#{c('LRadio')}-label {
+        margin-bottom: 0;
+        display: block;
+      }
+      .#{c('LRadio')}-feedback {
+        margin-top: $lb-spacing-xs;
+        display: block;
+      }
+      .#{c('LRadio')}-description {
+        margin-top: $lb-spacing-xs;
+        margin-bottom: 0;
+        display: block;
+      }
+    }
+  }
+
+  input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0;
+    opacity: 0;
+    z-index: 1;
+  }
+
+  &.form-feedback-error {
+    @include checkbox-color('error');
+
+    .#{c('LRadio')}-box {
+      border-color: color('error', 8);
+    }
+  }
+
+  &.form-feedback-success {
+    @include checkbox-color('success');
+
+    .#{c('LRadio')}-box {
+      border-color: color('error', 8);
+    }
+  }
+
+  @include checkbox-size('md', $lb-radio-size);
+  @include checkbox-size('sm', $lb-radio-size-sm);
+  @include checkbox-size('lg', $lb-radio-size-lg);
+}

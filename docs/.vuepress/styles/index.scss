@@ -1,0 +1,84 @@
+@import '../../../src/theme/labox.scss';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css');
+
+body {
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+div[class$='-display'] {
+  display: flex;
+  align-items: center;
+  column-gap: 0.5rem;
+}
+
+@each $themeName, $variants in $lb-themes {
+  @each $variant, $palette in $variants {
+    @each $key, $value in $palette {
+      .#{$variant}-#{$key} {
+        background-color: $value;
+        color: contrast-tone($value);
+      }
+    }
+  }
+}
+
+.modal p {
+  margin: 0;
+}
+
+.theme-palette > div {
+  display: flex;
+  height: 32px;
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+  }
+}
+
+.snippet {
+  .outer {
+    position: relative;
+    button {
+      position: absolute;
+      top: 1.5rem;
+      right: 0.66rem;
+    }
+
+    .fade {
+      position: absolute;
+      bottom: 1px;
+      left: 1px;
+      width: calc(100% - 2px);
+      height: 64px;
+      background: linear-gradient(
+        transparent,
+        rgba(255, 255, 255, 0.75) 50%,
+        #ffffff 100%
+      );
+      border-bottom-left-radius: 3px;
+      border-bottom-right-radius: 3px;
+    }
+  }
+
+  .hljs-code {
+    color: black;
+    padding: 1rem;
+    border: 1px solid rgb(236, 236, 236);
+    background-color: rgb(247, 247, 247) !important;
+    overflow-y: hidden !important;
+    max-height: 140px;
+    font-family: 'Consolas', 'Courier New', Courier, monospace;
+    font-size: 14px;
+
+    &.expanded {
+      max-height: none;
+    }
+
+    &[contenteditable='true'] {
+      border-color: var(--c-brand);
+    }
+  }
+}

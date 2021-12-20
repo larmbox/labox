@@ -1,0 +1,158 @@
+@use 'sass:math';
+@import '../../theme/imports';
+
+$lb-modal-border-radius: $lb-border-radius !default;
+$lb-modal-focus-shadow-size: $lb-focus-shadow-size !default;
+$lb-modal-text-color: $lb-text-color !default;
+$lb-modal-border-color: $lb-border-color !default;
+$lb-modal-border-color-disabled: $lb-border-color !default;
+$lb-modal-border-width: $lb-border-width !default;
+
+$lb-modal-size: 34rem !default;
+
+$lb-modal-size-sm: 28rem !default;
+
+$lb-modal-size-lg: 40rem !default;
+
+@mixin modal-size($suffix, $size) {
+  &.#{c('LModal')}-#{$suffix} {
+    .#{c('LModal')}-inner {
+      max-width: $size;
+    }
+  }
+}
+
+.#{c('LModal')} {
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $lb-z-index-modal;
+
+  &.#{c('LModal')}-visible {
+    .#{c('LModal')}-backdrop {
+      opacity: 0.66;
+    }
+
+    .#{c('LModal')}-inner {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .#{c('LModal')}-backdrop {
+    z-index: 9;
+    background-color: #000;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    opacity: 0;
+    transition: all 0.25s ease;
+  }
+
+  .#{c('LModal')}-inner {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    margin: 1.75rem auto;
+    min-height: calc(100% - (1.75rem * 2));
+    opacity: 0;
+    transition: all 0.25s ease;
+    transform: translateY(-10px);
+    padding: 0 $lb-spacing-sm;
+
+    .#{c('LModal')}-content {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      border-radius: $lb-border-radius;
+      background-color: $lb-body-color;
+      border: 1px solid $lb-border-color;
+      max-height: 80vh;
+
+      .#{c('LModal')}-header {
+        display: flex;
+        padding: 1rem;
+        border-bottom: 1px solid $lb-border-color;
+
+        :first-child {
+          flex: 1;
+        }
+
+        .#{c('LModal')}-title {
+          color: inherit;
+          font-size: 24px;
+          margin: 0;
+        }
+
+        .#{c('LModal')}-description {
+          color: color('gray', 8);
+          font-size: 14px;
+          margin-top: $lb-spacing-xs;
+          display: block;
+          line-height: 1.5;
+        }
+
+        .#{c('LModal')}-close {
+          $lb-close-button-size: 30px;
+          width: $lb-close-button-size;
+          height: $lb-close-button-size;
+          border: none;
+          padding: 4px 8px;
+          background-color: transparent;
+          margin: 0;
+          display: flex;
+          align-items: center;
+          line-height: 1;
+          flex-shrink: 0;
+          cursor: pointer;
+          svg {
+            fill: color('gray', 8);
+          }
+          &:hover {
+            svg {
+              fill: color('gray', 15);
+            }
+          }
+        }
+      }
+
+      .#{c('LModal')}-body {
+        overflow-y: auto;
+        max-height: calc(100vh - 108px - 3.5rem);
+        flex: 1;
+        padding: 1rem;
+        &.#{c('LModal')}-body-raw {
+          padding: 0;
+        }
+      }
+
+      .#{c('LModal')}-footer {
+        border-bottom-left-radius: $lb-border-radius;
+        border-bottom-right-radius: $lb-border-radius;
+        border-top: 1px solid $lb-border-color;
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        background-color: color('gray', 1);
+        .#{c('LModal')}-footer-fill {
+          flex: 1;
+        }
+
+        button + button {
+          margin-left: $lb-spacing-xs;
+        }
+      }
+    }
+  }
+
+  @include modal-size('md', $lb-modal-size);
+  @include modal-size('sm', $lb-modal-size-sm);
+  @include modal-size('lg', $lb-modal-size-lg);
+}

@@ -1,0 +1,123 @@
+@use 'sass:math';
+@import '../../theme/imports';
+
+$lb-loading-size-sm: $lb-text-sm !default;
+$lb-loading-border-width-sm: math.div($lb-loading-size-sm, 5) !default;
+
+$lb-loading-size: $lb-text-md !default;
+$lb-loading-border-width: math.div($lb-loading-size, 5) !default;
+
+$lb-loading-size-lg: $lb-text-lg !default;
+$lb-loading-border-width-lg: math.div($lb-loading-size-lg, 5) !default;
+
+@mixin loading-color-spinner($color, $theme: $lb-default-theme) {
+  color: color($color, 8, $theme);
+}
+
+@mixin loading-color-dots($color, $theme: $lb-default-theme) {
+  > div {
+    color: color($color, 8, $theme);
+  }
+}
+
+.#{c('LLoading')} {
+  display: inline-flex;
+
+  &.#{c('LLoading')}-spinner {
+    width: $lb-loading-size;
+    height: $lb-loading-size;
+    border-width: $lb-loading-border-width;
+    border-style: solid;
+    border-color: currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    vertical-align: text-bottom;
+    animation: spinner 0.75s linear infinite;
+  }
+
+  &.#{c('LLoading')}-dots > div {
+    border-width: $lb-loading-border-width;
+    border-style: solid;
+    border-color: currentColor;
+    border-radius: 50%;
+    vertical-align: text-bottom;
+    animation: dots 1.4s ease-in-out infinite;
+    animation-delay: 0.2s;
+    margin: 0 0.06rem;
+    &:first-of-type {
+      animation-delay: 0s;
+    }
+    &:last-of-type {
+      animation-delay: 0.4s;
+    }
+  }
+
+  &.#{c('LLoading')}-sm {
+    &.#{c('LLoading')}-spinner {
+      width: $lb-loading-size-sm;
+      height: $lb-loading-size-sm;
+      border-width: $lb-loading-border-width-sm;
+    }
+    &.#{c('LLoading')}-dots > div {
+      border-width: $lb-loading-border-width-sm;
+    }
+  }
+
+  &.#{c('LLoading')}-lg {
+    &.#{c('LLoading')}-spinner {
+      width: $lb-loading-size-lg;
+      height: $lb-loading-size-lg;
+      border-width: $lb-loading-border-width-lg;
+    }
+    &.#{c('LLoading')}-dots > div {
+      border-width: $lb-loading-border-width-lg;
+    }
+  }
+
+  @mixin loading-variants($variant, $theme: $lb-default-theme) {
+    &.#{c('LLoading')}-#{$variant} {
+      &.#{c('LLoading')}-spinner {
+        @include loading-color-spinner($variant, $theme);
+      }
+      &.#{c('LLoading')}-dots {
+        @include loading-color-dots($variant, $theme);
+      }
+    }
+  }
+
+  @each $name, $variant-map in lb-themes() {
+    @if css-vars() {
+      @include loading-variants($name);
+    } @else {
+      &.#{$lb-theme-prefix}#{$name} {
+        @each $variant, $_ in $variant-map {
+          @include loading-variants($variant, $name);
+        }
+      }
+    }
+  }
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dots {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.8);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

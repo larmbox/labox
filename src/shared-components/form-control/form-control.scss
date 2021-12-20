@@ -1,0 +1,65 @@
+@import '../../theme/imports';
+
+.form-label {
+  font-weight: 500;
+  margin-bottom: $lb-spacing-xs;
+  > label {
+    display: block;
+  }
+}
+
+.form-feedback,
+.form-help {
+  color: color('gray', 9);
+  font-size: $lb-text-sm;
+  margin-top: $lb-spacing-xs;
+}
+
+.form-feedback {
+  &.feedback-error {
+    color: color('error', 9);
+  }
+
+  &.feedback-success {
+    color: color('success', 9);
+  }
+}
+
+.form-description {
+  color: color('gray', 9);
+  font-size: $lb-text-sm;
+  margin-bottom: $lb-spacing-xs;
+}
+
+.form-feedback-error {
+  .form-feedback-icon {
+    fill: color('error', 8);
+  }
+}
+
+.form-feedback-success {
+  .form-feedback-icon {
+    fill: color('success', 8);
+  }
+}
+
+.input-md {
+  .form-feedback-icon {
+    width: 20px;
+    height: 20px;
+    justify-self: flex-end;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-right: 8px;
+  }
+}
+.form-feedback-icon {
+  position: absolute;
+  pointer-events: none;
+
+  svg {
+    height: 100%;
+  }
+}

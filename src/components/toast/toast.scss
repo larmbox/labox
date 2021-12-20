@@ -1,0 +1,84 @@
+@use 'sass:math';
+@import '../../theme/imports';
+
+$lb-toast-border-radius: $lb-border-radius !default;
+$lb-toast-text-color: $lb-text-color !default;
+
+@mixin toast-color($color, $theme: $lb-default-theme) {
+  input {
+    &:checked {
+      + .#{c('LCheckbox')}-box {
+        background-color: color($color, 8);
+        border-color: color($color, 8);
+        svg {
+          opacity: 1;
+        }
+      }
+    }
+
+    &:focus {
+      + .#{c('LCheckbox')}-box {
+        border-color: color($color, 8);
+        box-shadow: 0 0 0 $lb-checkbox-focus-shadow-size color($color, 'T25');
+      }
+    }
+
+    &:disabled:checked {
+      + .#{c('LCheckbox')}-box {
+        border-color: color($color, 6);
+        background-color: color($color, 6);
+      }
+    }
+
+    &:disabled:not(:checked) {
+      + .#{c('LCheckbox')}-box {
+        border-color: color($color, 3, $theme);
+      }
+    }
+  }
+}
+
+.#{c('LToast')} {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  .#{c('LToast')}-inner {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    margin: 1.75rem auto;
+    min-height: calc(100% - (1.75rem * 2));
+    max-width: 500px;
+    opacity: 0;
+    transition: all 0.25s ease;
+    transform: translateY(-10px);
+
+    .#{c('LToast')}-content {
+      width: 100%;
+    }
+  }
+
+  @mixin toast-variants($variant, $theme: $lb-default-theme) {
+    &.#{c('LToast')}-#{$variant} {
+      @include toast-color($variant, $theme);
+    }
+  }
+
+  @each $name, $variant-map in lb-themes() {
+    @if css-vars() {
+      @include toast-variants($name);
+    } @else {
+      &.#{$lb-theme-prefix}#{$name} {
+        @each $variant, $_ in $variant-map {
+          @include toast-variants($variant, $name);
+        }
+      }
+    }
+  }
+}

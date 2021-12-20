@@ -1,0 +1,25 @@
+@import 'variables';
+
+@if $lb-use-css-variables {
+  @each $themeName, $variants in $lb-themes {
+    @if $themeName == $lb-default-theme {
+      :root {
+        @each $variant, $palette in $variants {
+          @each $key, $value in $palette {
+            $keyname: '--l-' + $variant + '-' + $key;
+            #{$keyname}: #{$value};
+          }
+        }
+      }
+    } @else {
+      :root[data-theme='#{$themeName}'] {
+        @each $variant, $palette in $variants {
+          @each $key, $value in $palette {
+            $keyname: '--l-' + $variant + '-' + $key;
+            #{$keyname}: #{$value};
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,187 @@
+@use 'sass:math';
+@import '../../theme/imports';
+
+$lb-select-border-radius: $lb-border-radius !default;
+$lb-select-focus-shadow-size: $lb-focus-shadow-size !default;
+$lb-select-text-color: $lb-text-color !default;
+$lb-select-border-color: $lb-border-color !default;
+
+$lb-select-padding: $lb-spacing * 0.4375 $lb-spacing * 0.75 !default;
+$lb-select-font-size: $lb-text-md !default;
+$lb-select-line-height: $lb-line-height !default;
+
+$lb-select-padding-sm: $lb-spacing * 0.28125 $lb-spacing * 0.5 !default;
+$lb-select-font-size-sm: $lb-text-sm !default;
+$lb-select-line-height-sm: $lb-line-height-sm !default;
+
+$lb-select-padding-lg: $lb-spacing * 0.59375 $lb-spacing !default;
+$lb-select-font-size-lg: $lb-text-lg !default;
+$lb-select-line-height-lg: $lb-line-height-lg !default;
+
+$select-base-gap-x: 5%;
+$select-gap-x: calc(#{$select-base-gap-x} - 4px);
+$select-gap-x_edge: calc(#{$select-base-gap-x} - 3px);
+$select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
+
+@mixin select-color($color, $theme: $lb-default-theme) {
+  border-color: color($color, 8, $theme);
+
+  &:not(:disabled):active {
+    border-color: color($color, 8, $theme);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 $lb-input-focus-shadow-size color($color, 'T25', $theme);
+  }
+
+  &:disabled {
+    border-color: color($color, 3, $theme);
+    color: color($color, 4, $theme);
+  }
+}
+
+.#{c('LSelect')} {
+  margin-bottom: 1rem;
+  display: inline-flex;
+  flex-direction: column;
+
+  &.#{c('LSelect')}-append {
+    input {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .#{c('LSelect')}-append-inner {
+      display: flex;
+      > span {
+        display: flex;
+        align-items: center;
+        border: 1px solid $lb-input-border-color;
+        padding: 0 $lb-spacing-md;
+        border-left: none;
+        border-top-right-radius: $lb-input-border-radius;
+        border-bottom-right-radius: $lb-input-border-radius;
+      }
+      button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        &:not(:last-of-type) {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+        &:focus {
+          z-index: 1;
+        }
+      }
+    }
+  }
+
+  &.#{c('LSelect')}-prepend {
+    input {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    .#{c('LSelect')}-inner-prepend {
+      button {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        &:focus {
+          z-index: 1;
+        }
+      }
+    }
+  }
+
+  &.#{c('LSelect')}-block {
+    width: 100%;
+    display: flex;
+  }
+
+  .#{c('LSelect')}-icon {
+    position: absolute;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    pointer-events: none;
+    padding: 12px;
+    svg {
+      fill: $lb-select-border-color;
+      height: 100%;
+    }
+  }
+
+  select {
+    appearance: none;
+    background-color: transparent;
+    flex: 1;
+    transition: border-color $lb-animation-time ease-in-out,
+      box-shadow $lb-animation-time ease-in-out;
+    position: relative;
+    padding: $lb-input-padding;
+    border-style: solid;
+    border-width: $lb-border-width;
+    display: inline-flex;
+    line-height: $lb-input-line-height;
+    border-radius: $lb-input-border-radius;
+    border-color: $lb-input-border-color;
+    outline: none;
+    font-size: $lb-input-font-size;
+    color: inherit;
+    font-family: inherit;
+    padding-right: 2rem;
+
+    &::placeholder {
+      color: $lb-input-placeholder-color;
+    }
+
+    &:focus {
+      border-color: color('primary', 6);
+      box-shadow: 0 0 0 $lb-input-focus-shadow-size color('primary', 'T25');
+      &::placeholder {
+        color: $lb-input-placeholder-color--hover;
+      }
+    }
+
+    &:focus {
+      z-index: 3;
+    }
+  }
+
+  &.form-feedback-error select {
+    @include input-color('error');
+  }
+
+  &.form-feedback-success select {
+    @include input-color('success');
+  }
+
+  .#{c('LSelect')}-inner {
+    display: flex;
+
+    .#{c('LSelect')}-element {
+      position: relative;
+      display: flex;
+      width: 100%;
+    }
+  }
+
+  &.#{c('LSelect')}-sm select {
+    padding: $lb-select-padding-sm;
+    font-size: $lb-select-font-size-sm;
+    line-height: $lb-select-line-height-sm;
+  }
+
+  &.#{c('LSelect')}-lg select {
+    padding: $lb-select-padding-lg;
+    font-size: $lb-select-font-size-lg;
+    line-height: $lb-select-line-height-lg;
+  }
+}
+
+/* Firefox */
+@-moz-document url-prefix() {
+  .#{c('LSelect')} select {
+    padding-left: calc(1rem - 6px);
+    // Firefox recognizes hacks for webkit, so it needs a proper padding setting again
+  }
+}
