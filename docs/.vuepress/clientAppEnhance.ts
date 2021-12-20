@@ -21,7 +21,7 @@ import { createVuelr, Vuelr } from 'vuelr';
 export default defineClientAppEnhance(({ app, router }) => {
   router.addRoute({
     path: '/',
-    redirect: '/labox/getting-started/introduction',
+    redirect: '/getting-started/introduction',
   });
 
   app
