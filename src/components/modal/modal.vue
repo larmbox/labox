@@ -67,16 +67,14 @@
               ]"
               ref="body"
               :id="bodyId"
-              :data="data"
             >
-              <slot name="body-raw" :close="onClose" />
+              <slot name="body-raw" :data="data" :close="onClose" />
             </div>
             <div
               v-else
               :class="classComponentName('body')"
               ref="body"
               :id="bodyId"
-              :data="data"
             >
               <slot
                 v-if="hasSlot('body')"
