@@ -32,6 +32,12 @@ A disabled checkbox cannot be interacted with.
 
 <Snippet :code="disabled" />
 
+## Indeterminate
+
+Set the indeterminate prop to render a checkbox in a indeterminate state. This only affects the element visually and the checkbox works like usual.
+
+<Snippet :code="indeterminate" />
+
 ## Feedback
 
 Use the `feedback` slot to add validation or other form errors to your checkbox input. Labox provides variants for error and success feedback types.
@@ -71,7 +77,11 @@ const block = `
 `
 
 const disabled = `
-<LCheckbox disabled label="Can't check me!" />`
+<LCheckbox disabled label="Can't check me!" block />
+<LCheckbox disabled checked label="Can't uncheck me!" block />`
+
+const indeterminate = `
+<LCheckbox indeterminate label="Indeterminate" />`
 
 const feedback = `
 <LCheckbox label="Checkbox" block feedback="Bad!" />

@@ -5,7 +5,6 @@ $lb-checkbox-border-radius: $lb-border-radius !default;
 $lb-checkbox-focus-shadow-size: $lb-focus-shadow-size !default;
 $lb-checkbox-text-color: $lb-text-color !default;
 $lb-checkbox-border-color: $lb-border-color !default;
-$lb-checkbox-border-color-disabled: $lb-border-color !default;
 $lb-checkbox-border-width: $lb-border-width !default;
 
 $lb-checkbox-size: 1.5rem !default;
@@ -17,15 +16,14 @@ $lb-checkbox-size-lg: 1.75rem !default;
 @mixin checkbox-size($suffix, $size) {
   &.#{c('LCheckbox')}-#{$suffix} {
     .#{c('LCheckbox')}-inner .#{c('LCheckbox')}-descriptors {
-      min-height: $size;
+      label {
+        margin-top: math.div($size, 2) - math.div($lb-line-height, 2);
+      }
     }
     .#{c('LCheckbox')}-box {
       width: $size;
       height: $size;
-      svg {
-        width: $size - 0.5rem;
-        height: $size - 0.5rem;
-      }
+      font-size: $size - 0.2rem;
     }
     input {
       width: $size;
@@ -39,10 +37,8 @@ $lb-checkbox-size-lg: 1.75rem !default;
     &:checked {
       + .#{c('LCheckbox')}-box {
         background-color: color($color, 8, $theme);
-        border-color: color($color, 8, $theme);
-        svg {
-          opacity: 1;
-        }
+        border-color: color($color, 9, $theme);
+        color: $lb-body-color;
       }
     }
 
@@ -56,14 +52,14 @@ $lb-checkbox-size-lg: 1.75rem !default;
 
     &:disabled:checked {
       + .#{c('LCheckbox')}-box {
-        border-color: color($color, 6, $theme);
-        background-color: color($color, 6, $theme);
+        border-color: color($color, 4, $theme);
+        background-color: color($color, 4, $theme);
       }
     }
 
     &:disabled:not(:checked) {
       + .#{c('LCheckbox')}-box {
-        border-color: color($color, 3, $theme);
+        background-color: color('gray', 1, $theme);
       }
     }
   }
@@ -72,7 +68,7 @@ $lb-checkbox-size-lg: 1.75rem !default;
 .#{c('LCheckbox')} {
   display: inline-flex;
   position: relative;
-  margin-bottom: 1rem;
+  margin-bottom: $lb-spacing;
   align-items: center;
 
   &.#{c('LCheckbox')}-block {
@@ -110,10 +106,9 @@ $lb-checkbox-size-lg: 1.75rem !default;
       background-color $lb-animation-time ease-in-out,
       box-shadow $lb-animation-time ease-in-out;
 
-    svg {
-      fill: $lb-body-color;
-      opacity: 0;
-      transition: opacity $lb-animation-time ease-in-out;
+    color: transparent;
+    .#{c('LCheckbox')}-icon {
+      transition: color $lb-animation-time ease-in-out;
     }
   }
 
@@ -125,15 +120,13 @@ $lb-checkbox-size-lg: 1.75rem !default;
       flex-direction: column;
       justify-content: center;
       .#{c('LCheckbox')}-label {
-        margin-bottom: 0;
         display: block;
+        line-height: $lb-line-height;
       }
       .#{c('LCheckbox')}-feedback {
-        margin-top: $lb-spacing-xs;
         display: block;
       }
       .#{c('LCheckbox')}-description {
-        margin-top: $lb-spacing-xs;
         margin-bottom: 0;
         display: block;
       }
@@ -147,12 +140,6 @@ $lb-checkbox-size-lg: 1.75rem !default;
     margin: 0;
     opacity: 0;
     z-index: 1;
-
-    &:checked {
-      svg {
-        opacity: 1;
-      }
-    }
   }
 
   &.form-feedback-error {

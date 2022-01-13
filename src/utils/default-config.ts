@@ -7,7 +7,13 @@ const config: LConfig = {
       name: 'button',
       config: { activeClass: 'active', type: 'submit' },
     },
-    LCheckbox: { name: 'checkbox', config: {} },
+    LCheckbox: {
+      name: 'checkbox',
+      config: {
+        iconChecked: 'check',
+        iconIndeterminate: 'dash',
+      },
+    },
     LIcon: {
       name: 'icon',
       config: { tag: 'span', type: 'class', prefix: 'i-', className: 'icon' },
@@ -25,7 +31,10 @@ const config: LConfig = {
     LSelect: { name: 'select', config: {} },
     LSwitch: {
       name: 'switch',
-      config: {},
+      config: {
+        checkedIcon: 'check',
+        uncheckedIcon: 'x',
+      },
     },
     LTextarea: { name: 'textarea', config: {} },
     LTooltip: { name: 'tooltip', config: { variant: 'secondary' } },

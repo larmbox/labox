@@ -1,12 +1,14 @@
 import { computed, ComputedRef, PropType } from 'vue';
 import { getComponentInstance } from './use-component';
 import { useLabox } from './use-labox';
+import { hasSlot } from './use-utils';
 
 /**
  * Returns the $labox prototype instance.
  */
 export function useInput(): {
   feedbackClass: ComputedRef<string | undefined>;
+  hasDescriptors: ComputedRef<boolean>;
   ariaLabelledby: string;
   ariaDescribedby: string;
 } {
@@ -18,7 +20,26 @@ export function useInput(): {
       : undefined
   );
 
-  return { feedbackClass, ariaLabelledby: uuid(), ariaDescribedby: uuid() };
+  const hasDescriptors = computed(() => {
+    const { feedback, label, description, help } = instance.props;
+    return (
+      !!feedback ||
+      !!label ||
+      !!description ||
+      !!help ||
+      hasSlot('feedback') ||
+      hasSlot('label') ||
+      hasSlot('description') ||
+      hasSlot('help')
+    );
+  });
+
+  return {
+    feedbackClass,
+    hasDescriptors,
+    ariaLabelledby: uuid(),
+    ariaDescribedby: uuid(),
+  };
 }
 
 export const inputProps = {

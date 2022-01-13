@@ -62,8 +62,6 @@
             )
           "
         />
-
-        <!-- <LFormFeedbackIcon :feedback="feedback" :feedback-type="feedbackType" /> -->
       </div>
 
       <div

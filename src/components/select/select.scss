@@ -4,17 +4,22 @@
 $lb-select-border-radius: $lb-border-radius !default;
 $lb-select-focus-shadow-size: $lb-focus-shadow-size !default;
 $lb-select-text-color: $lb-text-color !default;
+$lb-select-text-color--disabled: color('gray', 5) !default;
 $lb-select-border-color: $lb-border-color !default;
+$lb-select-background-color--disabled: color('gray', 1) !default;
 
-$lb-select-padding: $lb-spacing * 0.4375 $lb-spacing * 0.75 !default;
+$lb-select-padding-x: $lb-spacing * 0.75 !default;
+$lb-select-padding-y: $lb-spacing * 0.4375 !default;
 $lb-select-font-size: $lb-text-md !default;
 $lb-select-line-height: $lb-line-height !default;
 
-$lb-select-padding-sm: $lb-spacing * 0.28125 $lb-spacing * 0.5 !default;
+$lb-select-padding-x-sm: $lb-spacing * 0.5 !default;
+$lb-select-padding-y-sm: $lb-spacing * 0.28125 !default;
 $lb-select-font-size-sm: $lb-text-sm !default;
 $lb-select-line-height-sm: $lb-line-height-sm !default;
 
-$lb-select-padding-lg: $lb-spacing * 0.59375 $lb-spacing !default;
+$lb-select-padding-x-lg: $lb-spacing !default;
+$lb-select-padding-y-lg: $lb-spacing * 0.59375 !default;
 $lb-select-font-size-lg: $lb-text-lg !default;
 $lb-select-line-height-lg: $lb-line-height-lg !default;
 
@@ -26,12 +31,13 @@ $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
 @mixin select-color($color, $theme: $lb-default-theme) {
   border-color: color($color, 8, $theme);
 
-  &:not(:disabled):active {
-    border-color: color($color, 8, $theme);
+  &:focus {
+    border-color: color($color, 6, $theme);
+    box-shadow: 0 0 0 $lb-input-focus-shadow-size color($color, 'T25', $theme);
   }
 
-  &:focus-visible {
-    box-shadow: 0 0 0 $lb-input-focus-shadow-size color($color, 'T25', $theme);
+  &:not(:disabled):active {
+    border-color: color($color, 8, $theme);
   }
 
   &:disabled {
@@ -41,12 +47,12 @@ $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
 }
 
 .#{c('LSelect')} {
-  margin-bottom: 1rem;
+  margin-bottom: $lb-spacing;
   display: inline-flex;
   flex-direction: column;
 
   &.#{c('LSelect')}-append {
-    input {
+    select {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
@@ -76,7 +82,7 @@ $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
   }
 
   &.#{c('LSelect')}-prepend {
-    input {
+    select {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
@@ -98,16 +104,9 @@ $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
 
   .#{c('LSelect')}-icon {
     position: absolute;
-    height: 100%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: flex-end;
+    right: $lb-select-padding-x;
+    color: color('gray', 5);
     pointer-events: none;
-    padding: 12px;
-    svg {
-      fill: $lb-select-border-color;
-      height: 100%;
-    }
   }
 
   select {
@@ -117,7 +116,7 @@ $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
     transition: border-color $lb-animation-time ease-in-out,
       box-shadow $lb-animation-time ease-in-out;
     position: relative;
-    padding: $lb-input-padding;
+    padding: $lb-select-padding-y $lb-select-padding-x;
     border-style: solid;
     border-width: $lb-border-width;
     display: inline-flex;
@@ -128,17 +127,22 @@ $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
     font-size: $lb-input-font-size;
     color: inherit;
     font-family: inherit;
-    padding-right: 2rem;
+    font-size: inherit;
+    padding-right: $lb-select-padding-x * 1.5 + $lb-select-font-size;
 
-    &::placeholder {
-      color: $lb-input-placeholder-color;
+    @-moz-document url-prefix() {
+      padding-left: calc($lb-select-padding-x - 0.25rem);
     }
 
-    &:focus {
-      border-color: color('primary', 6);
-      box-shadow: 0 0 0 $lb-input-focus-shadow-size color('primary', 'T25');
-      &::placeholder {
-        color: $lb-input-placeholder-color--hover;
+    @include select-color('primary');
+    border-color: $lb-select-border-color;
+
+    &:disabled {
+      color: $lb-select-text-color--disabled;
+      background-color: $lb-select-background-color--disabled;
+      border-color: $lb-select-border-color;
+      + .#{c('LSelect')}-icon {
+        color: $lb-select-border-color;
       }
     }
 
@@ -148,11 +152,11 @@ $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
   }
 
   &.form-feedback-error select {
-    @include input-color('error');
+    @include select-color('error');
   }
 
   &.form-feedback-success select {
-    @include input-color('success');
+    @include select-color('success');
   }
 
   .#{c('LSelect')}-inner {
@@ -161,27 +165,45 @@ $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
     .#{c('LSelect')}-element {
       position: relative;
       display: flex;
+      align-items: center;
       width: 100%;
     }
   }
 
-  &.#{c('LSelect')}-sm select {
-    padding: $lb-select-padding-sm;
+  &.#{c('LSelect')}-sm {
     font-size: $lb-select-font-size-sm;
-    line-height: $lb-select-line-height-sm;
+
+    select {
+      padding: $lb-select-padding-y-sm $lb-select-padding-x-sm;
+      padding-right: $lb-select-padding-x-sm * 1.5 + $lb-select-font-size-sm;
+      line-height: $lb-select-line-height-sm;
+
+      @-moz-document url-prefix() {
+        padding-left: calc($lb-select-padding-x-sm - 0.25rem);
+      }
+    }
+
+    .#{c('LSelect')}-icon {
+      right: $lb-select-padding-x-sm;
+    }
   }
 
-  &.#{c('LSelect')}-lg select {
-    padding: $lb-select-padding-lg;
+  &.#{c('LSelect')}-lg {
     font-size: $lb-select-font-size-lg;
-    line-height: $lb-select-line-height-lg;
-  }
-}
 
-/* Firefox */
-@-moz-document url-prefix() {
-  .#{c('LSelect')} select {
-    padding-left: calc(1rem - 6px);
-    // Firefox recognizes hacks for webkit, so it needs a proper padding setting again
+    select {
+      padding: $lb-select-padding-y-lg $lb-select-padding-x-lg;
+      padding-right: $lb-select-padding-x-lg * 1.5 + $lb-select-font-size-lg;
+      line-height: $lb-select-line-height-lg;
+
+      @-moz-document url-prefix() {
+        padding-left: calc($lb-select-padding-x-lg - 0.25rem);
+      }
+    }
+
+    .#{c('LSelect')}-icon {
+      font-size: inherit;
+      right: $lb-select-padding-x-lg;
+    }
   }
 }

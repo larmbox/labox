@@ -71,7 +71,8 @@ const block = `
 `
 
 const disabled = `
-<LSwitch disabled label="Can't check me!" />`
+<LSwitch disabled label="Can't check me!" block />
+<LSwitch checked disabled label="Can't uncheck me!" block />`
 
 const feedback = `
 <LSwitch label="Input" block feedback="Bad!" />

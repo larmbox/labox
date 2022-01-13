@@ -3,16 +3,32 @@
 .form-label {
   font-weight: 500;
   margin-bottom: $lb-spacing-xs;
+  font-size: $lb-text-md;
   > label {
     display: block;
   }
 }
 
 .form-feedback,
+.form-description,
 .form-help {
   color: color('gray', 9);
   font-size: $lb-text-sm;
+}
+
+.form-help {
   margin-top: $lb-spacing-xs;
+}
+
+.form-description {
+  margin-bottom: $lb-spacing-xs;
+}
+
+.form-control {
+  line-height: $lb-line-height;
+  > .form-feedback {
+    margin-top: $lb-spacing-xs;
+  }
 }
 
 .form-feedback {

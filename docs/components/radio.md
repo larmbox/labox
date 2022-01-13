@@ -73,7 +73,8 @@ const block = `
 `
 
 const disabled = `
-<LRadio disabled label="Can't click me!" />`
+<LRadio disabled label="Can't check me!" block />
+<LRadio disabled checked label="Can't uncheck me!" block />`
 
 const feedback = `
 <LRadio label="Radio" block feedback="Bad!" />

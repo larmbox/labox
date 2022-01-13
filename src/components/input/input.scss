@@ -4,30 +4,40 @@
 $lb-input-border-radius: $lb-border-radius !default;
 $lb-input-focus-shadow-size: $lb-focus-shadow-size !default;
 $lb-input-text-color: $lb-text-color !default;
+$lb-input-text-color--disabled: color('gray', 5) !default;
 $lb-input-placeholder-color: color('gray', 9) !default;
-$lb-input-placeholder-color--hover: color('gray', 10) !default;
+$lb-input-placeholder-color--focus: color('gray', 10) !default;
+$lb-input-placeholder-color--disabled: color('gray', 3) !default;
 $lb-input-border-color: $lb-border-color !default;
+$lb-input-background-color--disabled: color('gray', 1) !default;
 
-$lb-input-padding: $lb-spacing * 0.4375 $lb-spacing * 0.75 !default;
+$lb-input-padding-x: $lb-spacing * 0.75 !default;
+$lb-input-padding-y: $lb-spacing * 0.4375 !default;
 $lb-input-font-size: $lb-text-md !default;
 $lb-input-line-height: $lb-line-height !default;
 
-$lb-input-padding-sm: $lb-spacing * 0.28125 $lb-spacing * 0.5 !default;
+$lb-input-padding-x-sm: $lb-spacing * 0.5 !default;
+$lb-input-padding-y-sm: $lb-spacing * 0.28125 !default;
 $lb-input-font-size-sm: $lb-text-sm !default;
 $lb-input-line-height-sm: $lb-line-height-sm !default;
 
-$lb-input-padding-lg: $lb-spacing * 0.59375 $lb-spacing !default;
+$lb-input-padding-x-lg: $lb-spacing !default;
+$lb-input-padding-y-lg: $lb-spacing * 0.59375 !default;
 $lb-input-font-size-lg: $lb-text-lg !default;
 $lb-input-line-height-lg: $lb-line-height-lg !default;
 
 @mixin input-color($color, $theme: $lb-default-theme) {
   border-color: color($color, 8, $theme);
 
+  &:focus {
+    border-color: color($color, 6, $theme);
+  }
+
   &:not(:disabled):active {
     border-color: color($color, 8, $theme);
   }
 
-  &:focus-visible {
+  &:focus {
     box-shadow: 0 0 0 $lb-input-focus-shadow-size color($color, 'T25', $theme);
   }
 
@@ -38,7 +48,7 @@ $lb-input-line-height-lg: $lb-line-height-lg !default;
 }
 
 .#{c('LInput')} {
-  margin-bottom: 1rem;
+  margin-bottom: $lb-spacing;
   display: inline-flex;
   flex-direction: column;
 
@@ -113,7 +123,7 @@ $lb-input-line-height-lg: $lb-line-height-lg !default;
     transition: border-color $lb-animation-time ease-in-out,
       box-shadow $lb-animation-time ease-in-out;
     position: relative;
-    padding: $lb-input-padding;
+    padding: $lb-input-padding-y $lb-input-padding-x;
     border-style: solid;
     border-width: $lb-border-width;
     display: inline-flex;
@@ -124,16 +134,27 @@ $lb-input-line-height-lg: $lb-line-height-lg !default;
     font-size: $lb-input-font-size;
     color: inherit;
     font-family: inherit;
+    font-size: inherit;
+
+    @include input-color('primary');
+    border-color: $lb-input-border-color;
+
+    &:focus {
+      &::placeholder {
+        color: $lb-input-placeholder-color--focus;
+      }
+    }
 
     &::placeholder {
       color: $lb-input-placeholder-color;
     }
 
-    &:focus {
-      border-color: color('primary', 6);
-      box-shadow: 0 0 0 $lb-input-focus-shadow-size color('primary', 'T25');
+    &:disabled {
+      color: $lb-input-text-color--disabled;
+      background-color: $lb-input-background-color--disabled;
+      border-color: $lb-input-border-color;
       &::placeholder {
-        color: $lb-input-placeholder-color--hover;
+        color: $lb-input-placeholder-color--disabled;
       }
     }
 
@@ -156,19 +177,26 @@ $lb-input-line-height-lg: $lb-line-height-lg !default;
     .#{c('LInput')}-element {
       position: relative;
       display: flex;
+      align-items: center;
       width: 100%;
     }
   }
 
-  &.#{c('LInput')}-sm input {
-    padding: $lb-input-padding-sm;
+  &.#{c('LInput')}-sm {
     font-size: $lb-input-font-size-sm;
-    line-height: $lb-input-line-height-sm;
+
+    input {
+      padding: $lb-input-padding-y-sm $lb-input-padding-x-sm;
+      line-height: $lb-input-line-height-sm;
+    }
   }
 
-  &.#{c('LInput')}-lg input {
-    padding: $lb-input-padding-lg;
+  &.#{c('LInput')}-lg {
     font-size: $lb-input-font-size-lg;
-    line-height: $lb-input-line-height-lg;
+
+    input {
+      padding: $lb-input-padding-y-lg $lb-input-padding-x-lg;
+      line-height: $lb-input-line-height-lg;
+    }
   }
 }

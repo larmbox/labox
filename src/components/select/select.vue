@@ -38,16 +38,7 @@
             v-text="label"
           />
         </select>
-        <div :class="classComponentName('icon')">
-          <svg viewBox="0 0 64 64">
-            <path
-              d="M11.9,10c0.4-0.4,1-0.4,1.4,0c0.4,0.4,0.4,1,0,1.4L9,15.7c-0.4,0.4-1,0.4-1.4,0l-4.3-4.3c-0.4-0.4-0.4-1,0-1.4
-s1-0.4,1.4,0l3.6,3.6C8.3,13.6,11.9,10,11.9,10z M11.9,6L8.3,2.4L4.7,6c-0.4,0.4-1,0.4-1.4,0c-0.4-0.4-0.4-1,0-1.4l4.3-4.3
-c0.4-0.4,1-0.4,1.4,0l4.3,4.3c0.4,0.4,0.4,1,0,1.4C12.9,6.4,12.3,6.4,11.9,6z"
-            />
-          </svg>
-        </div>
-        <!-- <LFormFeedbackIcon :feedback="feedback" :feedback-type="feedbackType" /> -->
+        <LIcon icon="chevron-expand" :class="classComponentName('icon')" />
       </div>
     </div>
 
@@ -87,10 +78,12 @@ import LFormDescription from '../../shared-components/form-control/form-descript
 import LFormHelp from '../../shared-components/form-control/form-help.vue';
 import LFormFeedback from '../../shared-components/form-control/form-feedback.vue';
 import LFormFeedbackIcon from '../../shared-components/form-control/form-feedback-icon.vue';
+import { LIcon } from '..';
 
 export default defineComponent({
   dependencies: {
     components: [
+      LIcon,
       LFormControl,
       LFormLabel,
       LFormHelp,

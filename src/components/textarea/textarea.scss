@@ -3,32 +3,42 @@
 
 $lb-textarea-border-radius: $lb-border-radius !default;
 $lb-textarea-focus-shadow-size: $lb-focus-shadow-size !default;
-$lb-textarea-text-color: $lb-text-color;
-$lb-textarea-placeholder-color: color('light', 12);
-$lb-textarea-placeholder-color--hover: color('light', 10);
-$lb-textarea-border-color: $lb-border-color;
+$lb-textarea-text-color: $lb-text-color !default;
+$lb-textarea-text-color--disabled: color('gray', 5) !default;
+$lb-textarea-placeholder-color: color('gray', 9) !default;
+$lb-textarea-placeholder-color--focus: color('gray', 10) !default;
+$lb-textarea-placeholder-color--disabled: color('gray', 3) !default;
+$lb-textarea-border-color: $lb-border-color !default;
+$lb-textarea-background-color--disabled: color('gray', 1) !default;
 
-$lb-textarea-padding: $lb-spacing * 0.4375 $lb-spacing * 0.75 !default;
+$lb-textarea-padding-x: $lb-spacing * 0.75 !default;
+$lb-textarea-padding-y: $lb-spacing * 0.4375 !default;
 $lb-textarea-font-size: $lb-text-md !default;
 $lb-textarea-line-height: $lb-line-height !default;
 
-$lb-textarea-padding-sm: $lb-spacing * 0.28125 $lb-spacing * 0.5 !default;
+$lb-textarea-padding-x-sm: $lb-spacing * 0.5 !default;
+$lb-textarea-padding-y-sm: $lb-spacing * 0.28125 !default;
 $lb-textarea-font-size-sm: $lb-text-sm !default;
 $lb-textarea-line-height-sm: $lb-line-height-sm !default;
 
-$lb-textarea-padding-lg: $lb-spacing * 0.59375 $lb-spacing !default;
+$lb-textarea-padding-x-lg: $lb-spacing !default;
+$lb-textarea-padding-y-lg: $lb-spacing * 0.59375 !default;
 $lb-textarea-font-size-lg: $lb-text-lg !default;
 $lb-textarea-line-height-lg: $lb-line-height-lg !default;
 
 @mixin textarea-color($color, $theme: $lb-default-theme) {
   border-color: color($color, 8, $theme);
 
+  &:focus {
+    border-color: color($color, 6, $theme);
+  }
+
   &:not(:disabled):active {
     border-color: color($color, 8, $theme);
   }
 
-  &:focus-visible {
-    box-shadow: 0 0 0 $lb-textarea-focus-shadow-size color($color, 'T25', $theme);
+  &:focus {
+    box-shadow: 0 0 0 $lb-input-focus-shadow-size color($color, 'T25', $theme);
   }
 
   &:disabled {
@@ -38,11 +48,11 @@ $lb-textarea-line-height-lg: $lb-line-height-lg !default;
 }
 
 .#{c('LTextarea')} {
-  max-width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: $lb-spacing;
   display: inline-flex;
   flex-direction: column;
   background-color: transparent;
+  max-width: 100%;
 
   &.#{c('LTextarea')}-block {
     display: flex;
@@ -57,7 +67,7 @@ $lb-textarea-line-height-lg: $lb-line-height-lg !default;
       box-shadow $lb-animation-time ease-in-out;
 
     position: relative;
-    padding: $lb-textarea-padding;
+    padding: $lb-textarea-padding-y $lb-textarea-padding-x;
     border-style: solid;
     border-width: $lb-border-width;
     display: inline-flex;
@@ -68,16 +78,27 @@ $lb-textarea-line-height-lg: $lb-line-height-lg !default;
     font-size: $lb-textarea-font-size;
     color: inherit;
     font-family: inherit;
+    font-size: inherit;
+
+    @include textarea-color('primary');
+    border-color: $lb-textarea-border-color;
+
+    &:focus {
+      &::placeholder {
+        color: $lb-textarea-placeholder-color--focus;
+      }
+    }
 
     &::placeholder {
       color: $lb-textarea-placeholder-color;
     }
 
-    &:focus {
-      border-color: color('primary', 8);
-      box-shadow: 0 0 0 $lb-textarea-focus-shadow-size color('primary', 'T25');
+    &:disabled {
+      color: $lb-textarea-text-color--disabled;
+      background-color: $lb-textarea-background-color--disabled;
+      border-color: $lb-textarea-border-color;
       &::placeholder {
-        color: $lb-textarea-placeholder-color--hover;
+        color: $lb-textarea-placeholder-color--disabled;
       }
     }
 
@@ -99,14 +120,20 @@ $lb-textarea-line-height-lg: $lb-line-height-lg !default;
   }
 
   &.#{c('LTextarea')}-sm textarea {
-    padding: $lb-textarea-padding-sm;
     font-size: $lb-textarea-font-size-sm;
-    line-height: $lb-textarea-line-height-sm;
+
+    textarea {
+      padding: $lb-textarea-padding-y-sm $lb-textarea-padding-x-sm;
+      line-height: $lb-textarea-line-height-sm;
+    }
   }
 
   &.#{c('LTextarea')}-lg textarea {
-    padding: $lb-textarea-padding-lg;
     font-size: $lb-textarea-font-size-lg;
-    line-height: $lb-textarea-line-height-lg;
+
+    textarea {
+      padding: $lb-textarea-padding-y-lg $lb-textarea-padding-x-lg;
+      line-height: $lb-textarea-line-height-lg;
+    }
   }
 }

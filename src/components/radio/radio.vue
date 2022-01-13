@@ -13,7 +13,7 @@
       <input
         :id="id"
         type="radio"
-        :checked="modelValue === value"
+        :checked="modelValue === value || checked"
         :aria-labelledby="label ? ariaLabelledby : undefined"
         :aria-describedby="description ? ariaDescribedby : undefined"
         @input="$emit('update:modelValue', value)"
@@ -22,7 +22,7 @@
       <div :class="classComponentName('box')">
         <div :class="classComponentName('box2')" />
       </div>
-      <div :class="classComponentName('descriptors')">
+      <div v-if="hasDescriptors" :class="classComponentName('descriptors')">
         <LFormLabel
           :id="id"
           :label="label"
@@ -77,12 +77,17 @@ export default defineComponent({
     ...sizeProps,
     ...blockProps,
     ...variantProps,
+
+    checked: {
+      type: Boolean,
+    },
   },
   setup(_props, _context) {
     const component = useComponent<LRadioConfig>();
     const { sizeClass } = useSize();
     const { blockClass } = useBlock();
-    const { feedbackClass, ariaDescribedby, ariaLabelledby } = useInput();
+    const { feedbackClass, ariaDescribedby, ariaLabelledby, hasDescriptors } =
+      useInput();
     const { variantClass, themeClass } = useVariant();
 
     return {
@@ -95,6 +100,7 @@ export default defineComponent({
       themeClass,
       ariaDescribedby,
       ariaLabelledby,
+      hasDescriptors,
     };
   },
 });
