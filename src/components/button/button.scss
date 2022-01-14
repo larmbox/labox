@@ -20,7 +20,6 @@ $lb-button-line-height-lg: $lb-line-height-lg !default;
   background-color: color($color, 8, $theme);
   border-color: color($color, 9, $theme);
   color: contrast-tone(color2($color, 8, $theme));
-  box-shadow: 0 0 0 $lb-button-focus-shadow-size transparent;
 
   &:not(:disabled):not(:focus):hover {
     background-color: color($color, 9, $theme);
@@ -33,7 +32,7 @@ $lb-button-line-height-lg: $lb-line-height-lg !default;
   }
 
   &:focus {
-    box-shadow: 0 0 0 $lb-button-focus-shadow-size color($color, 'T50', $theme);
+    box-shadow: 0 0 0 $lb-button-focus-shadow-size color($color, 'T25', $theme);
   }
 
   &:disabled {

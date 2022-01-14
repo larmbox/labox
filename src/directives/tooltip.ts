@@ -5,7 +5,15 @@ import Tooltip from '../components/tooltip';
 const TooltipDirective = {
   name: 'tooltip',
   directive: {
+    updated(el: HTMLElement, binding: DirectiveBinding, vnode: any) {
+      TooltipDirective.directive.unMounted(el, binding, vnode);
+      TooltipDirective.directive.mounted(el, binding, vnode);
+    },
     mounted(el: HTMLElement, binding: DirectiveBinding, _vnode: any) {
+      if (!binding.value) {
+        return;
+      }
+
       const arg = binding.arg;
       let text = binding.value;
       let variant: string | undefined,
