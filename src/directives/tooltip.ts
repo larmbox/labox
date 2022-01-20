@@ -1,66 +1,103 @@
+import { DirectiveBinding, createApp, ref, reactive, computed } from 'vue';
 import { useLabox } from '../composables/use-labox';
-import { DirectiveBinding, createApp } from 'vue';
-import Tooltip from '../components/tooltip';
+import Tooltip, { LTooltipConfig } from '../components/tooltip';
+import { getComponentMeta } from '../composables/use-component';
 
-const TooltipDirective = {
-  name: 'tooltip',
-  directive: {
-    updated(el: HTMLElement, binding: DirectiveBinding, vnode: any) {
-      TooltipDirective.directive.unMounted(el, binding, vnode);
-      TooltipDirective.directive.mounted(el, binding, vnode);
-    },
-    mounted(el: HTMLElement, binding: DirectiveBinding, _vnode: any) {
-      if (!binding.value) {
-        return;
-      }
+export interface TooltipOptions extends LTooltipConfig {
+  text: string;
+}
 
+type BaseType = string | number | boolean;
+
+const DATA_ATTRIBUTE_NAME = 'data-lx-tooltip';
+
+const TooltipDirective = () => {
+  const state: { [key: string]: any } = {};
+
+  const create = (
+    element: HTMLElement,
+    binding: DirectiveBinding<TooltipOptions | BaseType>
+  ): TooltipOptions | void => {
+    if (typeof binding.value === 'undefined') {
+      return console.warn('Tooltip directive missing binding value:', element);
+    }
+
+    const { config } = getComponentMeta<LTooltipConfig>('LTooltip');
+
+    const options: TooltipOptions = {
+      ...config,
+      text: '',
+    };
+    if (typeof binding.value !== 'object') {
+      options.text = binding.value.toString();
+    } else {
+      Object.assign(options, binding.value);
+    }
+
+    if (binding.arg) {
+      // v-tooltip:abc == binding.arg = 'abc'
       const arg = binding.arg;
-      let text = binding.value;
-      let variant: string | undefined,
-        delay: number | undefined,
-        placement: string | undefined,
-        trigger: string | undefined;
+      if (arg.includes(':')) {
+        options.trigger = arg.split(':')[0] as any;
+        options.placement = addPlacementHyphens(arg.split(':')[1]) as any;
+      } else {
+        options.trigger = arg as any;
+      }
+    }
 
-      if (arg) {
-        if (arg.includes(':')) {
-          trigger = arg.split(':')[0];
-          placement = arg.split(':')[1];
-          placement = addPlacementHyphens(placement);
-        } else {
-          trigger = arg;
+    return options;
+  };
+
+  return {
+    name: 'tooltip',
+    directive: {
+      updated(
+        element: HTMLElement,
+        binding: DirectiveBinding<TooltipOptions | BaseType>,
+        _vnode: any
+      ) {
+        const options = create(element, binding);
+        if (options) {
+          state[element.getAttribute(DATA_ATTRIBUTE_NAME)!].value = options;
         }
-      }
+      },
+      mounted(
+        element: HTMLElement,
+        binding: DirectiveBinding<TooltipOptions | BaseType>,
+        _vnode: any
+      ) {
+        const options = create(element, binding);
+        if (!options) return;
 
-      if (typeof binding.value !== 'string') {
-        placement = binding.value.placement ?? placement;
-        text = binding.value.text;
-        delay = binding.value.delay;
-        variant = binding.value.variant;
-        trigger = binding.value.trigger ?? trigger;
-      }
+        const { uuid } = useLabox();
+        const id = uuid();
 
-      const { uuid } = useLabox();
-      const div = document.createElement('div');
-      div.id = uuid();
-      div.style.height = '0';
-      el.setAttribute('v-lb-tooltip', div.id);
-      el.parentNode!.insertBefore(div, el.nextSibling);
+        state[id] = ref(options);
 
-      createApp(Tooltip, {
-        vTriggerEl: el,
-        vText: text,
-        delay,
-        placement,
-        variant,
-        trigger,
-      }).mount(div);
+        const div = document.createElement('div');
+        div.id = uuid();
+        div.style.height = '0';
+
+        element.setAttribute(DATA_ATTRIBUTE_NAME, id);
+        element.parentNode!.insertBefore(div, element.nextSibling);
+
+        createApp(Tooltip, {
+          element,
+          options: state[id],
+        }).mount(div);
+      },
+      unMounted(
+        el: HTMLElement,
+        _binding: DirectiveBinding<TooltipOptions | BaseType>,
+        _vnode: any
+      ) {
+        const element = document.getElementById(
+          el.getAttribute(DATA_ATTRIBUTE_NAME) as string
+        );
+        if (element) element.remove();
+      },
     },
-    unMounted(el: HTMLElement, _binding: DirectiveBinding, _vnode: any) {
-      document
-        .getElementById(el.getAttribute('v-lb-tooltip') as string)!
-        .remove();
-    },
-  },
+  };
 };
 
 const addPlacementHyphens = (placement: string): string => {

@@ -27,28 +27,33 @@ export interface LComponent<T> {
   config: T;
 }
 
+export interface LComponents {
+  LButton: LComponent<LButtonConfig>;
+  LCheckbox: LComponent<LCheckboxConfig>;
+  LIcon: LComponent<LIconConfig>;
+  LInput: LComponent<LInputConfig>;
+  LLoading: LComponent<LLoadingConfig>;
+  LModal: LComponent<LModalConfig>;
+  LRadio: LComponent<LRadioConfig>;
+  LSelect: LComponent<LSelectConfig>;
+  LSwitch: LComponent<LSwitchConfig>;
+  LTextarea: LComponent<LTextareaConfig>;
+  LTooltip: LComponent<LTooltipConfig>;
+}
+
 export interface LConfig {
   stylePrefix: string;
-  components: {
-    LButton: LComponent<LButtonConfig>;
-    LCheckbox: LComponent<LCheckboxConfig>;
-    LIcon: LComponent<LIconConfig>;
-    LInput: LComponent<LInputConfig>;
-    LLoading: LComponent<LLoadingConfig>;
-    LModal: LComponent<LModalConfig>;
-    LRadio: LComponent<LRadioConfig>;
-    LSelect: LComponent<LSelectConfig>;
-    LSwitch: LComponent<LSwitchConfig>;
-    LTextarea: LComponent<LTextareaConfig>;
-    LTooltip: LComponent<LTooltipConfig>;
-  };
+  components: LComponents;
 }
 
 export interface LCreateOptions {
   components?: {
     name: string;
     alias?: string[];
-    dependencies?: { directives: any[]; components: any[] };
+    dependencies?: {
+      directives: (() => { name: string; directive: Directive })[];
+      components: any[];
+    };
   }[];
   config?: DeepPartial<LConfig>;
   theme?: string;
@@ -70,18 +75,17 @@ function createLabox(options: LCreateOptions = {}): LInstance {
   }
   function registerDirective(
     app: App,
-    name: string,
-    directive: Directive
+    dir: { name: string; directive: Directive }
   ): void {
-    const registered = app.component(name);
+    const registered = app.component(dir.name);
     if (!registered) {
-      app.directive(name, directive);
+      app.directive(dir.name, dir.directive);
     }
   }
   function install(app: App): void {
     if (installTargets.includes(app)) return;
     installTargets.push(app);
-    registerDirective(app, TooltipDirective.name, TooltipDirective.directive);
+    registerDirective(app, TooltipDirective());
     components.forEach((component) => {
       const { name, dependencies } = component;
       registerComponent(app, name, component);
@@ -91,8 +95,8 @@ function createLabox(options: LCreateOptions = {}): LInstance {
         });
       }
       if (dependencies && dependencies.directives) {
-        dependencies.directives.forEach(({ name, directive }: any) => {
-          registerDirective(app, name, directive);
+        dependencies.directives.forEach((directive) => {
+          registerDirective(app, directive());
         });
       }
     });

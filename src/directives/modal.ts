@@ -1,37 +1,56 @@
 import { useLabox } from '../composables/use-labox';
 import { DirectiveBinding } from 'vue';
+import { LModalConfig } from '../components';
 
-const OpenModalDirective = {
-  name: 'open-modal',
-  directive: {
-    mounted(el: HTMLElement, binding: DirectiveBinding, _vnode: any) {
-      el.addEventListener('click', () => {
-        let name: string, data: Record<string, any> | undefined;
+export interface ModalOptions extends LModalConfig {
+  name: string;
+  data?: any;
+}
 
-        if (typeof binding.value !== 'string') {
-          name = binding.value.name;
-          data = binding.value.data;
-        } else {
-          name = binding.value;
-        }
+const OpenModalDirective = () => {
+  return {
+    name: 'open-modal',
+    directive: {
+      mounted(
+        element: HTMLElement,
+        binding: DirectiveBinding<ModalOptions | string>,
+        _vnode: any
+      ) {
+        element.addEventListener('click', () => {
+          let name: string, data: Record<string, any> | undefined;
 
-        const { openModal } = useLabox();
-        openModal(name, data);
-      });
+          if (typeof binding.value === 'object') {
+            name = binding.value.name;
+            data = binding.value.data;
+          } else if (binding.value) {
+            name = binding.value;
+          } else {
+            return console.warn(
+              'Modal directive missing binding value:',
+              element
+            );
+          }
+
+          const { modal } = useLabox();
+          modal.open(name, data);
+        });
+      },
     },
-  },
+  };
 };
 
-const CloseModalDirective = {
-  name: 'close-modal',
-  directive: {
-    mounted(el: HTMLElement, binding: DirectiveBinding, _vnode: any) {
-      el.addEventListener('click', () => {
-        const { closeModal } = useLabox();
-        closeModal(binding.value);
-      });
+const CloseModalDirective = () => {
+  return {
+    name: 'close-modal',
+    directive: {
+      mounted(element: HTMLElement, binding: DirectiveBinding, _vnode: any) {
+        element.addEventListener('click', () => {
+          const { modal } = useLabox();
+          modal.open(binding.value);
+        });
+      },
     },
-  },
+  };
 };
 
 export { OpenModalDirective, CloseModalDirective };

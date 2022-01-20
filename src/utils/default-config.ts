@@ -37,7 +37,15 @@ const config: LConfig = {
       },
     },
     LTextarea: { name: 'textarea', config: {} },
-    LTooltip: { name: 'tooltip', config: { variant: 'secondary' } },
+    LTooltip: {
+      name: 'tooltip',
+      config: {
+        variant: 'secondary',
+        placement: 'top',
+        delay: 1000,
+        trigger: 'hover',
+      },
+    },
   },
 };
 

@@ -1,5 +1,5 @@
 <template>
-  <div :id="id + 'ref'" @open="onOpen" @close="onClose">
+  <div :id="`lx-${id}-ref`" @open="onOpen" @close="onClose">
     <Teleport v-if="open" :to="teleportTarget">
       <div
         v-if="active"
@@ -14,7 +14,7 @@
         :aria-labelledby="headerId"
         :aria-describedby="bodyId"
       >
-        <div :class="classComponentName('backdrop')" />
+        <div :class="classComponentName('backdrop')" @click="onBackdropClick" />
 
         <div :class="classComponentName('inner')">
           <div :class="classComponentName('content')">
@@ -43,9 +43,10 @@
               </div>
 
               <button
+                v-if="closeable"
                 :class="classComponentName('close')"
                 aria-label="Close Modal"
-                @click="onClose"
+                @click="modal.close()"
               >
                 <svg viewBox="0 0 64 64">
                   <path
@@ -68,10 +69,10 @@
               ref="body"
               :id="bodyId"
             >
-              <slot name="body-raw" :data="data" :close="onClose" />
+              <slot name="body-raw" :data="data" :close="modal.close" />
             </div>
             <div
-              v-else
+              v-if="!noBody"
               :class="classComponentName('body')"
               ref="body"
               :id="bodyId"
@@ -79,10 +80,10 @@
               <slot
                 v-if="hasSlot('body')"
                 name="body"
-                :close="onClose"
+                :close="modal.close"
                 :data="data"
               />
-              <slot v-else :close="onClose" :data="data" />
+              <slot v-else :close="modal.close" :data="data" />
             </div>
 
             <div
@@ -97,20 +98,20 @@
               <slot
                 v-if="hasSlot('footer')"
                 name="footer"
-                :close="onClose"
+                :close="modal.close"
                 :data="data"
               />
               <slot
                 v-else-if="hasSlot('footer-left')"
                 name="footer-left"
-                :close="onClose"
+                :close="modal.close"
                 :data="data"
               />
               <div :class="classComponentName('footer-fill')" />
               <slot
                 v-if="hasSlot('footer-right')"
                 name="footer-right"
-                :close="onClose"
+                :close="modal.close"
                 :data="data"
               />
             </div>
@@ -147,10 +148,16 @@ export default defineComponent({
     description: {
       type: String,
     },
+    closeable: {
+      type: Boolean,
+      default: true,
+    },
+    closeOnBackdrop: Boolean,
+    noBody: Boolean,
   },
   setup(props, _context) {
     const component = useComponent<LModalConfig>();
-    const { uuid } = useLabox();
+    const { uuid, modal } = useLabox();
 
     const modalId = props.id || uuid();
     const bodyId = uuid();
@@ -217,13 +224,37 @@ export default defineComponent({
         }, 5);
       }, 10);
 
-      document.body.style.overflowY = 'hidden';
+      window.addEventListener('keydown', onKeyDown);
+
       previousFocusedElement = document.activeElement as HTMLElement | null;
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (!props.closeable) {
+        return shake();
+      }
+      if (event.key === 'Escape') {
+        modal.close();
+      }
+    };
+
+    const shake = () => {
+      const LX_SHAKE_CLASS = 'lx-shake';
+      const ref = document.getElementById(modalId);
+      if (!ref || ref?.classList.contains(LX_SHAKE_CLASS)) {
+        return;
+      }
+
+      ref.classList.add(LX_SHAKE_CLASS);
+      setTimeout(() => {
+        ref.classList.remove(LX_SHAKE_CLASS);
+      }, 500);
     };
 
     const onClose = () => {
       visible.value = false;
       window.removeEventListener('resize', updateContentOverflowHeight);
+      window.removeEventListener('keydown', onKeyDown);
       disableTrapFocus();
       if (previousFocusedElement) {
         // Return focus to previous focused element.
@@ -233,9 +264,16 @@ export default defineComponent({
         active.value = false;
         nextTick(() => {
           open.value = false;
-          document.body.style.overflowY = '';
         });
       }, 250);
+    };
+
+    const onBackdropClick = () => {
+      if (props.closeOnBackdrop && props.closeable) {
+        modal.close();
+      } else {
+        return shake();
+      }
     };
 
     return {
@@ -254,6 +292,8 @@ export default defineComponent({
       headerId,
       bodyId,
       data,
+      onBackdropClick,
+      modal,
     };
   },
 });

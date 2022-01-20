@@ -1,2 +1,9 @@
 export { default } from './tooltip.vue';
-export interface LTooltipConfig {}
+import { Placement } from '@popperjs/core';
+
+export interface LTooltipConfig {
+  variant: string;
+  placement: Placement;
+  delay: number;
+  trigger: 'click' | 'hover';
+}

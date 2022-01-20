@@ -18,10 +18,10 @@ import { useLabox } from '@larmbox/labox';
 
 export default defineComponent({
   setup() {
-    const { setTheme, openModal } = useLabox();
+    const { setTheme, modal } = useLabox();
 
     // setTheme('dark');
-    // openModal('modal-id', { abc: 1 })
+    // modal.open('modal-id', { abc: 1 })
   },
 });
 </script>
@@ -37,13 +37,9 @@ This section is incomplete.
 
 The Labox config object.
 
-### openModal
+### modal
 
 Method to open a modal.
-
-### closeModal
-
-Method to close a modal.
 
 ### uuid
 

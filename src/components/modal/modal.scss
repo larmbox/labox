@@ -65,6 +65,7 @@ $lb-modal-size-lg: 40rem !default;
     transition: all 0.25s ease;
     transform: translateY(-10px);
     padding: 0 $lb-spacing-sm;
+    pointer-events: none;
 
     .#{c('LModal')}-content {
       width: 100%;
@@ -74,6 +75,7 @@ $lb-modal-size-lg: 40rem !default;
       background-color: $lb-body-color;
       border: 1px solid $lb-border-color;
       max-height: 80vh;
+      pointer-events: all;
 
       .#{c('LModal')}-header {
         display: flex;
@@ -154,4 +156,33 @@ $lb-modal-size-lg: 40rem !default;
   @include modal-size('md', $lb-modal-size);
   @include modal-size('sm', $lb-modal-size-sm);
   @include modal-size('lg', $lb-modal-size-lg);
+
+  &.lx-shake {
+    .modal-inner {
+      animation: lx-shake 0.5s ease;
+    }
+  }
+}
+
+@keyframes lx-shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }

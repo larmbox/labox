@@ -4,7 +4,7 @@ import {
   ComputedRef,
   getCurrentInstance,
 } from 'vue';
-import { LComponent } from '../create-labox';
+import { LComponent, LComponents } from '../create-labox';
 import { useLabox } from './use-labox';
 import * as u from './use-utils';
 
@@ -26,13 +26,6 @@ export function useComponent<TConfig>(): {
   const { uuid } = useLabox();
   const { instance, component } = getComponentInstance<TConfig>();
 
-  // Overwrite
-  // for (const [key] of Object.entries(component.config)) {
-  //   if (instance.props[key]) {
-  //     component.config[key as keyof TConfig] = instance.props[key] as any;
-  //   }
-  // }
-
   return {
     config: component.config,
     name: component.name,
@@ -48,18 +41,22 @@ export function getComponentInstance<T>(): {
   instance: ComponentInternalInstance;
   component: LComponent<T>;
 } {
-  const { config } = useLabox();
-
   const instance = getCurrentInstance();
   if (!instance) {
     throw new Error(`getCurrentInstance() is null.`);
   }
 
-  const name = instance.type.name as keyof typeof config.value.components;
+  const name = instance.type.name as keyof LComponents;
+  return { instance, component: getComponentMeta(name) as LComponent<T> };
+}
+
+export function getComponentMeta<T>(name: keyof LComponents): LComponent<T> {
+  const { config } = useLabox();
+
   const component = config.value.components[name];
   if (!component) {
     throw new Error(`Component '${name}' does not exist in configuration.`);
   }
 
-  return { instance, component: component as LComponent<T> };
+  return component as LComponent<T>;
 }
