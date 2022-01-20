@@ -61,7 +61,7 @@
               <slot name="body-raw" :data="data" :close="modal.close" />
             </div>
             <div
-              v-if="!noBody"
+              v-if="hasSlot('body') || hasSlot('default')"
               :class="classComponentName('body')"
               ref="body"
               :id="bodyId"
@@ -147,7 +147,6 @@ export default defineComponent({
       default: true,
     },
     closeOnBackdrop: Boolean,
-    noBody: Boolean,
   },
   setup(props, _context) {
     const { uuid, modal } = useLabox();
@@ -290,7 +289,9 @@ export default defineComponent({
     const updateBodyOverflowHeight = () => {
       if (body.value) {
         body.value.style.maxHeight = `calc(100vh - ${
-          (header.value?.clientHeight || 0) + (footer.value?.clientHeight || 0) + 2
+          (header.value?.clientHeight || 0) +
+          (footer.value?.clientHeight || 0) +
+          2
         }px - 3.5rem)`;
       }
     };
