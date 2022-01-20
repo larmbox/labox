@@ -1,6 +1,6 @@
 <template>
   <div :id="`lx-${id}-ref`" @open="onOpen" @close="onClose">
-    <Teleport v-if="open" :to="teleportTarget">
+    <Teleport v-if="ready" :to="teleportTarget">
       <div
         v-if="active"
         :id="id"
@@ -14,8 +14,6 @@
         :aria-labelledby="headerId"
         :aria-describedby="bodyId"
       >
-        <div :class="classComponentName('backdrop')" @click="onBackdropClick" />
-
         <div :class="classComponentName('inner')">
           <div :class="classComponentName('content')">
             <div
@@ -48,16 +46,7 @@
                 aria-label="Close Modal"
                 @click="modal.close()"
               >
-                <svg viewBox="0 0 64 64">
-                  <path
-                    d="M53.1,17.2L17.2,53.1c-1.6,1.6-4.4,1.5-6.1-0.2l0,0c-1.8-1.8-1.9-4.5-0.2-6.1l35.9-35.9c1.6-1.6,4.4-1.5,6.1,0.2l0,0
-	C54.7,12.9,54.8,15.6,53.1,17.2z"
-                  />
-                  <path
-                    d="M46.8,53.1L10.9,17.2c-1.6-1.6-1.5-4.4,0.2-6.1l0,0c1.8-1.8,4.5-1.9,6.1-0.2l35.9,35.9c1.6,1.6,1.5,4.4-0.2,6.1l0,0
-	C51.1,54.7,48.4,54.8,46.8,53.1z"
-                  />
-                </svg>
+                <LIcon :icon="config.closeIcon" />
               </button>
             </div>
             <div
@@ -124,7 +113,7 @@
 
 <script lang="ts">
 import { LModalConfig } from '.';
-import { defineComponent, ref, nextTick, watch } from 'vue';
+import { defineComponent, ref, nextTick, watch, onMounted } from 'vue';
 import { componentProps, useComponent } from '../../composables/use-component';
 import { sizeProps, useSize } from '../../composables/use-size';
 import {
@@ -132,11 +121,16 @@ import {
   OpenModalDirective,
 } from '../../directives/modal';
 import { useLabox } from '../../composables/use-labox';
+import { LIcon } from '..';
 
-const TELEPORT_TARGET = 'lbm-portal';
+const TELEPORT_TARGET = 'lxm-portal';
+const ANIMATION_DURATION = 250;
 
 export default defineComponent({
-  dependencies: { directives: [OpenModalDirective, CloseModalDirective] },
+  dependencies: {
+    components: [LIcon],
+    directives: [OpenModalDirective, CloseModalDirective],
+  },
   name: 'LModal',
   props: {
     ...componentProps,
@@ -156,91 +150,101 @@ export default defineComponent({
     noBody: Boolean,
   },
   setup(props, _context) {
-    const component = useComponent<LModalConfig>();
     const { uuid, modal } = useLabox();
-
-    const modalId = props.id || uuid();
-    const bodyId = uuid();
-    const headerId = uuid();
-
+    const component = useComponent<LModalConfig>();
+    const { sizeClass } = useSize();
     const { enable: enableTrapFocus, disable: disableTrapFocus } =
       useTrapFocus();
 
-    const open = ref(false);
-    const data = ref(undefined);
+    const id = props.id || uuid();
+    const bodyId = uuid();
+    const headerId = uuid();
+
+    const ready = ref(false);
     const active = ref(false);
     const visible = ref(false);
 
+    const data = ref(null);
+
+    let closetimeout: NodeJS.Timeout | null = null;
+
     let previousFocusedElement: HTMLElement | null = null; // Contains the element that was focused when the modal was opened.
 
-    const { sizeClass } = useSize();
-    if (typeof document !== 'undefined') {
-      nextTick(() => {
-        if (document.getElementById(TELEPORT_TARGET)) {
-          return;
-        }
-        const teleportTarget = document.createElement('div');
-        teleportTarget.setAttribute('id', TELEPORT_TARGET);
-        document.body.appendChild(teleportTarget);
-      });
-    }
+    const createTeleport = () => {
+      const teleport = document.createElement('div');
+      teleport.setAttribute('id', TELEPORT_TARGET);
+      document.body.appendChild(teleport);
 
-    const header = ref(null);
-    const body = ref(null);
-    const footer = ref(null);
+      backdrop.value = document.createElement('div');
+      backdrop.value.className = component.u.classComponentName('backdrop');
+      teleport.appendChild(backdrop.value);
+    };
+
+    onMounted(() => {
+      if (typeof document === 'undefined') {
+        return;
+      }
+
+      let teleport = document.getElementById(TELEPORT_TARGET);
+      if (!teleport) {
+        createTeleport();
+      }
+
+      ready.value = true;
+    });
+
+    const header = ref<HTMLElement | null>(null);
+    const body = ref<HTMLElement | null>(null);
+    const footer = ref<HTMLElement | null>(null);
+    const backdrop = ref<HTMLElement | null>(null);
 
     watch(
-      () => [props.title],
+      () => [props],
       () => {
         nextTick(() => {
-          updateContentOverflowHeight();
+          updateBodyOverflowHeight();
         });
       }
     );
 
-    const updateContentOverflowHeight = () => {
-      const footerElement: HTMLElement = footer.value as unknown as HTMLElement;
-      const titleElement: HTMLElement = header.value as unknown as HTMLElement;
-      if (footerElement && titleElement) {
-        const bodyElement: HTMLElement = body.value as unknown as HTMLElement;
-        bodyElement.style.maxHeight = `calc(100vh - ${
-          footerElement.clientHeight + titleElement.clientHeight + 2
-        }px - 3.5rem)`;
-      }
-    };
-
     const onOpen = (event: any) => {
-      open.value = true;
+      const teleport = document.getElementById(TELEPORT_TARGET)!;
+      backdrop.value = teleport.firstElementChild! as HTMLElement;
+      backdrop.value.addEventListener('click', onBackdropClick);
+
+      if (closetimeout) {
+        clearInterval(closetimeout);
+      }
+      active.value = true;
       data.value = event.detail;
-      setTimeout(() => {
-        active.value = true;
-        nextTick(() => {
-          enableTrapFocus(modalId);
-        });
-        setTimeout(() => {
-          visible.value = true;
-          updateContentOverflowHeight();
-          window.addEventListener('resize', updateContentOverflowHeight);
-        }, 5);
-      }, 10);
 
+      window.addEventListener('resize', updateBodyOverflowHeight);
       window.addEventListener('keydown', onKeyDown);
-
       previousFocusedElement = document.activeElement as HTMLElement | null;
+
+      nextTick(() => {
+        visible.value = true;
+        enableTrapFocus(id);
+        updateBodyOverflowHeight();
+      });
     };
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (!props.closeable) {
-        return shake();
-      }
       if (event.key === 'Escape') {
-        modal.close();
+        if (props.closeable) {
+          modal.close();
+        } else {
+          shake();
+        }
       }
     };
 
+    /**
+     * Shakes (css) the current modal using the lx-shake class name.
+     */
     const shake = () => {
       const LX_SHAKE_CLASS = 'lx-shake';
-      const ref = document.getElementById(modalId);
+      const ref = document.getElementById(id);
       if (!ref || ref?.classList.contains(LX_SHAKE_CLASS)) {
         return;
       }
@@ -253,26 +257,41 @@ export default defineComponent({
 
     const onClose = () => {
       visible.value = false;
-      window.removeEventListener('resize', updateContentOverflowHeight);
-      window.removeEventListener('keydown', onKeyDown);
+
       disableTrapFocus();
+
       if (previousFocusedElement) {
         // Return focus to previous focused element.
         previousFocusedElement.focus();
       }
+
+      window.removeEventListener('resize', updateBodyOverflowHeight);
+      window.removeEventListener('keydown', onKeyDown);
+
+      if (backdrop.value) {
+        backdrop.value.removeEventListener('click', onBackdropClick);
+      }
+
       setTimeout(() => {
-        active.value = false;
-        nextTick(() => {
-          open.value = false;
-        });
-      }, 250);
+        if (!visible.value) {
+          active.value = false;
+        }
+      }, ANIMATION_DURATION);
     };
 
     const onBackdropClick = () => {
-      if (props.closeOnBackdrop && props.closeable) {
+      if (props.closeable && props.closeOnBackdrop) {
         modal.close();
       } else {
         return shake();
+      }
+    };
+
+    const updateBodyOverflowHeight = () => {
+      if (body.value) {
+        body.value.style.maxHeight = `calc(100vh - ${
+          (header.value?.clientHeight || 0) + (footer.value?.clientHeight || 0) + 2
+        }px - 3.5rem)`;
       }
     };
 
@@ -281,7 +300,6 @@ export default defineComponent({
       ...component.u,
       sizeClass,
       teleportTarget: `#${TELEPORT_TARGET}`,
-      open,
       active,
       visible,
       onOpen,
@@ -294,6 +312,7 @@ export default defineComponent({
       data,
       onBackdropClick,
       modal,
+      ready,
     };
   },
 });

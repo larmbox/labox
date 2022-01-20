@@ -78,7 +78,6 @@ const stacking = `<LButton v-open-modal="'stack-1'">Open Modal 1</LButton>
   <LButton v-open-modal="'stack-3'">Open Modal 3</LButton>
 </LModal>
 
-<LModal id="stack-3" title="🦙" no-body>
-</LModal>`
+<LModal id="stack-3" title="🦙" no-body />`
 
 </script>

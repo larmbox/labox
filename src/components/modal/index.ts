@@ -1,2 +1,4 @@
 export { default } from './modal.vue';
-export interface LModalConfig {}
+export interface LModalConfig {
+  closeIcon: string;
+}

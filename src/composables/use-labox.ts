@@ -8,9 +8,10 @@ type LConfig = typeof defaultConfig;
 let GLC: ReturnType<typeof Labox>;
 
 const Modal = (_options: LCreateOptions) => {
-  const tree = ref<string[]>([]);
+  const stack = ref<{ id: string; data: any }[]>([]);
+  const TELEPORT_TARGET = 'lxm-portal';
 
-  const open = (id: string, data?: any): void => {
+  const open = (id: string, data?: any, restore = false): void => {
     const event = new CustomEvent('open', {
       detail: data,
       bubbles: true,
@@ -21,25 +22,39 @@ const Modal = (_options: LCreateOptions) => {
       return console.error(`Unknown modal '${id}'.`);
     }
 
-    if (tree.value.length && !tree.value.includes(id)) {
-      close(tree.value[tree.value.length - 1], true);
+    // TODO: Return if modal id already exists in stack.
+
+    if (stack.value.length && !restore) {
+      // Close previous modal if exists in stack.
+      close(stack.value[stack.value.length - 1].id, true);
     }
 
+    // Trigger open on target modal.
     ref.dispatchEvent(event);
-    if (!tree.value.includes(id)) {
-      tree.value.push(id);
-    }
 
-    document.body.style.overflowY = 'hidden';
+    if (!stack.value.find((t) => t.id === id)) {
+      // Add modal to stack.
+      stack.value.push({ id, data });
+      document
+        .getElementById(TELEPORT_TARGET)
+        ?.setAttribute('data-lx-active', 'true');
+      if (stack.value.length === 1) {
+        // Only change padding if this is the first modal.
+        // Otherwise for subsequent modals the padding will be changed to 0, as overflow and scrollbar is hidden.
+        document.body.style.paddingRight = scrollBarWidth() + 'px';
+      }
+      document.body.style.overflowY = 'hidden';
+    }
   };
 
-  const close = (id?: string, stack = false): void => {
+  const close = (id?: string, keep = false): void => {
     const event = new CustomEvent('close', {
       bubbles: true,
     });
 
-    if (!id) {
-      id = tree.value[tree.value.length - 1];
+    if (!id && stack.value.length) {
+      // Pick the last modal in stack if exists.
+      id = stack.value[stack.value.length - 1].id;
     }
 
     const ref = document.getElementById(`lx-${id}-ref`);
@@ -47,18 +62,54 @@ const Modal = (_options: LCreateOptions) => {
 
     ref.dispatchEvent(event);
 
-    // Remove from tree.
-    if (!stack) {
-      tree.value = tree.value.filter((t) => t !== id);
-      if (!tree.value.length) {
-        document.body.style.overflowY = '';
+    // If keep is true, the modal will remain in the stack.
+    if (!keep) {
+      // Remove from stack.
+      stack.value = stack.value.filter((t) => t.id !== id);
+      if (!stack.value.length) {
+        // No more modals in stack, restore overflow on body.
+        document
+          .getElementById(TELEPORT_TARGET)
+          ?.removeAttribute('data-lx-active');
+        setTimeout(() => {
+          document.body.style.paddingRight = '0';
+          document.body.style.overflowY = '';
+        }, 250);
       } else {
-        open(tree.value[tree.value.length - 1]);
+        // Restore (open) previous modal in stack.
+        const mod = stack.value[stack.value.length - 1];
+        open(mod.id, mod.data, true);
       }
     }
   };
 
-  return { modal: { close: (id?: string) => close(id), open, tree } };
+  const scrollBarWidth = (element?: HTMLElement) => {
+    if (!element) {
+      // Return the body scrollbar width, when no element was specified.
+      return window.innerWidth - document.body.clientWidth;
+    } else {
+      // When an element is specified, return its specific scrollbar width.
+      return element.offsetWidth - element.clientWidth;
+    }
+  };
+
+  return {
+    modal: {
+      /**
+       * Closes a modal.
+       *
+       * @param id Modal id to close. If omitted, the last modal in the stack will be closed.
+       */
+      close: (id?: string) => close(id),
+      /**
+       * Opens a modal.
+       *
+       * @param id Modal id.
+       * @param data Data to pass to modal.
+       */
+      open: (id: string, data?: any) => open(id, data),
+    },
+  };
 };
 
 const Toast = (_options: LCreateOptions) => {

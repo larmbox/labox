@@ -21,6 +21,27 @@ $lb-modal-size-lg: 40rem !default;
   }
 }
 
+#lxm-portal[data-lx-active='true'] {
+  .#{c('LModal')}-backdrop {
+    pointer-events: all;
+    opacity: 0.66;
+  }
+}
+
+.#{c('LModal')}-backdrop {
+  z-index: $lb-z-index-modal - 1;
+  pointer-events: none;
+  background-color: #000;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  opacity: 0;
+  transition: all 0.25s ease;
+}
+
 .#{c('LModal')} {
   overflow: hidden;
   position: fixed;
@@ -29,34 +50,17 @@ $lb-modal-size-lg: 40rem !default;
   bottom: 0;
   left: 0;
   z-index: $lb-z-index-modal;
+  pointer-events: none;
 
   &.#{c('LModal')}-visible {
-    .#{c('LModal')}-backdrop {
-      opacity: 0.66;
-    }
-
     .#{c('LModal')}-inner {
       opacity: 1;
       transform: translateY(0);
     }
   }
 
-  .#{c('LModal')}-backdrop {
-    z-index: 9;
-    background-color: #000;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
-    opacity: 0;
-    transition: all 0.25s ease;
-  }
-
   .#{c('LModal')}-inner {
     position: relative;
-    z-index: 10;
     display: flex;
     align-items: center;
     margin: 1.75rem auto;
@@ -157,10 +161,8 @@ $lb-modal-size-lg: 40rem !default;
   @include modal-size('sm', $lb-modal-size-sm);
   @include modal-size('lg', $lb-modal-size-lg);
 
-  &.lx-shake {
-    .modal-inner {
-      animation: lx-shake 0.5s ease;
-    }
+  &.lx-shake > div:not(.#{c('LModal')}-backdrop) {
+    animation: lx-shake 0.5s ease;
   }
 }
 

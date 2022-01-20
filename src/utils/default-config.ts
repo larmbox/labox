@@ -26,7 +26,7 @@ const config: LConfig = {
       name: 'loading',
       config: { mode: 'spinner' },
     },
-    LModal: { name: 'modal', config: {} },
+    LModal: { name: 'modal', config: { closeIcon: 'x-lg' } },
     LRadio: { name: 'radio', config: {} },
     LSelect: { name: 'select', config: {} },
     LSwitch: {

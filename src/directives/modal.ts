@@ -46,7 +46,7 @@ const CloseModalDirective = () => {
       mounted(element: HTMLElement, binding: DirectiveBinding, _vnode: any) {
         element.addEventListener('click', () => {
           const { modal } = useLabox();
-          modal.open(binding.value);
+          modal.close(binding.value);
         });
       },
     },
