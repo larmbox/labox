@@ -28,7 +28,7 @@ const config: LConfig = {
     },
     LModal: { name: 'modal', config: { closeIcon: 'x-lg' } },
     LRadio: { name: 'radio', config: {} },
-    LSelect: { name: 'select', config: {} },
+    LSelect: { name: 'select', config: { icon: 'chevron-expand' } },
     LSwitch: {
       name: 'switch',
       config: {

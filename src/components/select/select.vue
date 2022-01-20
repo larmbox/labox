@@ -38,7 +38,7 @@
             v-text="label"
           />
         </select>
-        <LIcon icon="chevron-expand" :class="classComponentName('icon')" />
+        <LIcon :icon="config.icon" :class="classComponentName('icon')" />
       </div>
     </div>
 
