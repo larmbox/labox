@@ -1,4 +1,4 @@
-import { DirectiveBinding, createApp, ref, reactive, computed } from 'vue';
+import { DirectiveBinding, createApp, ref } from 'vue';
 import { useLabox } from '../composables/use-labox';
 import Tooltip, { LTooltipConfig } from '../components/tooltip';
 import { getComponentMeta } from '../composables/use-component';

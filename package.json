@@ -1,6 +1,6 @@
 {
   "name": "@larmbox/labox",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Labox is a component library.",
   "license": "MIT",
   "main": "dist/labox.umd.js",
