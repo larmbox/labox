@@ -28,7 +28,7 @@
           :invalid="feedback && feedbackType === 'error'"
           :value="modelValue || value"
           :placeholder="first(placeholder, label)"
-          @input="$emit('update:modelValue', $event.target?.value)"
+          @input="$emit('update:modelValue', $event.target?.value || null)"
           v-bind="autoBind('autofocus', 'autocomplete', 'disabled', 'name')"
         >
           <option
