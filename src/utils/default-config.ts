@@ -42,7 +42,7 @@ const config: LConfig = {
       config: {
         variant: 'secondary',
         placement: 'top',
-        delay: 1000,
+        delay: 0,
         trigger: 'hover',
       },
     },
