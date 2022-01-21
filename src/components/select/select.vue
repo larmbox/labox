@@ -34,7 +34,7 @@
           <option
             v-for="({ value, label }, i) in options"
             :key="i"
-            :value="value"
+            :value="value || ''"
             v-text="label"
           />
         </select>
