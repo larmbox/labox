@@ -79,7 +79,7 @@ const TooltipDirective = () => {
         div.style.height = '0';
 
         element.setAttribute(DATA_ATTRIBUTE_NAME, id);
-        element.parentNode!.insertBefore(div, element.nextSibling);
+        element.appendChild(div);
 
         createApp(Tooltip, {
           element,
