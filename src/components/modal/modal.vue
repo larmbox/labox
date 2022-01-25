@@ -147,6 +147,7 @@ export default defineComponent({
       default: true,
     },
     closeOnBackdrop: Boolean,
+    closeOnRouteChange: { type: Boolean, default: true },
   },
   setup(props, _context) {
     const { uuid, modal } = useLabox();
@@ -220,6 +221,12 @@ export default defineComponent({
       window.addEventListener('resize', updateBodyOverflowHeight);
       window.addEventListener('keydown', onKeyDown);
       previousFocusedElement = document.activeElement as HTMLElement | null;
+
+      if (props.closeOnRouteChange) {
+        useRouteObserver(() => {
+          modal.closeAll();
+        });
+      }
 
       nextTick(() => {
         visible.value = true;
@@ -317,6 +324,19 @@ export default defineComponent({
     };
   },
 });
+
+const useRouteObserver = (onChange: Function) => {
+  if (typeof document === 'undefined') return;
+  let previousUrl = location.href;
+  const observer = new MutationObserver(() => {
+    if (location.href !== previousUrl) {
+      previousUrl = location.href;
+      onChange();
+    }
+  });
+  const config = { subtree: true, childList: true };
+  observer.observe(document, config);
+};
 
 const useTrapFocus = () => {
   let firstFocusableElement: HTMLElement;

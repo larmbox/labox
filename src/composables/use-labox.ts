@@ -83,6 +83,11 @@ const Modal = (_options: LCreateOptions) => {
     }
   };
 
+  const closeAll = (): void => {
+    stack.value = stack.value.slice(-1);
+    close();
+  };
+
   const scrollBarWidth = (element?: HTMLElement) => {
     if (!element) {
       // Return the body scrollbar width, when no element was specified.
@@ -101,6 +106,10 @@ const Modal = (_options: LCreateOptions) => {
        * @param id Modal id to close. If omitted, the last modal in the stack will be closed.
        */
       close: (id?: string) => close(id),
+      /**
+       * Closes all modals in stack.
+       */
+      closeAll: () => closeAll(),
       /**
        * Opens a modal.
        *
