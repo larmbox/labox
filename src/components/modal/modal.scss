@@ -21,7 +21,7 @@ $lb-modal-size-lg: 40rem !default;
   }
 }
 
-#lxm-portal[data-lx-active='true'] {
+#lx-md[data-lx-active='true'] {
   .#{c('LModal')}-backdrop {
     pointer-events: all;
     opacity: 0.66;

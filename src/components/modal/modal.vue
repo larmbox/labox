@@ -120,10 +120,9 @@ import {
   CloseModalDirective,
   OpenModalDirective,
 } from '../../directives/modal';
-import { useLabox } from '../../composables/use-labox';
+import { TeleportTarget, useLabox } from '../../composables/use-labox';
 import { LIcon } from '..';
 
-const TELEPORT_TARGET = 'lxm-portal';
 const ANIMATION_DURATION = 250;
 
 export default defineComponent({
@@ -171,11 +170,14 @@ export default defineComponent({
     let previousFocusedElement: HTMLElement | null = null; // Contains the element that was focused when the modal was opened.
 
     const createTeleport = () => {
-      const teleport = document.createElement('div');
-      teleport.setAttribute('id', TELEPORT_TARGET);
-      document.body.appendChild(teleport);
-
+      if (
+        backdrop.value ||
+        document.getElementById(TeleportTarget.Modal + '-backdrop')
+      )
+        return;
+      const teleport = document.getElementById(TeleportTarget.Modal)!;
       backdrop.value = document.createElement('div');
+      backdrop.value.id = TeleportTarget.Modal + '-backdrop';
       backdrop.value.className = component.u.classComponentName('backdrop');
       teleport.appendChild(backdrop.value);
     };
@@ -185,10 +187,7 @@ export default defineComponent({
         return;
       }
 
-      let teleport = document.getElementById(TELEPORT_TARGET);
-      if (!teleport) {
-        createTeleport();
-      }
+      createTeleport();
 
       ready.value = true;
     });
@@ -208,7 +207,7 @@ export default defineComponent({
     );
 
     const onOpen = (event: any) => {
-      const teleport = document.getElementById(TELEPORT_TARGET)!;
+      const teleport = document.getElementById(TeleportTarget.Modal)!;
       backdrop.value = teleport.firstElementChild! as HTMLElement;
       backdrop.value.addEventListener('click', onBackdropClick);
 
@@ -307,7 +306,7 @@ export default defineComponent({
       ...component,
       ...component.u,
       sizeClass,
-      teleportTarget: `#${TELEPORT_TARGET}`,
+      teleportTarget: `#${TeleportTarget.Modal}`,
       active,
       visible,
       onOpen,
@@ -327,10 +326,10 @@ export default defineComponent({
 
 const useRouteObserver = (onChange: Function) => {
   if (typeof document === 'undefined') return;
-  let previousUrl = location.href;
+  let previousUrl = location.pathname;
   const observer = new MutationObserver(() => {
-    if (location.href !== previousUrl) {
-      previousUrl = location.href;
+    if (location.pathname !== previousUrl) {
+      previousUrl = location.pathname;
       onChange();
     }
   });

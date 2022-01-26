@@ -2,67 +2,28 @@
 @import '../../theme/imports';
 
 $lb-toast-border-radius: $lb-border-radius !default;
-$lb-toast-text-color: $lb-text-color !default;
+$lb-toast-text-size: $lb-text-sm !default;
+$lb-toast-background-color: color('gray', 12) !default;
+$lb-toast-text-color: #fff !default;
+$lb-toast-max-width: 250px !default;
+$lb-toast-padding-x: $lb-spacing-sm !default;
+$lb-toast-padding-y: $lb-spacing-xs * 2 !default;
+$lb-toast-arrow-size: 8px !default;
 
 @mixin toast-color($color, $theme: $lb-default-theme) {
-  input {
-    &:checked {
-      + .#{c('LCheckbox')}-box {
-        background-color: color($color, 8);
-        border-color: color($color, 8);
-        svg {
-          opacity: 1;
-        }
-      }
-    }
-
-    &:focus {
-      + .#{c('LCheckbox')}-box {
-        border-color: color($color, 8);
-        box-shadow: 0 0 0 $lb-checkbox-focus-shadow-size color($color, 'T25');
-      }
-    }
-
-    &:disabled:checked {
-      + .#{c('LCheckbox')}-box {
-        border-color: color($color, 6);
-        background-color: color($color, 6);
-      }
-    }
-
-    &:disabled:not(:checked) {
-      + .#{c('LCheckbox')}-box {
-        border-color: color($color, 3, $theme);
-      }
-    }
+  .#{c('LToast')}-inner .#{c('LToast')}-content {
+    background-color: color($color, 8, $theme);
+    color: contrast-tone(color2($color, 8, $theme));
   }
+}
+
+.#{c('LToast')}-trigger {
+  display: inline-flex;
 }
 
 .#{c('LToast')} {
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-
-  .#{c('LToast')}-inner {
-    position: relative;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    margin: 1.75rem auto;
-    min-height: calc(100% - (1.75rem * 2));
-    max-width: 500px;
-    opacity: 0;
-    transition: all 0.25s ease;
-    transform: translateY(-10px);
-
-    .#{c('LToast')}-content {
-      width: 100%;
-    }
-  }
+  display: inline-flex;
 
   @mixin toast-variants($variant, $theme: $lb-default-theme) {
     &.#{c('LToast')}-#{$variant} {
@@ -81,4 +42,54 @@ $lb-toast-text-color: $lb-text-color !default;
       }
     }
   }
+
+  .#{c('LToast')}-inner {
+    .#{c('LToast')}-content {
+      border-radius: $lb-toast-border-radius;
+      padding: $lb-toast-padding-y $lb-toast-padding-x;
+      font-size: $lb-toast-text-size;
+      max-width: $lb-toast-max-width;
+    }
+
+    display: inline-flex;
+    position: relative;
+    border-radius: $lb-toast-border-radius;
+    color: $lb-toast-text-color;
+
+    .#{c('LToast')}-arrow,
+    .#{c('LToast')}-arrow::before {
+      position: absolute;
+      width: $lb-toast-arrow-size;
+      height: $lb-toast-arrow-size;
+    }
+
+    .#{c('LToast')}-arrow::before {
+      content: '';
+      transform: rotate(45deg);
+      top: 0;
+      left: 0;
+    }
+  }
 }
+
+
+.#{c('LToast')}-bottom {
+  bottom: 0;
+}
+
+.lb-toast-animation-enter-active,
+.lb-toast-animation-leave-active {
+  transition: opacity 0.05s ease;
+  .#{c('LToast')}-content {
+    transition: transform 0.05s ease;
+  }
+}
+
+.lb-toast-animation-enter-from,
+.lb-toast-animation-leave-to {
+  opacity: 0.5;
+  .#{c('LToast')}-content {
+    transform: scale(0.9);
+  }
+}
+

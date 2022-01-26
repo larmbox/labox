@@ -44,8 +44,10 @@ $lb-text-sm: 0.875rem !default;
 $lb-text-md: 1rem !default;
 $lb-text-lg: 1.125rem !default;
 
-$lb-z-index-modal: 400 !default;
-$lb-z-index-toast: 500 !default;
+$lb-z-index-base: 400 !default;
+$lb-z-index-modal: 401 !default;
+$lb-z-index-toast: 402 !default;
+$lb-z-index-tooltip: 403 !default;
 
 $lb-line-height: 1.25 !default;
 $lb-line-height-sm: $lb-line-height !default;
@@ -57,7 +59,7 @@ $lb-focus-shadow-size: 4px !default;
 $lb-themes: (
   'default': (
     'primary': create-palette(#0969da),
-    'secondary': create-palette(#365f8d),
+    'secondary': create-palette(#1f2225),
     'success': create-palette(#1d9e64),
     'error': create-palette(#cb2960),
     'gray': create-palette(#5a6677),

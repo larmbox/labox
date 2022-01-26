@@ -48,6 +48,7 @@ export default defineUserConfig<DefaultThemeOptions>({
               '/components/select.md',
               '/components/switch.md',
               '/components/textarea.md',
+              '/components/toast.md',
               '/components/tooltip.md',
             ],
           },

@@ -1,100 +1,96 @@
 <template>
-  <div :id="id + 'ref'" @open="onOpen" @close="onClose">
-    <Teleport v-if="open" :to="teleportTarget">
-      <div
-        v-if="open2"
-        :id="id"
-        :ref="id"
-        :class="[className(name), sizeClass, { abcd: porp }]"
-        role="dialog"
-      >
-        <div :class="classComponentName('backdrop')" />
-
-        <div :class="classComponentName('inner')">
+  <div
+    v-if="!isDirective && hasSlot('trigger')"
+    :id="el.trigger.id"
+    :class="classComponentName('trigger')"
+  >
+    <slot name="trigger" />
+  </div>
+  <Teleport :to="TELEPORT_TARGET">
+    <div
+      :id="id"
+      :class="[name, variantClass, themeClass]"
+    >
+      <Transition name="lb-tooltip-animation" appear>
+        <div :id="el.content.id" :class="classComponentName('inner')">
+          {{ isDirective }}
           <div :class="classComponentName('content')">
-            <div :class="classComponentName('header')">
-              <div>Header</div>
-              <div @click="onClose">close</div>
-            </div>
-            <div><slot /></div>
+            <div :class="classComponentName('arrow')" data-popper-arrow />
+            <span v-if="isDirective" v-text="text" />
 
-            <div :class="classComponentName('footer')">
-              <div>Footer</div>
-            </div>
+            <slot v-else name="content" />
           </div>
         </div>
-      </div>
-    </Teleport>
-  </div>
+      </Transition>
+    </div>
+  </Teleport>
 </template>
 
 <script lang="ts">
 import { LToastConfig } from '.';
-import { defineComponent, ref, nextTick } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import { componentProps, useComponent } from '../../composables/use-component';
-import { sizeProps, useSize } from '../../composables/use-size';
 import { ToastDirective } from '../../directives/toast';
-
-const TELEPORT_TARGET = 'lbm-portal';
+import { disabledProps } from '../../composables/use-disabled';
+import { TeleportTarget, useLabox } from '../../composables/use-labox';
+import { useVariant } from '../../composables/use-variant';
 
 export default defineComponent({
   dependencies: { directives: [ToastDirective] },
   name: 'LToast',
   props: {
     ...componentProps,
-    ...sizeProps,
+    variant: {
+      type: String,
+      default: 'secondary',
+    },
+    ...disabledProps,
+
+    placement: String,
+    title: String,
+    text: String,
+    icon: String,
+    directive: Boolean,
   },
-  setup(_props, _context) {
+  setup(props, _context) {
     const component = useComponent<LToastConfig>();
-    const ready = ref(false);
-    const open = ref(false);
-    const open2 = ref(false);
-    const porp = ref(false);
+    const { variantClass, themeClass } = useVariant();
+    const { uuid } = useLabox();
 
-    const { sizeClass } = useSize();
-    if (typeof document !== 'undefined') {
-      nextTick(() => {
-        if (document.getElementById(TELEPORT_TARGET)) {
-          return;
-        }
-        const teleportTarget = document.createElement('div');
-        teleportTarget.setAttribute('id', TELEPORT_TARGET);
-        document.body.appendChild(teleportTarget);
-        ready.value = true;
-      });
-    }
+    const active = ref(false);
 
-    const onOpen = () => {
-      open.value = true;
-      nextTick(() => {
-        open2.value = true;
-        setTimeout(() => {
-          porp.value = true;
-        }, 5);
-      });
+    type ElValue = { id: string };
+    type El = { trigger: ElValue; content: ElValue };
+    const el: El = {
+      trigger: { id: uuid() },
+      content: { id: uuid() },
     };
 
-    const onClose = () => {
-      porp.value = false;
-      setTimeout(() => {
-        open2.value = false;
-        nextTick(() => {
-          open.value = false;
-        });
-      }, 500);
-    };
+    const isDirective = !!props.directive;
+
+    // const onClick = () => {
+
+    // }
+
+    onMounted(() => {
+      // document.getElementById(el.trigger.id)?.addEventListener(onClick);
+      // nextTick(() => {
+      //   if (!el.trigger.element) {
+      //     el.trigger.element = document.getElementById(el.trigger.id);
+      //   }
+      //   el.content.element = document.getElementById(el.content.id);
+      // });
+    });
 
     return {
       ...component,
       ...component.u,
-      sizeClass,
-      ready,
-      open,
-      open2,
-      teleportTarget: `#${TELEPORT_TARGET}`,
-      onOpen,
-      porp,
-      onClose,
+      isDirective,
+      TELEPORT_TARGET: `#${TeleportTarget.Toast}`,
+      active,
+      variantClass,
+      themeClass,
+      el,
     };
   },
 });

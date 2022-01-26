@@ -6,4 +6,9 @@ export interface LTooltipConfig {
   placement: Placement;
   delay: number;
   trigger: 'click' | 'hover';
+  offset: [number, number];
+  arrow: {
+    padding: number;
+  };
+  disableTouch: boolean;
 }

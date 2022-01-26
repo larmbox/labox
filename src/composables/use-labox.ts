@@ -9,7 +9,6 @@ let GLC: ReturnType<typeof Labox>;
 
 const Modal = (_options: LCreateOptions) => {
   const stack = ref<{ id: string; data: any }[]>([]);
-  const TELEPORT_TARGET = 'lxm-portal';
 
   const open = (id: string, data?: any, restore = false): void => {
     const event = new CustomEvent('open', {
@@ -36,7 +35,7 @@ const Modal = (_options: LCreateOptions) => {
       // Add modal to stack.
       stack.value.push({ id, data });
       document
-        .getElementById(TELEPORT_TARGET)
+        .getElementById(TeleportTarget.Modal)
         ?.setAttribute('data-lx-active', 'true');
       if (stack.value.length === 1) {
         // Only change padding if this is the first modal.
@@ -69,7 +68,7 @@ const Modal = (_options: LCreateOptions) => {
       if (!stack.value.length) {
         // No more modals in stack, restore overflow on body.
         document
-          .getElementById(TELEPORT_TARGET)
+          .getElementById(TeleportTarget.Modal)
           ?.removeAttribute('data-lx-active');
         setTimeout(() => {
           document.body.style.paddingRight = '0';
@@ -158,6 +157,34 @@ const Labox = (options: LCreateOptions) => {
 export function createGlobalLaboxClass(options: LCreateOptions): void {
   GLC = Labox(options);
 }
+
+const LABOX_TELEPORT_TARGET = 'lx';
+
+export const TeleportTarget = {
+  Modal: `${LABOX_TELEPORT_TARGET}-md`,
+  Tooltip: `${LABOX_TELEPORT_TARGET}-tt`,
+  Toast: `${LABOX_TELEPORT_TARGET}-to`,
+};
+
+export function createLaboxTeleportTarget(): void {
+  if (typeof document === 'undefined') return;
+  let global = document.getElementById(LABOX_TELEPORT_TARGET);
+  if (!global) {
+    global = document.createElement('div');
+    global.id = LABOX_TELEPORT_TARGET;
+    document.body.appendChild(global);
+  }
+
+  Object.values(TeleportTarget).forEach((a) => {
+    let target = document.getElementById(a);
+    if (!target) {
+      target = document.createElement('div');
+      target.setAttribute('id', a);
+      global!.appendChild(target);
+    }
+  });
+}
+
 /**
  * Returns the $labox prototype instance.
  */

@@ -28,5 +28,8 @@ export type { LSelectConfig } from './select';
 export { default as LSwitch } from './switch';
 export type { LSwitchConfig } from './switch';
 
+export { default as LToast } from './toast';
+export type { LToastConfig } from './toast';
+
 export { default as LTooltip } from './tooltip';
 export type { LTooltipConfig } from './tooltip';

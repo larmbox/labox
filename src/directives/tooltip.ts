@@ -4,7 +4,7 @@ import Tooltip, { LTooltipConfig } from '../components/tooltip';
 import { getComponentMeta } from '../composables/use-component';
 
 export interface TooltipOptions extends LTooltipConfig {
-  text: string;
+  text: string | null | undefined;
 }
 
 type BaseType = string | number | boolean;
@@ -74,19 +74,18 @@ const TooltipDirective = () => {
 
         state[id] = ref(options);
 
-        const div = document.createElement('div');
-        div.id = uuid();
-        div.style.height = '0';
-
         element.setAttribute(DATA_ATTRIBUTE_NAME, id);
+
+        const div = document.createElement('div');
         element.appendChild(div);
 
         createApp(Tooltip, {
+          id,
           element,
-          options: state[id],
+          binding: state[id],
         }).mount(div);
       },
-      unMounted(
+      unmounted(
         el: HTMLElement,
         _binding: DirectiveBinding<TooltipOptions | BaseType>,
         _vnode: any

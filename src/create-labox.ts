@@ -1,5 +1,5 @@
 import { App, Component, Directive } from 'vue';
-import { createGlobalLaboxClass } from './composables/use-labox';
+import { createGlobalLaboxClass, createLaboxTeleportTarget } from './composables/use-labox';
 import { DeepPartial } from './utils/types';
 import version from './version';
 import type {
@@ -13,6 +13,7 @@ import type {
   LSelectConfig,
   LSwitchConfig,
   LTextareaConfig,
+  LToastConfig,
   LTooltipConfig,
 } from './components';
 import { TooltipDirective } from './directives/tooltip';
@@ -38,6 +39,7 @@ export interface LComponents {
   LSelect: LComponent<LSelectConfig>;
   LSwitch: LComponent<LSwitchConfig>;
   LTextarea: LComponent<LTextareaConfig>;
+  LToast: LComponent<LToastConfig>;
   LTooltip: LComponent<LTooltipConfig>;
 }
 
@@ -100,6 +102,8 @@ function createLabox(options: LCreateOptions = {}): LInstance {
         });
       }
     });
+
+    createLaboxTeleportTarget();
   }
   return {
     version,

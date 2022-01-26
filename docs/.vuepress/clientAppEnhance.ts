@@ -11,6 +11,7 @@ import {
   LTooltip,
   LRadio,
   LSwitch,
+  LToast,
   useLabox,
 } from '../../src';
 
@@ -37,6 +38,7 @@ export default defineClientAppEnhance(({ app, router }) => {
           LCheckbox,
           LRadio,
           LSwitch,
+          LToast,
         ],
         config: {
           components: {

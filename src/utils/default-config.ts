@@ -37,6 +37,10 @@ const config: LConfig = {
       },
     },
     LTextarea: { name: 'textarea', config: {} },
+    LToast: {
+      name: 'toast',
+      config: { variant: 'secondary', placement: 'bottom' },
+    },
     LTooltip: {
       name: 'tooltip',
       config: {
@@ -44,6 +48,9 @@ const config: LConfig = {
         placement: 'top',
         delay: 0,
         trigger: 'hover',
+        arrow: { padding: 8 },
+        offset: [0, 8],
+        disableTouch: false,
       },
     },
   },

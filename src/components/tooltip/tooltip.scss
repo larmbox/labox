@@ -6,14 +6,23 @@ $lb-tooltip-text-size: $lb-text-sm !default;
 $lb-tooltip-background-color: color('gray', 12) !default;
 $lb-tooltip-text-color: #fff !default;
 $lb-tooltip-max-width: 250px !default;
-$lb-tooltip-padding: $lb-spacing-xs * 2 !default;
+$lb-tooltip-padding-x: $lb-spacing-sm !default;
+$lb-tooltip-padding-y: $lb-spacing-xs * 2 !default;
 $lb-tooltip-arrow-size: 8px !default;
 
 @mixin tooltip-color($color, $theme: $lb-default-theme) {
-  .#{c('LTooltip')}-inner {
+  .#{c('LTooltip')}-inner .#{c('LTooltip')}-content {
     background-color: color($color, 8, $theme);
     color: contrast-tone(color2($color, 8, $theme));
   }
+
+  .#{c('LTooltip')}-arrow::before {
+    background-color: color($color, 8, $theme);
+  }
+}
+
+.#{c('LTooltip')}-trigger {
+  display: inline-flex;
 }
 
 .#{c('LTooltip')} {
@@ -37,66 +46,65 @@ $lb-tooltip-arrow-size: 8px !default;
     }
   }
 
-  .#{c('LTooltip')}-arrow,
-  .#{c('LTooltip')}-arrow::before {
-    position: absolute;
-    width: $lb-tooltip-arrow-size;
-    height: $lb-tooltip-arrow-size;
-    left: 0;
-    background: inherit;
-  }
-
-  .#{c('LTooltip')}-arrow::before {
-    visibility: visible;
-    content: '';
-    transform: rotate(45deg);
-  }
-
-  .#{c('LTooltip')}-arrow {
-    visibility: hidden;
-  }
-
-  // .#{c('LTooltip')}-trigger {
-  // }
-
   .#{c('LTooltip')}-inner {
-    border-radius: $lb-tooltip-border-radius;
-    color: $lb-tooltip-text-color;
-    padding: $lb-tooltip-padding;
-
     .#{c('LTooltip')}-content {
+      border-radius: $lb-tooltip-border-radius;
+      padding: $lb-tooltip-padding-y $lb-tooltip-padding-x;
       font-size: $lb-tooltip-text-size;
       max-width: $lb-tooltip-max-width;
+    }
+
+    display: inline-flex;
+    position: relative;
+    border-radius: $lb-tooltip-border-radius;
+    color: $lb-tooltip-text-color;
+
+    .#{c('LTooltip')}-arrow,
+    .#{c('LTooltip')}-arrow::before {
+      position: absolute;
+      width: $lb-tooltip-arrow-size;
+      height: $lb-tooltip-arrow-size;
+    }
+
+    .#{c('LTooltip')}-arrow::before {
+      content: '';
+      transform: rotate(45deg);
+      top: 0;
+      left: 0;
     }
   }
 }
 
 .lb-tooltip-animation-enter-active,
 .lb-tooltip-animation-leave-active {
-  transition: transform 0.075s ease, opacity 0.075s ease;
+  transition: opacity 0.05s ease;
+  .#{c('LTooltip')}-content {
+    transition: transform 0.05s ease;
+  }
 }
 
 .lb-tooltip-animation-enter-from,
 .lb-tooltip-animation-leave-to {
-  transform: scale(0.9);
-  opacity: 0;
+  opacity: 0.5;
+  .#{c('LTooltip')}-content {
+    transform: scale(0.9);
+  }
 }
 
-.#{c('LTooltip')}-popper[data-popper-placement^='top'] .#{c('LTooltip')}-arrow {
+.#{c('LTooltip')}-inner[data-popper-placement^='top'] .#{c('LTooltip')}-arrow {
   bottom: -4px;
 }
 
-.#{c('LTooltip')}-popper[data-popper-placement^='bottom']
+.#{c('LTooltip')}-inner[data-popper-placement^='bottom']
   .#{c('LTooltip')}-arrow {
   top: -4px;
 }
 
-.#{c('LTooltip')}-popper[data-popper-placement^='left']
-  .#{c('LTooltip')}-arrow {
+.#{c('LTooltip')}-inner[data-popper-placement^='left'] .#{c('LTooltip')}-arrow {
   right: -4px;
 }
 
-.#{c('LTooltip')}-popper[data-popper-placement^='right']
+.#{c('LTooltip')}-inner[data-popper-placement^='right']
   .#{c('LTooltip')}-arrow {
   left: -4px;
 }
