@@ -27,6 +27,8 @@ $lb-tooltip-arrow-size: 8px !default;
 
 .#{c('LTooltip')} {
   display: inline-flex;
+  border-radius: $lb-tooltip-border-radius;
+  color: $lb-tooltip-text-color;
 
   @mixin tooltip-variants($variant, $theme: $lb-default-theme) {
     &.#{c('LTooltip')}-#{$variant} {
@@ -53,11 +55,6 @@ $lb-tooltip-arrow-size: 8px !default;
       font-size: $lb-tooltip-text-size;
       max-width: $lb-tooltip-max-width;
     }
-
-    display: inline-flex;
-    position: relative;
-    border-radius: $lb-tooltip-border-radius;
-    color: $lb-tooltip-text-color;
 
     .#{c('LTooltip')}-arrow,
     .#{c('LTooltip')}-arrow::before {

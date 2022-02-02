@@ -2,7 +2,8 @@
   <div
     v-if="!isDirective && hasSlot('trigger')"
     :id="el.trigger.id"
-    :class="classComponentName('trigger')"
+    v-bind="$attrs"
+    :class="[classComponentName('trigger')]"
   >
     <slot name="trigger" />
   </div>

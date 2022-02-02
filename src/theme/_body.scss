@@ -6,17 +6,18 @@
 
 #lx {
   position: relative;
+  height: 0;
   z-index: $lb-z-index-base;
   #lx-md {
-    position: relative;
-    z-index: $lb-z-index-modal;
+    width: 0;
+    height: 0;
   }
   #lx-tt {
-    position: relative;
-    z-index: $lb-z-index-toast;
+    width: 0;
+    height: 0;
   }
   #lx-to {
-    position: relative;
-    z-index: $lb-z-index-tooltip;
+    width: 0;
+    height: 0;
   }
 }
