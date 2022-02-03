@@ -57,9 +57,10 @@ const Modal = (_options: LCreateOptions) => {
     }
 
     const ref = document.getElementById(`lx-${id}-ref`);
-    if (!ref) return;
 
-    ref.dispatchEvent(event);
+    if (ref) {
+      ref.dispatchEvent(event);
+    }
 
     // If keep is true, the modal will remain in the stack.
     if (!keep) {
