@@ -110,6 +110,7 @@ $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
   }
 
   select {
+    width: 100%;
     appearance: none;
     background-color: transparent;
     flex: 1;

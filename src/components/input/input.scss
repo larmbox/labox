@@ -118,6 +118,7 @@ $lb-input-line-height-lg: $lb-line-height-lg !default;
   }
 
   input {
+    width: 100%;
     background-color: transparent;
     flex: 1;
     transition: border-color $lb-animation-time ease-in-out,
