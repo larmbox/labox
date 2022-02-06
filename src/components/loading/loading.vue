@@ -1,10 +1,8 @@
 <template>
   <div
     :class="[
-      component.u.className(component.name),
-      component.u.classComponentName(
-        component.u.first(mode, component.config.mode)
-      ),
+      className(name),
+      classComponentName(first(mode, config.mode)),
       variantClass,
       themeClass,
       sizeClass,
@@ -53,12 +51,12 @@ export default defineComponent({
     );
 
     return {
-      component,
+      ...component,
+      ...component.u,
       sizeClass,
       variantClass,
       themeClass,
       screenReaderClass,
-
       isDots,
     };
   },

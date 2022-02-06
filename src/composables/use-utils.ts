@@ -1,6 +1,17 @@
 import { useLabox } from './use-labox';
 import { getComponentInstance } from './use-component';
 
+export interface Binds {
+  props?: string[];
+  events?: string[];
+}
+
+function toCamel(s: string): string {
+  return s.replace(/([-_][a-z])/gi, ($1) => {
+    return $1.toUpperCase().replace('-', '').replace('_', '');
+  });
+}
+
 export function first<R>(...args: R[]): R | undefined {
   return args.find((arg) => typeof arg !== 'undefined') || undefined;
 }
@@ -10,7 +21,8 @@ export function className(c: string): string {
   return `${config.value.stylePrefix}${c}`;
 }
 
-export function classComponentName(name2: string): string {
+export function classComponentName(name2: string | undefined): string {
+  if (!name2) return '';
   const { instance } = getComponentInstance();
   const { config } = useLabox();
   const name = instance.type.name as string;
@@ -18,32 +30,45 @@ export function classComponentName(name2: string): string {
   return className(`${component.name}-${name2}`);
 }
 
-export function autoBind(...binds: string[]): Record<string, any> {
+export function omit(events?: string[]) {
   const { instance } = getComponentInstance();
-  const toCamel = (s: string): string => {
-    return s.replace(/([-_][a-z])/gi, ($1) => {
-      return $1.toUpperCase().replace('-', '').replace('_', '');
-    });
-  };
-  const obj: Record<string, any> = {};
-  if (typeof binds !== 'undefined') {
-    binds.forEach((bind) => {
-      obj[bind] = instance.props[toCamel(bind)];
+  const attrs = Object.assign({}, instance.attrs);
+
+  if (events) {
+    events.forEach((event) => {
+      const e = event.charAt(0).toUpperCase() + event.slice(1);
+      delete attrs['on' + e];
     });
   }
-  return obj;
+
+  return attrs;
 }
 
-export function autoListen(
-  binds: string[],
-  listeners: Record<string, any>
-): Record<string, any> {
+export function bind(binds: Binds): Record<string, any> {
+  const { instance } = getComponentInstance();
   const obj: Record<string, any> = {};
-  Object.entries(listeners).forEach(([key, value]) => {
-    if (!binds.includes(key)) {
-      obj[key] = value;
+
+  const attrs = instance.attrs;
+  if (binds.events) {
+    Object.entries(attrs).forEach(([key, value]) => {
+      if (!key.startsWith('on')) return;
+      const orgkey = key;
+      key = toCamel(key.substring(2)).toLowerCase();
+      if (binds.events!.find((event) => event === key)) {
+        obj[orgkey] = value;
+      }
+    });
+  }
+
+  const props = instance.props;
+  if (binds.props) {
+    if (typeof binds !== 'undefined') {
+      binds.props.forEach((bind) => {
+        obj[bind] = props[toCamel(bind)];
+      });
     }
-  });
+  }
+
   return obj;
 }
 

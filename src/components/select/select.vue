@@ -8,6 +8,7 @@
       blockClass,
       feedbackClass,
     ]"
+    v-bind="omit(binds.events)"
   >
     <LFormLabel :id="id" :label="label" :use-slot="hasSlot('label')">
       <slot name="label" :id="id" />
@@ -29,7 +30,7 @@
           :value="modelValue || value"
           :placeholder="first(placeholder, label)"
           @input="$emit('update:modelValue', $event.target?.value || null)"
-          v-bind="autoBind('autofocus', 'autocomplete', 'disabled', 'name')"
+          v-bind="bind(binds)"
         >
           <option
             v-for="({ value, label }, i) in options"
@@ -112,9 +113,15 @@ export default defineComponent({
     const { blockClass } = useBlock();
     const { feedbackClass, ariaDescribedby, ariaLabelledby } = useInput();
 
+    const binds: Binds = {
+      props: ['autofocus', 'disabled', 'name', 'value'],
+      events: ['focus', 'blur', 'change'],
+    };
+
     return {
       ...component,
       ...component.u,
+      binds,
       variantClass,
       themeClass,
       sizeClass,

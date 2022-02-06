@@ -16,7 +16,7 @@
       }),
     ]"
     :id="id"
-    v-bind="autoBind('disabled')"
+    v-bind="{ ...omit(binds.events), ...bind(binds) }"
     :type="first(type, config.type)"
     :active-class="
       tag.toLowerCase().includes('link')
@@ -50,8 +50,10 @@ import { useSize, sizeProps } from '../../composables/use-size';
 import { linkProps } from '../../composables/use-link';
 import LIcon from '../../components/icon';
 import LLoading from '../../components/loading';
+import { Binds } from '../../composables/use-utils';
 
 export default defineComponent({
+  inheritAttrs: false,
   name: 'LButton',
   dependencies: { components: [LIcon, LLoading] },
   emits: ['click'],
@@ -96,9 +98,12 @@ export default defineComponent({
       }
     };
 
+    const binds: Binds = { props: ['disabled'], events: [] };
+
     return {
       ...component,
       ...component.u,
+      binds,
       onClick,
       variantClass,
       outlineClass,

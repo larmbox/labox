@@ -8,6 +8,7 @@
       variantClass,
       themeClass,
     ]"
+    v-bind="omit(binds.events)"
   >
     <div :class="classComponentName('inner')">
       <input
@@ -17,7 +18,7 @@
         :aria-labelledby="label ? ariaLabelledby : undefined"
         :aria-describedby="description ? ariaDescribedby : undefined"
         @input="$emit('update:modelValue', value)"
-        v-bind="autoBind('autofocus', 'disabled', 'name', 'value')"
+        v-bind="bind(binds)"
       />
       <div :class="classComponentName('box')">
         <div :class="classComponentName('box2')">
@@ -74,6 +75,7 @@ import LFormDescription from '../../shared-components/form-control/form-descript
 import LFormFeedback from '../../shared-components/form-control/form-feedback.vue';
 import { useVariant, variantProps } from '../../composables/use-variant';
 import { LIcon } from '..';
+import { Binds } from '../../composables/use-utils';
 
 export default defineComponent({
   dependencies: {
@@ -104,9 +106,15 @@ export default defineComponent({
       useInput();
     const { variantClass, themeClass } = useVariant();
 
+    const binds: Binds = {
+      props: ['autofocus', 'disabled', 'name', 'value'],
+      events: ['focus', 'blur', 'change'],
+    };
+
     return {
       ...component,
       ...component.u,
+      binds,
       sizeClass,
       blockClass,
       feedbackClass,

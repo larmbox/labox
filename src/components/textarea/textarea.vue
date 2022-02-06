@@ -8,6 +8,7 @@
       blockClass,
       feedbackClass,
     ]"
+    v-bind="omit(binds.events)"
   >
     <LFormLabel
       :id="id"
@@ -34,19 +35,9 @@
         :placeholder="first(placeholder, label)"
         :aria-labelledby="label ? ariaLabelledby : undefined"
         :aria-describedby="description || help ? ariaDescribedby : undefined"
-        @input="$emit('update:modelValue', $event.target?.value)"
-        v-bind="
-          autoBind(
-            'autofocus',
-            'autocomplete',
-            'disabled',
-            'name',
-            'readonly',
-            'rows',
-            'cols'
-          )
-        "
         :style="`resize: ${resize}`"
+        @input="$emit('update:modelValue', $event.target?.value)"
+        v-bind="bind(binds)"
       />
 
       <!-- <LFormFeedbackIcon :feedback="feedback" :feedback-type="feedbackType" /> -->
@@ -85,6 +76,7 @@ import LFormDescription from '../../shared-components/form-control/form-descript
 import LFormHelp from '../../shared-components/form-control/form-help.vue';
 import LFormFeedback from '../../shared-components/form-control/form-feedback.vue';
 import LFormFeedbackIcon from '../../shared-components/form-control/form-feedback-icon.vue';
+import { Binds } from '../../composables/use-utils';
 
 export default defineComponent({
   dependencies: {
@@ -124,9 +116,23 @@ export default defineComponent({
     const { blockClass } = useBlock();
     const { feedbackClass, ariaLabelledby, ariaDescribedby } = useInput();
 
+    const binds: Binds = {
+      props: [
+        'autofocus',
+        'autocomplete',
+        'disabled',
+        'name',
+        'readonly',
+        'rows',
+        'cols',
+      ],
+      events: ['focus', 'blur', 'change'],
+    };
+
     return {
       ...component,
       ...component.u,
+      binds,
       variantClass,
       themeClass,
       sizeClass,

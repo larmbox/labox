@@ -1,21 +1,23 @@
 <template>
   <component
-    :is="u.first(tag, config.tag)"
-    v-if="u.first(type, config.type) === 'inline'"
-    :class="[u.className(name), u.first(className, config.className)]"
+    :is="first(tag, config.tag)"
+    v-if="first(type, config.type) === 'inline'"
+    :class="[className(name), u.first(className, config.className)]"
     aria-hidden="true"
+    v-bind="$attrs"
   >
-    {{ u.first(icon, i) }}
+    {{ first(icon, i) }}
   </component>
   <component
-    :is="u.first(tag, config.tag)"
+    :is="first(tag, config.tag)"
     v-else
     :class="[
-      u.className(name),
-      u.first(className, config.className),
-      `${u.first(prefix, config.prefix)}${u.first(icon, i)}`,
+      className(name),
+      first(className, config.className),
+      `${first(prefix, config.prefix)}${first(icon, i)}`,
     ]"
     aria-hidden="true"
+    v-bind="$attrs"
   />
 </template>
 
@@ -46,6 +48,7 @@ export const props = {
 };
 
 export default defineComponent({
+  inheritAttrs: false,
   name: 'LIcon',
   props: {
     ...componentProps,
@@ -56,6 +59,7 @@ export default defineComponent({
 
     return {
       ...component,
+      ...component.u,
     };
   },
 });

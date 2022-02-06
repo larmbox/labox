@@ -12,6 +12,7 @@
         append: !!append || hasSlot('append'),
       }),
     ]"
+    v-bind="omit(binds.events)"
   >
     <LFormLabel
       :id="id"
@@ -48,19 +49,7 @@
           :aria-labelledby="label ? ariaLabelledby : undefined"
           :aria-describedby="description || help ? ariaDescribedby : undefined"
           @input="$emit('update:modelValue', $event.target?.value)"
-          v-bind="
-            autoBind(
-              'min',
-              'max',
-              'step',
-              'autofocus',
-              'autocomplete',
-              'type',
-              'name',
-              'disabled',
-              'readonly'
-            )
-          "
+          v-bind="bind(binds)"
         />
       </div>
 
@@ -111,6 +100,7 @@ import LFormFeedback from '../../shared-components/form-control/form-feedback.vu
 import LFormFeedbackIcon from '../../shared-components/form-control/form-feedback-icon.vue';
 
 export default defineComponent({
+  inheritAttrs: false,
   dependencies: {
     components: [
       LFormControl,
@@ -157,6 +147,21 @@ export default defineComponent({
     const { blockClass } = useBlock();
     const { feedbackClass, ariaDescribedby, ariaLabelledby } = useInput();
 
+    const binds = {
+      props: [
+        'min',
+        'max',
+        'step',
+        'autofocus',
+        'autocomplete',
+        'type',
+        'name',
+        'disabled',
+        'readonly',
+      ],
+      events: ['focus', 'blur', 'change'],
+    };
+
     return {
       ...component,
       ...component.u,
@@ -167,6 +172,7 @@ export default defineComponent({
       feedbackClass,
       ariaDescribedby,
       ariaLabelledby,
+      binds,
     };
   },
 });
