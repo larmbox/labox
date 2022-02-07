@@ -19,8 +19,7 @@
     "sourceMap": true,
     "types": [
       "node",
-      "vue",
-      "webpack-env"
+      "vue"
     ],
     "lib": [
       "esnext",
