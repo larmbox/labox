@@ -1,5 +1,10 @@
 <template>
-  <div :id="`lx-${id}-ref`" @open="onOpen" @close="onClose">
+  <div
+    :id="`lx-${id}-ref`"
+    style="display: inline"
+    @open="onOpen"
+    @close="onClose"
+  >
     <Teleport v-if="ready" :to="teleportTarget">
       <div
         v-if="active"

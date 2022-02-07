@@ -78,6 +78,7 @@ const TooltipDirective = () => {
 
         const div = document.createElement('div');
         element.appendChild(div);
+        div.style.display = 'inline';
 
         createApp(Tooltip, {
           id,
