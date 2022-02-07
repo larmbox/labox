@@ -64,6 +64,7 @@
 <script lang="ts">
 import { LSelectConfig } from '.';
 import { defineComponent, PropType } from 'vue';
+import { Binds } from '../../composables/use-utils';
 import {
   useVariantWithOutline,
   variantProps,
@@ -114,7 +115,7 @@ export default defineComponent({
     const { feedbackClass, ariaDescribedby, ariaLabelledby } = useInput();
 
     const binds: Binds = {
-      props: ['autofocus', 'disabled', 'name', 'value'],
+      props: ['autofocus', 'disabled', 'name'],
       events: ['focus', 'blur', 'change'],
     };
 
