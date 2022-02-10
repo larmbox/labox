@@ -59,7 +59,6 @@ To only import the required stylesheets:
 // The 'labox-base' stylesheet is always required:
 @import '@larmbox/labox/dist/theme/labox-base';
 
-@import '@larmbox/labox/dist/components/button';
-@import '@larmbox/labox/dist/modal/modal';
+@import '@larmbox/labox/dist/components/button/button';
 // ...
 ```
