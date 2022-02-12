@@ -17,7 +17,7 @@ import {
 
 import Snippet from './components/Snippet.vue';
 
-import { createVuelr, Vuelr } from 'vuelr';
+import { createVuelr, Vuelr } from 'vuelr/dist/vuelr.es';
 
 export default defineClientAppEnhance(({ app, router }) => {
   router.addRoute({

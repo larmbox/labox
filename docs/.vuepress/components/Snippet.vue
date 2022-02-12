@@ -56,6 +56,8 @@ export default defineComponent({
         editor.textContent = code.value;
         editor.spellcheck = false;
 
+        hljs.configure({ ignoreUnescapedHTML: true });
+
         // first, find all the div.code blocks
         document.querySelectorAll('pre.hljs-code').forEach((el) => {
           // then highlight each
