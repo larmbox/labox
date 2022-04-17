@@ -1,0 +1,15 @@
+{
+	"name": "labox",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "labox",
+	"workspaceFolder": "/workspace",
+	"settings": {},
+	"extensions": [
+		"EditorConfig.EditorConfig",
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode",
+		"johnsoncodehk.volar"
+	],
+	"postCreateCommand": "npm install && npm run start:dev",
+	"remoteUser": "node"
+}
