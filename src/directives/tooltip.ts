@@ -1,9 +1,10 @@
 import { DirectiveBinding, createApp, ref } from 'vue';
-import { useLabox } from '../composables/use-labox';
-import Tooltip, { LTooltipConfig } from '../components/tooltip';
-import { getComponentMeta } from '../composables/use-component';
+import { useLabox } from '~/composables/use-labox/use-labox';
+import Tooltip, { LTooltipComponent } from '../components/tooltip';
+import { getComponentMeta } from '~/composables/component/use-component';
+import { Props } from '../components/tooltip/src/props';
 
-export interface TooltipOptions extends LTooltipConfig {
+export interface TooltipOptions extends Props {
   text: string | null | undefined;
 }
 
@@ -22,10 +23,10 @@ const TooltipDirective = () => {
       return console.warn('Tooltip directive missing binding value:', element);
     }
 
-    const { config } = getComponentMeta<LTooltipConfig>('LTooltip');
+    const { options: o } = getComponentMeta<LTooltipComponent>('LTooltip');
 
     const options: TooltipOptions = {
-      ...config,
+      ...o,
       text: '',
     };
     if (typeof binding.value !== 'object') {

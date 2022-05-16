@@ -1,53 +1,47 @@
 @use 'sass:math';
 @import '../../theme/imports';
 
-$lb-select-border-radius: $lb-border-radius !default;
-$lb-select-focus-shadow-size: $lb-focus-shadow-size !default;
-$lb-select-text-color: $lb-text-color !default;
-$lb-select-text-color--disabled: color('gray', 5) !default;
-$lb-select-border-color: $lb-border-color !default;
-$lb-select-background-color--disabled: color('gray', 1) !default;
-
-$lb-select-padding-x: $lb-spacing * 0.75 !default;
-$lb-select-padding-y: $lb-spacing * 0.4375 !default;
-$lb-select-font-size: $lb-text-md !default;
-$lb-select-line-height: $lb-line-height !default;
-
-$lb-select-padding-x-sm: $lb-spacing * 0.5 !default;
-$lb-select-padding-y-sm: $lb-spacing * 0.28125 !default;
-$lb-select-font-size-sm: $lb-text-sm !default;
-$lb-select-line-height-sm: $lb-line-height-sm !default;
-
-$lb-select-padding-x-lg: $lb-spacing !default;
-$lb-select-padding-y-lg: $lb-spacing * 0.59375 !default;
-$lb-select-font-size-lg: $lb-text-lg !default;
-$lb-select-line-height-lg: $lb-line-height-lg !default;
-
 $select-base-gap-x: 5%;
 $select-gap-x: calc(#{$select-base-gap-x} - 4px);
 $select-gap-x_edge: calc(#{$select-base-gap-x} - 3px);
 $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
 
-@mixin select-color($color, $theme: $lb-default-theme) {
-  border-color: color($color, 8, $theme);
+@mixin highlight($color) {
+  select {
+    border-color: color($color, 8);
+    &:disabled {
+      border-color: color($color, 3);
+    }
+  }
+}
 
-  &:focus {
-    border-color: color($color, 6, $theme);
-    box-shadow: 0 0 0 $lb-input-focus-shadow-size color($color, 'T25', $theme);
+@mixin color($color) {
+  &.#{c('LSelect')}-highlight {
+    @include highlight($color);
   }
 
-  &:not(:disabled):active {
-    border-color: color($color, 8, $theme);
-  }
+  select {
+    &:focus {
+      border-color: color($color, 6);
+    }
 
-  &:disabled {
-    border-color: color($color, 3, $theme);
-    color: color($color, 4, $theme);
+    &:not(:disabled):active {
+      border-color: color($color, 8);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 v(focus-shadow-size) color($color, 'T20');
+    }
+
+    &:disabled {
+      border-color: v(select-border-color--disabled);
+      color: v(select-text-color--disabled);
+    }
   }
 }
 
 .#{c('LSelect')} {
-  margin-bottom: $lb-spacing;
+  margin-bottom: v(spacing);
   display: inline-flex;
   flex-direction: column;
 
@@ -61,11 +55,11 @@ $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
       > span {
         display: flex;
         align-items: center;
-        border: 1px solid $lb-input-border-color;
-        padding: 0 $lb-spacing-md;
+        border: v(border-width) solid v(select-border-color);
+        padding: 0 v(spacing);
         border-left: none;
-        border-top-right-radius: $lb-input-border-radius;
-        border-bottom-right-radius: $lb-input-border-radius;
+        border-top-right-radius: v(select-border-radius);
+        border-bottom-right-radius: v(select-border-radius);
       }
       button {
         border-top-left-radius: 0;
@@ -104,46 +98,45 @@ $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
 
   .#{c('LSelect')}-icon {
     position: absolute;
-    right: $lb-select-padding-x;
+    z-index: 5;
+    right: v(select-padding-x);
     color: color('gray', 5);
     pointer-events: none;
   }
 
   select {
-    width: 100%;
-    appearance: none;
-    background-color: transparent;
-    flex: 1;
-    transition: border-color $lb-animation-time ease-in-out,
-      box-shadow $lb-animation-time ease-in-out;
     position: relative;
-    padding: $lb-select-padding-y $lb-select-padding-x;
-    border-style: solid;
-    border-width: $lb-border-width;
+    width: 100%;
     display: inline-flex;
-    line-height: $lb-input-line-height;
-    border-radius: $lb-input-border-radius;
-    border-color: $lb-input-border-color;
+    flex: 1;
     outline: none;
-    font-size: $lb-input-font-size;
-    color: inherit;
+    appearance: none;
+    background-color: v(select-background-color);
+    transition: border-color v(transition-time) v(transition-type),
+      box-shadow v(transition-time) v(transition-type);
+    padding: v(select-padding-y) v(select-padding-x);
+    border-style: solid;
+    border-width: v(select-border-width);
+    line-height: v(select-line-height);
+    border-radius: v(select-border-radius);
+    border-color: v(select-border-color);
+    font-size: v(select-font-size);
+    color: v(select-text-color);
+
     font-family: inherit;
-    font-size: inherit;
-    padding-right: $lb-select-padding-x * 1.5 + $lb-select-font-size;
+
+    padding-right: calc(v(select-padding-x) * 1.5 + v(select-font-size));
 
     @-moz-document url-prefix() {
-      padding-left: calc($lb-select-padding-x - 0.25rem);
+      padding-left: calc(v(select-padding-x) - 0.25rem);
     }
 
-    @include select-color('primary');
-    border-color: $lb-select-border-color;
-
     &:disabled {
-      color: $lb-select-text-color--disabled;
-      background-color: $lb-select-background-color--disabled;
-      border-color: $lb-select-border-color;
+      color: v(select-text-color--disabled);
+      background-color: v(select-background-color--disabled);
+      border-color: v(select-border-color--disabled);
       + .#{c('LSelect')}-icon {
-        color: $lb-select-border-color;
+        color: v(select-placeholder-color--disabled);
       }
     }
 
@@ -152,12 +145,28 @@ $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
     }
   }
 
-  &.form-feedback-error select {
-    @include select-color('error');
+  @mixin variants($variant) {
+    &.#{c('LSelect')}-#{$variant} {
+      @include color($variant);
+    }
   }
 
-  &.form-feedback-success select {
-    @include select-color('success');
+  @each $variant in $lx-palettes {
+    @include variants($variant);
+  }
+
+  &.form-feedback-error {
+    @include color('error');
+    &.#{c('LSelect')}-highlight {
+      @include highlight('error');
+    }
+  }
+
+  &.form-feedback-success {
+    @include color('success');
+    &.#{c('LSelect')}-highlight {
+      @include highlight('success');
+    }
   }
 
   .#{c('LSelect')}-inner {
@@ -172,39 +181,42 @@ $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
   }
 
   &.#{c('LSelect')}-sm {
-    font-size: $lb-select-font-size-sm;
+    font-size: v(select-font-size-sm);
 
     select {
-      padding: $lb-select-padding-y-sm $lb-select-padding-x-sm;
-      padding-right: $lb-select-padding-x-sm * 1.5 + $lb-select-font-size-sm;
-      line-height: $lb-select-line-height-sm;
+      padding: v(select-padding-y-sm) v(select-padding-x-sm);
+      padding-right: calc(
+        v(select-padding-x-sm) * 1.5 + v(select-font-size-sm)
+      );
+      line-height: v(select-line-height-sm);
 
       @-moz-document url-prefix() {
-        padding-left: calc($lb-select-padding-x-sm - 0.25rem);
+        padding-left: calc(v(select-padding-x-sm) - 0.25rem);
       }
     }
 
     .#{c('LSelect')}-icon {
-      right: $lb-select-padding-x-sm;
+      right: v(select-padding-x-sm);
     }
   }
 
   &.#{c('LSelect')}-lg {
-    font-size: $lb-select-font-size-lg;
+    font-size: v(select-font-size-lg);
 
     select {
-      padding: $lb-select-padding-y-lg $lb-select-padding-x-lg;
-      padding-right: $lb-select-padding-x-lg * 1.5 + $lb-select-font-size-lg;
-      line-height: $lb-select-line-height-lg;
+      padding: v(select-padding-y-lg) v(select-padding-x-lg);
+      padding-right: calc(
+        v(select-padding-x-lg) * 1.5 + v(select-font-size-lg)
+      );
+      line-height: v(select-line-height-lg);
 
       @-moz-document url-prefix() {
-        padding-left: calc($lb-select-padding-x-lg - 0.25rem);
+        padding-left: calc(v(select-padding-x-lg) - 0.25rem);
       }
     }
 
     .#{c('LSelect')}-icon {
-      font-size: inherit;
-      right: $lb-select-padding-x-lg;
+      right: v(select-padding-x-lg);
     }
   }
 }

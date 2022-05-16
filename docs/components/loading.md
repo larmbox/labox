@@ -1,4 +1,4 @@
-# Loading
+# Loading <Tag text="<LLoading>" />
 
 The loading component is used to show users that an activity is happening in the background.
 
@@ -21,6 +21,10 @@ Labox provides two loading animation modes, `spinner` and `dots`.
 Use the `variant` prop to change the button theming according to your configured [themes](/labox/configuration/themes/).
 
 <Snippet :code="variants" />
+
+## Component Reference
+
+<ComponentMeta src="loading" />
 
 <script lang="ts" setup>
 import {ref} from 'vue';

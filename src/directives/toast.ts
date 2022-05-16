@@ -1,13 +1,11 @@
 import { DirectiveBinding, createApp } from 'vue';
-import { useLabox } from '../composables/use-labox';
-import Toast, { LToastConfig } from '../components/toast';
-import { getComponentMeta } from '../composables/use-component';
+import { useLabox } from '~/composables/use-labox/use-labox';
+import Toast, { LToastComponent } from '../components/toast';
+import { getComponentMeta } from '~/composables/component/use-component';
 
-export interface ToastOptions extends LToastConfig {
-  title: string | null | undefined;
-  text: string | null | undefined;
-  icon: string | null | undefined;
-}
+import { Props } from '../components/toast/src/props';
+
+export interface ToastOptions extends Props {}
 
 type BaseType = string | number | boolean;
 
@@ -29,13 +27,14 @@ const ToastDirective = () => {
           );
         }
 
-        const { config } = getComponentMeta<LToastConfig>('LToast');
+        const { options: o } = getComponentMeta<LToastComponent>('LToast');
 
         const options: ToastOptions = {
-          ...config,
-          text: null,
-          title: null,
-          icon: null,
+          ...o,
+          text: undefined,
+          title: undefined,
+          icon: undefined,
+          directive: true,
         };
         if (typeof binding.value !== 'object') {
           options.text = binding.value.toString();
@@ -54,7 +53,7 @@ const ToastDirective = () => {
         createApp(Toast, {
           id,
           ...options,
-          directive: true
+          directive: true,
         }).mount(div);
       },
       unmounted(

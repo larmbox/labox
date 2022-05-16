@@ -20,8 +20,7 @@ export default defineComponent({
   setup() {
     const { setTheme, modal } = useLabox();
 
-    // setTheme('dark');
-    // modal.open('modal-id', { abc: 1 })
+    setTheme('dark');
   },
 });
 </script>

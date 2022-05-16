@@ -1,15 +1,7 @@
-@import 'create-palette';
+$lx-class-prefix: '' !default;
+$lx-screen-reader-class: '#{$lx-class-prefix}sr' !default;
 
-$lb-class-prefix: '' !default;
-
-$lb-use-css-variables: false !default;
-$lb-theme-prefix: 'theme-' !default;
-$lb-default-theme: 'default' !default;
-
-$lb-screen-reader-class: '#{$lb-class-prefix}sr' !default;
-$lb-animation-time: 0.15s;
-
-$lb-components: (
+$lx-components: (
   'LButton': 'button',
   'LCheckbox': 'checkbox',
   'LIcon': 'icon',
@@ -24,56 +16,4 @@ $lb-components: (
   'LTooltip': 'tooltip',
 ) !default;
 
-$lb-font-weight-light: 300 !default;
-$lb-font-weight-normal: 400 !default;
-$lb-font-weight-medium: 500 !default;
-$lb-font-weight-semibold: 600 !default;
-$lb-font-weight-bold: 700 !default;
-
-$lb-border-radius: 6px !default;
-$lb-border-width: 1px !default;
-
-$lb-spacing: 1rem !default;
-$lb-spacing-xs: $lb-spacing * 0.25 !default;
-$lb-spacing-sm: $lb-spacing * 0.75 !default;
-$lb-spacing-md: $lb-spacing !default;
-$lb-spacing-lg: $lb-spacing * 1.25 !default;
-$lb-spacing-xl: $lb-spacing * 1.75 !default;
-
-$lb-text-sm: 0.875rem !default;
-$lb-text-md: 1rem !default;
-$lb-text-lg: 1.125rem !default;
-
-$lb-z-index-base: 400 !default;
-$lb-z-index-modal: 401 !default;
-$lb-z-index-toast: 402 !default;
-$lb-z-index-tooltip: 403 !default;
-
-$lb-line-height: 1.25 !default;
-$lb-line-height-sm: $lb-line-height !default;
-$lb-line-height-md: $lb-line-height !default;
-$lb-line-height-lg: $lb-line-height !default;
-
-$lb-focus-shadow-size: 4px !default;
-
-$lb-themes: (
-  'default': (
-    'primary': create-palette(#0969da),
-    'secondary': create-palette(#1f2225),
-    'success': create-palette(#1d9e64),
-    'error': create-palette(#cb2960),
-    'gray': create-palette(#5a6677),
-  ),
-) !default;
-
-@function colord($lb-variant, $lb-key, $lb-theme: $lb-default-theme) {
-  @if $lb-use-css-variables {
-    @return var(--l-#{$lb-variant}-#{$lb-key});
-  } @else {
-    @return map-get($lb-themes, $lb-theme, $lb-variant, $lb-key);
-  }
-}
-
-$lb-body-color: #fff !default;
-$lb-text-color: colord('gray', 15) !default;
-$lb-border-color: colord('gray', 2) !default;
+$lx-palettes: ('primary', 'secondary', 'error', 'success') !default;

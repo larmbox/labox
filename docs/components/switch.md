@@ -1,4 +1,4 @@
-# Switch
+# Switch <Tag text="<LSwitch>" />
 
 The switch works just like a [checkbox](/labox/components/checkbox) but has a different appearance.
 
@@ -10,19 +10,35 @@ The switch component allows a `size` prop. Labox provides CSS rules for the smal
 
 <Snippet :code="sizes" />
 
-## Descriptors
+## Variant
+
+Use the `variant` prop to change the switch theming according to your configured [themes](/labox/configuration/themes/).
+
+<Snippet :code="variants" />
+
+### Highlight
+
+Set the `highlight` prop to override the default border color with the variant color.
+
+<Snippet :code="highlight" />
+
+Highlight is automatically set to `true` if the [feedback](#feedback) prop is populated. Set highlight to `false` to override feedback highlighting.
+
+<Snippet :code="highlightFeedback" />
+
+## Labels
 
 Use the `label`, and `description` props to describe your switch.
 
-<Snippet :code="descriptors" />
+<Snippet :code="labels" />
 
-You can also use slots for more freedom on descriptor content. Please see the [Slots](#slots) section for information on slot variables.
+You can also use slots for more freedom on label content. Please see the [Slots](#slots) section for information on slot variables.
 
-<Snippet :code="descriptorsslots" />
+<Snippet :code="labelsSlots" />
 
 ## Block
 
-By default the switch component is displayed as an inline element. By adding the `block` prop, the input container will span the whole container width.
+By default the checkbox component is displayed as an inline element. By adding the `block` prop, the input container will span the whole container width.
 
 <Snippet :code="block" />
 
@@ -38,23 +54,54 @@ Use the `feedback` slot to add validation or other form errors to your switch in
 
 <Snippet :code="feedback" />
 
+## Component Reference
+
+<ComponentMeta src="switch" />
+
 <script lang="ts" setup>
-const example = `<LSwitch label="Check me!" />`
+const example = `<LSwitch label="Switch" />`
 
 const sizes = `
-<LSwitch size="sm" label="Small" block />
-<LSwitch size="md" label="Default" block />
-<LSwitch size="lg" label="Large" block />
+<div class="grid-3">
+  <LSwitch size="sm" label="Small" block />
+  <LSwitch size="md" label="Default" block />
+  <LSwitch size="lg" label="Large" block />
+</div>
 `
 
-const descriptors = `
+const variants = `
+<div class="grid-4">
+  <LSwitch variant="primary" label="primary" />
+  <LSwitch variant="secondary" label="secondary" />
+  <LSwitch variant="error" label="error" />
+  <LSwitch variant="success" label="success" />
+</div>
+`
+
+const highlight = `
+<div class="grid-4">
+  <LSwitch highlight variant="primary" label="primary" />
+  <LSwitch highlight variant="secondary" label="secondary" />
+  <LSwitch highlight variant="error" label="error" />
+  <LSwitch highlight variant="success" label="success" />
+</div>
+`
+
+const highlightFeedback = `
+<div class="grid-3">
+  <LSwitch feedback="Error!" label="Feedback" />
+  <LSwitch :highlight="false" feedback="Error!" label="Override" />
+</div>
+`
+
+const labels = `
 <LSwitch 
   label="Label"
   description="Description"
 />
 `
 
-const descriptorsslots = `
+const labelsSlots = `
 <LSwitch placeholder="Placeholder">
   <template #label="{ id }">
     <label :for="id">Label</label>
@@ -66,16 +113,16 @@ const descriptorsslots = `
 `
 
 const block = `
-<LSwitch block label="I'm wide!" />
-<LSwitch block label="Me too!" />
+<LSwitch block label="Block" />
+<LSwitch block label="Block 2" />
 `
 
 const disabled = `
-<LSwitch disabled label="Can't check me!" block />
-<LSwitch checked disabled label="Can't uncheck me!" block />`
+<LSwitch disabled label="Disabled" block />
+<LSwitch checked disabled label="Disabled" block />`
 
 const feedback = `
-<LSwitch label="Input" block feedback="Bad!" />
-<LSwitch label="Input" block feedback="Good!" feedback-type="success" />
+<LSwitch label="Switch" block feedback="Error!" description="Hello world!" />
+<LSwitch label="Switch" block feedback="Success!" feedback-type="success" />
 `
 </script>

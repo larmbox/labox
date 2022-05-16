@@ -1,0 +1,15 @@
+// Vitest Snapshot v1
+
+exports[`mount component 1`] = `
+"<div class=\\"form-control form-field input input-md input-primary\\">
+  <!--v-if-->
+  <!--v-if-->
+  <div class=\\"input-inner\\">
+    <!--v-if-->
+    <div class=\\"input-element\\"><input id=\\"id\\" type=\\"text\\" /></div>
+    <!--v-if-->
+  </div>
+  <!--v-if-->
+  <!--v-if-->
+</div>"
+`;

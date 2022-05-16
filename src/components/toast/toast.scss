@@ -1,19 +1,19 @@
 @use 'sass:math';
 @import '../../theme/imports';
 
-$lb-toast-border-radius: $lb-border-radius !default;
-$lb-toast-text-size: $lb-text-sm !default;
-$lb-toast-background-color: color('gray', 12) !default;
-$lb-toast-text-color: #fff !default;
-$lb-toast-max-width: 250px !default;
-$lb-toast-padding-x: $lb-spacing-sm !default;
-$lb-toast-padding-y: $lb-spacing-xs * 2 !default;
-$lb-toast-arrow-size: 8px !default;
+$lx-toast-border-radius: v(border-radius) !default;
+$lx-toast-text-size: v(text-sm) !default;
+$lx-toast-background-color: color('gray', 12) !default;
+$lx-toast-text-color: #fff !default;
+$lx-toast-max-width: 250px !default;
+$lx-toast-padding-x: v(spacing-sm) !default;
+$lx-toast-padding-y: calc(v(spacing-xs) * 2) !default;
+$lx-toast-arrow-size: 8px !default;
 
-@mixin toast-color($color, $theme: $lb-default-theme) {
+@mixin toast-color($color) {
   .#{c('LToast')}-inner .#{c('LToast')}-content {
-    background-color: color($color, 8, $theme);
-    color: contrast-tone(color2($color, 8, $theme));
+    background-color: color($color, 8);
+    color: contrast-tone(color($color, 8));
   }
 }
 
@@ -25,42 +25,34 @@ $lb-toast-arrow-size: 8px !default;
   position: fixed;
   display: inline-flex;
 
-  @mixin toast-variants($variant, $theme: $lb-default-theme) {
+  @mixin toast-variants($variant) {
     &.#{c('LToast')}-#{$variant} {
-      @include toast-color($variant, $theme);
+      @include toast-color($variant);
     }
   }
 
-  @each $name, $variant-map in lb-themes() {
-    @if css-vars() {
-      @include toast-variants($name);
-    } @else {
-      &.#{$lb-theme-prefix}#{$name} {
-        @each $variant, $_ in $variant-map {
-          @include toast-variants($variant, $name);
-        }
-      }
-    }
+  @each $variant in $lx-palettes {
+    @include toast-variants($variant);
   }
 
   .#{c('LToast')}-inner {
     .#{c('LToast')}-content {
-      border-radius: $lb-toast-border-radius;
-      padding: $lb-toast-padding-y $lb-toast-padding-x;
-      font-size: $lb-toast-text-size;
-      max-width: $lb-toast-max-width;
+      border-radius: $lx-toast-border-radius;
+      padding: $lx-toast-padding-y $lx-toast-padding-x;
+      font-size: $lx-toast-text-size;
+      max-width: $lx-toast-max-width;
     }
 
     display: inline-flex;
     position: relative;
-    border-radius: $lb-toast-border-radius;
-    color: $lb-toast-text-color;
+    border-radius: $lx-toast-border-radius;
+    color: $lx-toast-text-color;
 
     .#{c('LToast')}-arrow,
     .#{c('LToast')}-arrow::before {
       position: absolute;
-      width: $lb-toast-arrow-size;
-      height: $lb-toast-arrow-size;
+      width: $lx-toast-arrow-size;
+      height: $lx-toast-arrow-size;
     }
 
     .#{c('LToast')}-arrow::before {
@@ -71,7 +63,6 @@ $lb-toast-arrow-size: 8px !default;
     }
   }
 }
-
 
 .#{c('LToast')}-bottom {
   bottom: 0;
@@ -92,4 +83,3 @@ $lb-toast-arrow-size: 8px !default;
     transform: scale(0.9);
   }
 }
-

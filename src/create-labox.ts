@@ -1,46 +1,53 @@
 import { App, Component, Directive } from 'vue';
-import { createGlobalLaboxClass, createLaboxTeleportTarget } from './composables/use-labox';
-import { DeepPartial } from './utils/types';
+import { DeepPartial } from './common/types';
 import version from './version';
-import type {
-  LButtonConfig,
-  LCheckboxConfig,
-  LIconConfig,
-  LInputConfig,
-  LLoadingConfig,
-  LModalConfig,
-  LRadioConfig,
-  LSelectConfig,
-  LSwitchConfig,
-  LTextareaConfig,
-  LToastConfig,
-  LTooltipConfig,
+import {
+  LCheckboxComponent,
+  LIconComponent,
+  LInputComponent,
+  LLoadingComponent,
+  LModalComponent,
+  LRadioComponent,
+  LSelectComponent,
+  LSwitchComponent,
+  LTextareaComponent,
+  LThemeProvider,
+  LThemeProviderComponent,
+  LToastComponent,
+  LTooltipComponent,
 } from './components';
 import { TooltipDirective } from './directives/tooltip';
+import { OpenModalDirective, CloseModalDirective } from './directives/modal';
+import { LButtonComponent } from './components/button';
+import { _useLabox } from './composables/use-labox/use-labox';
 
 export interface LInstance {
   version: string;
   install: (app: App) => void;
 }
 
-export interface LComponent<T> {
+export type LGenericProps = Record<string, any>;
+
+export interface LComponent<TOptions, TProps extends LGenericProps> {
   name: string;
-  config: T;
+  options: TOptions;
+  props: TProps;
 }
 
 export interface LComponents {
-  LButton: LComponent<LButtonConfig>;
-  LCheckbox: LComponent<LCheckboxConfig>;
-  LIcon: LComponent<LIconConfig>;
-  LInput: LComponent<LInputConfig>;
-  LLoading: LComponent<LLoadingConfig>;
-  LModal: LComponent<LModalConfig>;
-  LRadio: LComponent<LRadioConfig>;
-  LSelect: LComponent<LSelectConfig>;
-  LSwitch: LComponent<LSwitchConfig>;
-  LTextarea: LComponent<LTextareaConfig>;
-  LToast: LComponent<LToastConfig>;
-  LTooltip: LComponent<LTooltipConfig>;
+  LButton: LButtonComponent;
+  LCheckbox: LCheckboxComponent;
+  LIcon: LIconComponent;
+  LInput: LInputComponent;
+  LLoading: LLoadingComponent;
+  LModal: LModalComponent;
+  LRadio: LRadioComponent;
+  LSelect: LSelectComponent;
+  LSwitch: LSwitchComponent;
+  LTextarea: LTextareaComponent;
+  LThemeProvider: LThemeProviderComponent;
+  LToast: LToastComponent;
+  LTooltip: LTooltipComponent;
 }
 
 export interface LConfig {
@@ -52,10 +59,6 @@ export interface LCreateOptions {
   components?: {
     name: string;
     alias?: string[];
-    dependencies?: {
-      directives: (() => { name: string; directive: Directive })[];
-      components: any[];
-    };
   }[];
   config?: DeepPartial<LConfig>;
   theme?: string;
@@ -63,8 +66,10 @@ export interface LCreateOptions {
 
 function createLabox(options: LCreateOptions = {}): LInstance {
   const components = options.components || [];
-  createGlobalLaboxClass(options);
   const installTargets: App[] = [];
+
+  _useLabox(options, true);
+
   function registerComponent(
     app: App,
     name: string,
@@ -75,6 +80,7 @@ function createLabox(options: LCreateOptions = {}): LInstance {
       app.component(name, component);
     }
   }
+
   function registerDirective(
     app: App,
     dir: { name: string; directive: Directive }
@@ -84,26 +90,20 @@ function createLabox(options: LCreateOptions = {}): LInstance {
       app.directive(dir.name, dir.directive);
     }
   }
+
   function install(app: App): void {
     if (installTargets.includes(app)) return;
     installTargets.push(app);
-    registerDirective(app, TooltipDirective());
-    components.forEach((component) => {
-      const { name, dependencies } = component;
-      registerComponent(app, name, component);
-      if (dependencies && dependencies.components) {
-        dependencies.components.forEach((dependency: any) => {
-          registerComponent(app, dependency.name, dependency);
-        });
-      }
-      if (dependencies && dependencies.directives) {
-        dependencies.directives.forEach((directive) => {
-          registerDirective(app, directive());
-        });
-      }
-    });
 
-    createLaboxTeleportTarget();
+    registerComponent(app, 'LThemeProvider', LThemeProvider);
+    registerDirective(app, TooltipDirective());
+    registerDirective(app, OpenModalDirective());
+    registerDirective(app, CloseModalDirective());
+
+    components.forEach((component) => {
+      const { name } = component;
+      registerComponent(app, name, component);
+    });
   }
   return {
     version,

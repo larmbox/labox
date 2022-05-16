@@ -14,26 +14,34 @@ export const ssrTransformCustomDir = () => {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  test: {
+    globals: true,
+    environment: 'happy-dom',
+  },
   plugins: [
     vue({
-      template: {
-        ssr: true,
-        compilerOptions: {
-          directiveTransforms: { 'open-modal': ssrTransformCustomDir },
-        },
-      },
+      // template: {
+      //   ssr: true,
+      //   // compilerOptions: {
+      //   //   directiveTransforms: { 'open-modal': ssrTransformCustomDir },
+      //   // },
+      // },
     }),
   ],
   resolve: {
-    alias: {
-      '~': resolve(__dirname, '../src'),
-    },
+    dedupe: ['vue'],
+    alias: [
+      {
+        find: '~',
+        replacement: resolve(__dirname, '..', 'src'),
+      },
+    ],
   },
   build: {
-    minify: false,
     lib: {
       entry: resolve(__dirname, `../src/${entry}.ts`),
       name,
+      fileName: (format) => `${name}.${format}.js`,
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
@@ -45,7 +53,6 @@ export default defineConfig({
         globals: {
           vue: 'Vue',
         },
-        exports: 'named',
       },
     },
   },

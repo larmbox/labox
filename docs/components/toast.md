@@ -1,4 +1,4 @@
-# Toast
+# Toast <Tag text="<LToast>" />
 
 Tooltips display informative text when users hover over, focus on, or tap an element. Labox uses [Popper](https://npmjs.org/package/@popperjs/core) for tooltips.
 

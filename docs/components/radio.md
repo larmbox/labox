@@ -1,4 +1,4 @@
-# Radio
+# Radio <Tag text="<LRadio>" />
 
 Radio inputs are normally presented in radio groups (a collection of radio buttons describing a set of related options). Only one radio button in a group can be selected at the same time.
 
@@ -10,15 +10,29 @@ The radio component allows a `size` prop. Labox provides CSS rules for the small
 
 <Snippet :code="sizes" />
 
-## Descriptors
+## Variant
+
+Use the `variant` prop to change the input theming according to your configured [themes](/labox/configuration/themes/).
+
+<Snippet :code="variants" />
+
+### Highlight
+
+Set the `highlight` prop to override the default border color with the variant color.
+
+<Snippet :code="highlight" />
+
+Highlight is automatically set to `true` if the [feedback](#feedback) prop is populated. Set highlight to `false` to override feedback highlighting.
+
+## Labels
 
 Use the `label`, and `description` props to describe your radio input.
 
-<Snippet :code="descriptors" />
+<Snippet :code="labels" />
 
-You can also use slots for more freedom on descriptor content. Please see the [Slots](#slots) section for information on slot variables.
+You can also use slots for more freedom on label content. Please see the [Slots](#slots) section for information on slot variables.
 
-<Snippet :code="descriptorsslots" />
+<Snippet :code="labelsSlots" />
 
 ## Block
 
@@ -38,6 +52,10 @@ Use the `feedback` slot to add validation or other form errors to your radio inp
 
 <Snippet :code="feedback" />
 
+## Component Reference
+
+<ComponentMeta src="radio" />
+
 <script lang="ts" setup>
 const example = `
 <LRadio name="fruit" value="apple" label="Apple" block />
@@ -49,14 +67,32 @@ const sizes = `
 <LRadio name="size" value="large" size="lg" label="Large" block />
 `
 
-const descriptors = `
+const variants = `
+<div class="grid-4">
+  <LRadio variant="primary" label="primary" block />
+  <LRadio variant="secondary" label="secondary" block />
+  <LRadio variant="error" label="error" block />
+  <LRadio variant="success" label="success" block />
+</div>
+`
+
+const highlight = `
+<div class="grid-4">
+  <LRadio highlight variant="primary" label="primary" block />
+  <LRadio highlight variant="secondary" label="secondary" block />
+  <LRadio highlight variant="error" label="error" block />
+  <LRadio highlight variant="success" label="success" block />
+</div>
+`
+
+const labels = `
 <LRadio 
   label="Label"
   description="Description"
 />
 `
 
-const descriptorsslots = `
+const labelsSlots = `
 <LRadio>
   <template #label="{ id }">
     <label :for="id">Label</label>
@@ -68,16 +104,16 @@ const descriptorsslots = `
 `
 
 const block = `
-<LRadio block label="I'm wide!" />
-<LRadio block label="Me too!" />
+<LRadio block label="Block" />
+<LRadio block label="Block 2" />
 `
 
 const disabled = `
-<LRadio disabled label="Can't check me!" block />
-<LRadio disabled checked label="Can't uncheck me!" block />`
+<LRadio disabled label="Disabled" block />
+<LRadio disabled checked label="Disabled" block />`
 
 const feedback = `
-<LRadio label="Radio" block feedback="Bad!" />
-<LRadio label="Radio" block feedback="Good!" feedback-type="success" />
+<LRadio label="Radio" block feedback="Error!" />
+<LRadio label="Radio" block feedback="Success!" feedback-type="success" />
 `
 </script>

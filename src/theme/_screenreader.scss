@@ -1,7 +1,7 @@
-@import 'variables';
+@use 'variables';
 
 // Screenreader class.
-.#{$lb-screen-reader-class} {
+.#{variables.$lx-screen-reader-class} {
   position: absolute;
   width: 1px;
   height: 1px;

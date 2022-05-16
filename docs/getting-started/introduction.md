@@ -1,64 +1,21 @@
 # Introduction
 
-Labox is a Vue 3 component library.
+Labox is a component library for Vue.js version 3. The project is primarily developed and maintained by the [Larmbox](https://larmbox.com) team. New components and features are considered and implemented as required by the Larmbox team.
 
-## Installation
+Labox is designed to be fully customizeable with support for custom themes and configurations.
 
-<CodeGroup>
-  <CodeGroupItem title="npm" active>
+## Documentation
 
-```bash:no-line-numbers
-npm install @larmbox/labox
-```
+This documentation aims to give you an overview of available components of Labox and instructions on how to use them. Each component has a _Component Reference_ section that lists all available props, events and slots for the component.
 
-  </CodeGroupItem>
-  <CodeGroupItem title="Yarn">
-  
-```bash:no-line-numbers
-yarn add @larmbox/labox
-```
+Each example includes a code snippet. Each snippet can be edited by clicking the **Edit** button inside the snippet. Once you make changes, they will be reflected instantly in the preview.
 
-  </CodeGroupItem>
-</CodeGroup>
+## Contributing
 
-Add Labox to your entry file:
+Even though the project is primarily developed by Larmbox, feel free to contribute anyway! Here are some ways you can contribute:
 
-```ts
-import { createApp } from 'vue';
-import {
-  createLabox,
-  LButton /* Add all components you would like to use here. */,
-} from '@larmbox/labox';
+- Open bug reports
+- Open feature requests
+- Propose improvements to the documentation
 
-createApp(App)
-  .use(
-    createLabox({
-      components: [
-        LButton /* Add all components you would like to use here. */,
-      ],
-    })
-  )
-  .mount('#app');
-```
-
-## Stylesheet
-
-Import the `labox.scss` file with Sass:
-
-```scss
-@import '@larmbox/labox/dist/theme/labox';
-```
-
-:::warning
-You probably don't want to import the full stylesheet if you don't intend to use all components. See below for how to import only the necessary stylesheets.
-:::
-
-To only import the required stylesheets:
-
-```scss
-// The 'labox-base' stylesheet is always required:
-@import '@larmbox/labox/dist/theme/labox-base';
-
-@import '@larmbox/labox/dist/components/button/button';
-// ...
-```
+Please refer to our [Larmbox Open Source Community Guidelines](https://github.com/larmbox/labox/blob/HEAD/CODE_OF_CONDUCT.md).

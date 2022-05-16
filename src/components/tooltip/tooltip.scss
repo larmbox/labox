@@ -1,23 +1,14 @@
 @use 'sass:math';
 @import '../../theme/imports';
 
-$lb-tooltip-border-radius: $lb-border-radius !default;
-$lb-tooltip-text-size: $lb-text-sm !default;
-$lb-tooltip-background-color: color('gray', 12) !default;
-$lb-tooltip-text-color: #fff !default;
-$lb-tooltip-max-width: 250px !default;
-$lb-tooltip-padding-x: $lb-spacing-sm !default;
-$lb-tooltip-padding-y: $lb-spacing-xs * 2 !default;
-$lb-tooltip-arrow-size: 8px !default;
-
-@mixin tooltip-color($color, $theme: $lb-default-theme) {
+@mixin color($color) {
   .#{c('LTooltip')}-inner .#{c('LTooltip')}-content {
-    background-color: color($color, 8, $theme);
-    color: contrast-tone(color2($color, 8, $theme));
+    background-color: color($color, 8);
+    color: contrast-tone(color($color, 8));
   }
 
   .#{c('LTooltip')}-arrow::before {
-    background-color: color($color, 8, $theme);
+    background-color: color($color, 8);
   }
 }
 
@@ -27,40 +18,32 @@ $lb-tooltip-arrow-size: 8px !default;
 
 .#{c('LTooltip')} {
   display: inline-flex;
-  border-radius: $lb-tooltip-border-radius;
-  color: $lb-tooltip-text-color;
+  border-radius: v(tooltip-border-radius);
+  color: v(tooltip-text-color);
 
-  @mixin tooltip-variants($variant, $theme: $lb-default-theme) {
+  @mixin variants($variant) {
     &.#{c('LTooltip')}-#{$variant} {
-      @include tooltip-color($variant, $theme);
+      @include color($variant);
     }
   }
 
-  @each $name, $variant-map in lb-themes() {
-    @if css-vars() {
-      @include tooltip-variants($name);
-    } @else {
-      &.#{$lb-theme-prefix}#{$name} {
-        @each $variant, $_ in $variant-map {
-          @include tooltip-variants($variant, $name);
-        }
-      }
-    }
+  @each $variant in $lx-palettes {
+    @include variants($variant);
   }
 
   .#{c('LTooltip')}-inner {
     .#{c('LTooltip')}-content {
-      border-radius: $lb-tooltip-border-radius;
-      padding: $lb-tooltip-padding-y $lb-tooltip-padding-x;
-      font-size: $lb-tooltip-text-size;
-      max-width: $lb-tooltip-max-width;
+      border-radius: v(tooltip-border-radius);
+      padding: v(tooltip-padding-y) v(tooltip-padding-x);
+      font-size: v(tooltip-font-size);
+      max-width: v(tooltip-max-width);
     }
 
     .#{c('LTooltip')}-arrow,
     .#{c('LTooltip')}-arrow::before {
       position: absolute;
-      width: $lb-tooltip-arrow-size;
-      height: $lb-tooltip-arrow-size;
+      width: v(tooltip-arrow-size);
+      height: v(tooltip-arrow-size);
     }
 
     .#{c('LTooltip')}-arrow::before {

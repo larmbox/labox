@@ -1,4 +1,8 @@
-# Tooltip
+# Tooltip <Tag text="<LTooltip>" />
+
+::: tip
+This page covers the Tooltip component. For simple tooltips, you might want to use the [Tooltip Directive](/labox/directives/tooltip).
+:::
 
 Tooltips display informative text when users hover over, focus on, or tap an element. Labox uses [Popper](https://npmjs.org/package/@popperjs/core) for tooltips.
 
@@ -39,6 +43,10 @@ Use the `trigger` and `content` slots to use elements in the content displayed i
 Set prop `interactive` on the tooltip to allow users to interact with the content without it being closed automatically.
 
 <Snippet :code="interactive" />
+
+## Component Reference
+
+<ComponentMeta src="tooltip" />
 
 <script lang="ts" setup>
 const example = `

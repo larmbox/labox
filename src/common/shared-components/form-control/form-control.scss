@@ -1,0 +1,53 @@
+@import '../../../theme/imports';
+
+.form-control {
+  line-height: v(line-height);
+}
+
+.form-label {
+  font-weight: 500;
+  margin-bottom: v(spacing-xs);
+  font-size: v(text-md);
+  > label {
+    display: block;
+  }
+}
+
+.form-description,
+.form-help,
+.form-feedback {
+  display: block;
+  font-size: v(text-sm);
+
+  &.form-help {
+    color: v(text-color--light);
+  }
+
+  &.form-feedback {
+    &.feedback-error {
+      color: color('error', 9);
+    }
+
+    &.feedback-success {
+      color: color('success', 9);
+    }
+  }
+}
+
+.form-control {
+  &:not(.form-field) {
+    .form-description + .form-feedback {
+      margin-top: calc(v(spacing-xs) / 2);
+    }
+  }
+
+  &.form-field {
+    .form-feedback,
+    .form-help {
+      margin-top: calc(v(spacing-xs) / 2);
+    }
+    .form-description {
+      margin-bottom: calc(v(spacing-xs) / 2);
+    }
+  }
+}

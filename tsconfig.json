@@ -2,8 +2,8 @@
   "compilerOptions": {
     "outDir": "dist",
     "baseUrl": ".",
-    "target": "es2015",
-    "module": "es2015",
+    "target": "es2020",
+    "module": "es2020",
     "strict": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": false,
@@ -17,10 +17,16 @@
     "emitDeclarationOnly": true,
     "declaration": true,
     "sourceMap": true,
+    "jsx": "preserve",
     "types": [
       "node",
       "vue"
     ],
+    "paths": {
+      "~/*": [
+        "./src/*"
+      ]
+    },
     "lib": [
       "esnext",
       "dom",
@@ -29,12 +35,19 @@
     ]
   },
   "include": [
-    "src"
+    "src",
+    "docs",
+    ".vuepress",
   ],
   "exclude": [
-    "node_modules",
-    "**/*.spec.ts",
+    "node_modules/**/*",
     "tests",
-    "dev"
-  ]
+    "__snapshots__"
+  ],
+  "ts-node": {
+    "compilerOptions": {
+      "resolveJsonModule": true,
+      "module": "CommonJS",
+    }
+  }
 }

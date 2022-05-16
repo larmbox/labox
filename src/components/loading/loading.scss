@@ -1,22 +1,13 @@
 @use 'sass:math';
 @import '../../theme/imports';
 
-$lb-loading-size-sm: $lb-text-sm !default;
-$lb-loading-border-width-sm: math.div($lb-loading-size-sm, 5) !default;
-
-$lb-loading-size: $lb-text-md !default;
-$lb-loading-border-width: math.div($lb-loading-size, 5) !default;
-
-$lb-loading-size-lg: $lb-text-lg !default;
-$lb-loading-border-width-lg: math.div($lb-loading-size-lg, 5) !default;
-
-@mixin loading-color-spinner($color, $theme: $lb-default-theme) {
-  color: color($color, 8, $theme);
+@mixin color-spinner($color) {
+  color: color($color, 8);
 }
 
-@mixin loading-color-dots($color, $theme: $lb-default-theme) {
+@mixin color-dots($color) {
   > div {
-    color: color($color, 8, $theme);
+    color: color($color, 8);
   }
 }
 
@@ -24,9 +15,9 @@ $lb-loading-border-width-lg: math.div($lb-loading-size-lg, 5) !default;
   display: inline-flex;
 
   &.#{c('LLoading')}-spinner {
-    width: $lb-loading-size;
-    height: $lb-loading-size;
-    border-width: $lb-loading-border-width;
+    width: v(loading-size);
+    height: v(loading-size);
+    border-width: calc(v(loading-size) / 5);
     border-style: solid;
     border-color: currentColor;
     border-right-color: transparent;
@@ -36,65 +27,60 @@ $lb-loading-border-width-lg: math.div($lb-loading-size-lg, 5) !default;
   }
 
   &.#{c('LLoading')}-dots > div {
-    border-width: $lb-loading-border-width;
-    border-style: solid;
-    border-color: currentColor;
-    border-radius: 50%;
-    vertical-align: text-bottom;
-    animation: dots 1.4s ease-in-out infinite;
-    animation-delay: 0.2s;
-    margin: 0 0.06rem;
-    &:first-of-type {
-      animation-delay: 0s;
-    }
-    &:last-of-type {
-      animation-delay: 0.4s;
+    display: flex;
+    > div {
+      border-width: calc(v(loading-size) / 5);
+      border-style: solid;
+      border-color: currentColor;
+      border-radius: 50%;
+      vertical-align: text-bottom;
+      animation: dots 1.4s v(transition-type) infinite;
+      animation-delay: 0.2s;
+      margin: 0 0.06rem;
+      &:first-of-type {
+        animation-delay: 0s;
+      }
+      &:last-of-type {
+        animation-delay: 0.4s;
+      }
     }
   }
 
   &.#{c('LLoading')}-sm {
     &.#{c('LLoading')}-spinner {
-      width: $lb-loading-size-sm;
-      height: $lb-loading-size-sm;
-      border-width: $lb-loading-border-width-sm;
+      width: v(loading-size-sm);
+      height: v(loading-size-sm);
+      border-width: calc(v(loading-size-sm) / 5);
     }
-    &.#{c('LLoading')}-dots > div {
-      border-width: $lb-loading-border-width-sm;
+    &.#{c('LLoading')}-dots > div > div {
+      border-width: calc(v(loading-size-sm) / 5);
     }
   }
 
   &.#{c('LLoading')}-lg {
     &.#{c('LLoading')}-spinner {
-      width: $lb-loading-size-lg;
-      height: $lb-loading-size-lg;
-      border-width: $lb-loading-border-width-lg;
+      width: v(loading-size-lg);
+      height: v(loading-size-lg);
+      border-width: calc(v(loading-size-lg) / 5);
     }
-    &.#{c('LLoading')}-dots > div {
-      border-width: $lb-loading-border-width-lg;
+    &.#{c('LLoading')}-dots > div > div {
+      border-width: calc(v(loading-size-lg) / 5);
     }
   }
 
-  @mixin loading-variants($variant, $theme: $lb-default-theme) {
+  @mixin variants($variant) {
     &.#{c('LLoading')}-#{$variant} {
       &.#{c('LLoading')}-spinner {
-        @include loading-color-spinner($variant, $theme);
+        @include color-spinner($variant);
       }
       &.#{c('LLoading')}-dots {
-        @include loading-color-dots($variant, $theme);
+        @include color-dots($variant);
       }
     }
   }
 
-  @each $name, $variant-map in lb-themes() {
-    @if css-vars() {
-      @include loading-variants($name);
-    } @else {
-      &.#{$lb-theme-prefix}#{$name} {
-        @each $variant, $_ in $variant-map {
-          @include loading-variants($variant, $name);
-        }
-      }
-    }
+  @each $variant in $lx-palettes {
+    @include variants($variant);
   }
 }
 

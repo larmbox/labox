@@ -1,4 +1,4 @@
-# Modal
+# Modal <Tag text="<LModal>" />
 
 A modal is a dialog box/popup window that is displayed on top of the current page.
 
@@ -20,23 +20,19 @@ Or `modal.open('modal-with-data', { hello: 'world' })` if you use the [useLabox]
 
 ## Stacking
 
-It's possible to open multiple modals. The previous modal is automatically hidden when another modal is opened. When the new modal is closed, the previous will automatically open.
+It is possible to open multiple modals. The previous modal is automatically hidden when another modal is opened. When the new modal is closed, the previous will automatically open.
 
 <Snippet :code="stacking" />
-
-## Prevent closing
-
-Prevent the user from closing the modal by setting the `closeable` prop to `false`.
-
-## Close with backdrop
-
-Allow the user to close the modal by setting the `close-on-backdrop` prop to `true`.
 
 ## Accessibility
 
 Opening a modal automatically traps the tab focus inside the modal. When the modal is closed, Labox tries to restore focus to the element focused prior to opening the modal.
 
 The `aria-labelledby` attribute is automatically set to the modal header element and `aria-describedby` attribute to the modal body element.
+
+## Component Reference
+
+<ComponentMeta src="modal" />
 
 <script lang="ts" setup>
 import {ref} from 'vue';
@@ -46,7 +42,7 @@ const example = `<LButton v-open-modal="'Hello'">Open Modal</LButton>
 <LModal id="Hello" title="Hello world!" description="A modal is a dialog box/popup window that is displayed on top of the current page." :closeable="false">
   <p><b>Example modal:</b> This modal has a title and description, and also a footer with a button.</p>
   <template #footer-right="{ close }">
-    <LButton @click="close">Close me!</LButton>
+    <LButton @click="close()">Close me!</LButton>
   </template>
 </LModal>`
 

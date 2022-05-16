@@ -1,4 +1,4 @@
-# Input
+# Input <Tag text="<LInput>" />
 
 The input element is used to create interactive controls for web-based forms in order to accept data from the user.
 
@@ -10,15 +10,31 @@ The input component allows a `size` prop. Labox provides CSS rules for the small
 
 <Snippet :code="sizes" />
 
-## Descriptors
+## Variant
+
+Use the `variant` prop to change the input theming according to your configured [themes](/labox/configuration/themes/).
+
+<Snippet :code="variants" />
+
+### Highlight
+
+Set the `highlight` prop to override the default border color with the variant color.
+
+<Snippet :code="highlight" />
+
+Highlight is automatically set to `true` if the [feedback](#feedback) prop is populated. Set highlight to `false` to override feedback highlighting.
+
+<Snippet :code="highlightFeedback" />
+
+## Label
 
 Use the `label`, `description` and `help` props to describe your input field.
 
-<Snippet :code="descriptors" />
+<Snippet :code="label" />
 
-You can also use slots for more freedom on descriptor content. Please see the [Slots](#slots) section for information on slot variables.
+You can also use slots for more freedom on label content. Please see the [Slots](#slots) section for information on slot variables.
 
-<Snippet :code="descriptorsslots" />
+<Snippet :code="labelsSlots" />
 
 ## Block
 
@@ -54,16 +70,51 @@ Use the `feedback` slot to add validation or other form errors to your input fie
 
 <Snippet :code="feedback" />
 
+## Type
+
+You can use all native browser HTML5 input types. Default is `text`.
+
+<Snippet :code="type" />
+
+## Component Reference
+
+<ComponentMeta src="input" />
+
 <script lang="ts" setup>
 const example = `<LInput label="Input" help="Please enter something here." />`
 
-const sizes = `<div class="input-display">
+const sizes = `<div class="grid-3">
   <LInput size="sm" placeholder="Small" />
   <LInput size="md" placeholder="Default" />
   <LInput size="lg" placeholder="Large" />
 </div>`
 
-const descriptors = `
+const variants = `
+<div class="grid-4">
+  <LInput variant="primary" placeholder="primary" />
+  <LInput variant="secondary" placeholder="secondary" />
+  <LInput variant="error" placeholder="error" />
+  <LInput variant="success" placeholder="success"/>
+</div>
+`
+
+const highlight = `
+<div class="grid-4">
+  <LInput highlight variant="primary" placeholder="primary" />
+  <LInput highlight variant="secondary" placeholder="secondary" />
+  <LInput highlight variant="error" placeholder="error" />
+  <LInput highlight variant="success" placeholder="success"/>
+</div>
+`
+
+const highlightFeedback = `
+<div class="grid-3">
+  <LInput feedback="Error!" placeholder="Feedback"/>
+  <LInput :highlight="false" feedback="Error!" placeholder="Override"/>
+</div>
+`
+
+const label = `
 <LInput 
   label="Label"
   description="Description"
@@ -72,7 +123,7 @@ const descriptors = `
 />
 `
 
-const descriptorsslots = `
+const labelsSlots = `
 <LInput placeholder="Placeholder">
   <template #label="{ id }">
     <label :for="id">Label</label>
@@ -87,11 +138,15 @@ const descriptorsslots = `
 `
 
 const block = `
-<LInput block label="I'm wide!" />
+<LInput block label="Block" />
 `
 
 const disabled = `
-<LInput disabled placeholder="Can't type here!" />`
+<div class="grid-3">
+  <LInput disabled placeholder="Placeholder" />
+  <LInput disabled value="Value" placeholder="Placeholder" />
+</div>
+`
 
 const readonly = `
 <template>
@@ -102,7 +157,7 @@ const readonly = `
 export default {
   data() {
     return {
-      text: "Can't type here!"
+      text: "Value"
     }
   }
 }
@@ -131,4 +186,19 @@ const feedback = `
 <LInput label="Input" block feedback="Bad!" />
 <LInput label="Input" block feedback="Good!" feedback-type="success" />
 `
+
+const type = `
+<div class="grid-3">
+  <LInput block label="text" type="text" />
+  <LInput block label="number" type="number" />
+  <LInput block label="email" type="email" />
+  <LInput block label="tel" type="tel" />
+  <LInput block label="password" type="password" />
+  <LInput block label="search" type="search" />
+  <LInput block label="url" type="url" />
+  <LInput block label="date" type="date" />
+  <LInput block label="time" type="time" />
+  <LInput block label="range" type="range" />
+  <LInput block label="color" type="color" />
+</div>`
 </script>

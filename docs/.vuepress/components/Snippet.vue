@@ -1,17 +1,18 @@
 <template>
   <div>
     <Vuelr class="snippet" :code="code" v-slot="{ target }">
-      <div :id="target" />
+      <div v-if="!noRender" :id="target" />
       <div class="outer" @mousedown="onClick">
         <LButton
-          @click="setEditable"
+          v-if="!noEdit"
+          @click="toggle"
           variant="gray"
           size="sm"
           outline
-          v-tooltip:hover:left="'Toggle editing'"
-          icon-left="pencil-square"
-          >Edit</LButton
+          :icon-left="editing ? 'check-square' : 'pencil-square'"
         >
+          {{ editing ? 'Done' : 'Edit' }}
+        </LButton>
         <div v-if="!expanded" class="fade" />
         <pre
           :id="id"
@@ -26,7 +27,6 @@
 </template>
 <script lang="ts">
 import hljs from 'highlight.js';
-import 'highlight.js/styles/xcode.css';
 import { useLabox } from '../../../src';
 
 import { defineComponent, nextTick, onMounted, ref } from 'vue';
@@ -36,6 +36,12 @@ export default defineComponent({
     code: {
       type: String,
       default: '',
+    },
+    noRender: {
+      type: Boolean,
+    },
+    noEdit: {
+      type: Boolean,
     },
   },
   setup(props, contxt) {
@@ -76,7 +82,7 @@ export default defineComponent({
       code.value = event.target.textContent;
     };
 
-    const setEditable = () => {
+    const toggle = () => {
       onClick();
       editing.value = !editing.value;
     };
@@ -85,7 +91,7 @@ export default defineComponent({
       expanded.value = true;
     };
 
-    return { id, code, editing, onInput, setEditable, onClick, expanded };
+    return { id, code, editing, onInput, toggle, onClick, expanded };
   },
 });
 
@@ -98,3 +104,47 @@ function escapeHtml(unsafe) {
     .replace(/'/g, '&#039;');
 }
 </script>
+
+<style lang="scss">
+.snippet {
+  .outer {
+    position: relative;
+    button {
+      position: absolute;
+      top: 0.66rem;
+      right: 0.66rem;
+    }
+
+    .fade {
+      position: absolute;
+      bottom: 1px;
+      left: 1px;
+      width: calc(100% - 2px);
+      height: 64px;
+      background: var(--code-fade);
+      border-bottom-left-radius: 3px;
+      border-bottom-right-radius: 3px;
+      transition: background var(--t-color);
+    }
+  }
+
+  .hljs-code {
+    padding: 1rem;
+    overflow-y: hidden !important;
+    max-height: 140px;
+    font-family: 'Consolas', 'Courier New', Courier, monospace;
+    font-size: 14px;
+    border: 1px solid transparent;
+
+    &.expanded {
+      max-height: none;
+    }
+
+    &[contenteditable='true'] {
+      box-shadow: 0 0 0 var(--lx-focus-shadow-size) var(--lx-primary-T20);
+      border: 1px solid var(--lx-primary-6);
+      outline: none;
+    }
+  }
+}
+</style>

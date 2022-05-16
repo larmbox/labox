@@ -1,0 +1,16 @@
+// Vitest Snapshot v1
+
+exports[`mount component 1`] = `
+"<div class=\\"form-control checkbox checkbox-md checkbox-primary\\">
+  <div class=\\"checkbox-inner\\">
+    <div><input id=\\"id\\" type=\\"checkbox\\" />
+      <div class=\\"checkbox-box\\"><span class=\\"icon check checkbox-icon\\" aria-hidden=\\"true\\"></span></div>
+      <!--v-if-->
+    </div>
+    <div class=\\"checkbox-context\\">
+      <!--v-if-->
+      <!--v-if-->
+    </div>
+  </div>
+</div>"
+`;

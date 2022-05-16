@@ -1,4 +1,4 @@
-# Select
+# Select <Tag text="<LSelect>" />
 
 The select component represents an input control that provides a menu of options.
 
@@ -10,15 +10,31 @@ The select component allows a `size` prop. Labox provides CSS rules for the smal
 
 <Snippet :code="sizes" />
 
-## Descriptors
+## Variant
+
+Use the `variant` prop to change the input theming according to your configured [themes](/labox/configuration/themes/).
+
+<Snippet :code="variants" />
+
+### Highlight
+
+Set the `highlight` prop to override the default border color with the variant color.
+
+<Snippet :code="highlight" />
+
+Highlight is automatically set to `true` if the [feedback](#feedback) prop is populated. Set highlight to `false` to override feedback highlighting.
+
+<Snippet :code="highlightFeedback" />
+
+## Labels
 
 Use the `label`, `description` and `help` props to describe your select fields.
 
-<Snippet :code="descriptors" />
+<Snippet :code="labels" />
 
-You can also use slots for more freedom on descriptor content. Please see the [Slots](#slots) section for information on slot variables.
+You can also use slots for more freedom on label content. Please see the [Slots](#slots) section for information on slot variables.
 
-<Snippet :code="descriptorsslots" />
+<Snippet :code="labelsSlots" />
 
 ## Block
 
@@ -38,6 +54,10 @@ Use the `feedback` slot to add validation or other form errors to your select fi
 
 <Snippet :code="feedback" />
 
+## Component Reference
+
+<ComponentMeta src="select" />
+
 <script lang="ts" setup>
 const example = `<template>
   <LSelect
@@ -49,7 +69,6 @@ const example = `<template>
       { label: 'Cranberry', value: 'cranberry' }
     ]"
     :help="selected ? \`You selected \${selected}.\` : \`Please select something.\`"
-    block
   />
 </template>
 
@@ -65,7 +84,7 @@ export default {
 `
 
 const sizes = `<template>
-  <div class="select-display">
+  <div class="grid-3">
     <LSelect size="sm" :options="options" label="Small" />
     <LSelect size="md" :options="options" label="Default" />
     <LSelect size="lg" :options="options" label="Large" />
@@ -87,7 +106,32 @@ export default {
 <\/script>
 `
 
-const descriptors = `
+const variants = `
+<div class="grid-4">
+  <LSelect variant="primary" placeholder="primary" />
+  <LSelect variant="secondary" placeholder="secondary" />
+  <LSelect variant="error" placeholder="error" />
+  <LSelect variant="success" placeholder="success"/>
+</div>
+`
+
+const highlight = `
+<div class="grid-4">
+  <LSelect highlight variant="primary" placeholder="primary" />
+  <LSelect highlight variant="secondary" placeholder="secondary" />
+  <LSelect highlight variant="error" placeholder="error" />
+  <LSelect highlight variant="success" placeholder="success"/>
+</div>
+`
+
+const highlightFeedback = `
+<div class="grid-3">
+  <LSelect feedback="Error!" placeholder="Feedback"/>
+  <LSelect :highlight="false" feedback="Error!" placeholder="Override"/>
+</div>
+`
+
+const labels = `
 <LSelect 
   label="Label"
   description="Description"
@@ -100,7 +144,7 @@ const descriptors = `
 />
 `
 
-const descriptorsslots = `
+const labelsSlots = `
 <LSelect 
   :options="[
     { label: 'Apple', value: 'apple' },
@@ -122,7 +166,7 @@ const descriptorsslots = `
 const block = `
 <LSelect 
   block
-  label="I'm wide!" 
+  label="Block" 
   :options="[
     { label: 'Apple', value: 'apple' },
     { label: 'Banana', value: 'banana' },
@@ -156,7 +200,9 @@ export default {
 `
 
 const feedback = `
-<LSelect label="Select" block feedback="Bad!" />
-<LSelect label="Select" block feedback="Good!" feedback-type="success" />
+<div class="grid-2">
+  <LSelect label="Select" block feedback="Error!" />
+  <LSelect label="Select" block feedback="Success!" feedback-type="success" />
+</div>
 `
 </script>

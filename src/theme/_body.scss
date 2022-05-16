@@ -4,10 +4,14 @@
   box-sizing: border-box;
 }
 
+body {
+  color: v(text-color);
+}
+
 #lx {
   position: relative;
   height: 0;
-  z-index: $lb-z-index-base;
+  z-index: var(--lx-z-index-base);
   #lx-md {
     width: 0;
     height: 0;

@@ -2,11 +2,11 @@
 @import 'labox-base';
 @import 'animations';
 
+@import '../common/shared-components/form-control/form-control';
 @import '../components/loading/loading';
 @import '../components/button/button';
 @import '../components/checkbox/checkbox';
 @import '../components/icon/icon';
-@import '../shared-components/form-control/form-control';
 @import '../components/input/input';
 @import '../components/radio/radio';
 @import '../components/modal/modal';

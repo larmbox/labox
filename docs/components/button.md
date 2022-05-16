@@ -1,4 +1,4 @@
-# Button
+# Button <Tag text="<LButton>" />
 
 The button component represents a clickable button, used to submit forms or anywhere in a document for accessible, standard button functionality.
 
@@ -8,7 +8,7 @@ The button component represents a clickable button, used to submit forms or anyw
 
 The button component allows a `size` prop. Labox provides CSS rules for the small, default and large size options.
 
-<Snippet :code="sizes" />
+<Snippet :code="sizes" class="sizes" />
 
 ## Variant
 
@@ -26,13 +26,13 @@ Add the `outline` prop to change the button to a outline variant.
 
 By default the button component is displayed as an inline element. By adding the `block` prop, the button will span the whole container width.
 
-<Snippet code="<LButton block>I'm wide!</LButton>" />
+<Snippet code="<LButton block>Block</LButton>" />
 
 ## Disabled
 
 Set the `disabled` prop to disable button default functionality.
 
-<Snippet code="<LButton disabled>Can't click me!</LButton>" />
+<Snippet code="<LButton disabled>Disabled</LButton>" />
 
 ## Icons
 
@@ -44,7 +44,7 @@ Icons are automatically scaled to button size.
 
 ## Loading
 
-Add the `loading` prop to show the [Loading](/labox/components/loading) component inside the button.
+Add the `loading` prop to show the [Loading](/labox/components/loading) component inside the button. **Note:** The Loading component's variant is set to `inherit`, inheriting the text color of the button.
 
 <Snippet :code="loadingSnippet" />
 
@@ -52,19 +52,23 @@ The button will maintain its width when changed from non-loading to loading:
 
 <Snippet :code="loadingSnippet2" />
 
+## Component Reference
+
+<ComponentMeta src="button" />
+
 <script lang="ts" setup>
 import {ref} from 'vue';
 
 const sizes = `
-<div class="button-display">
-  <LButton size="sm">Small Button</LButton>
-  <LButton size="md">Default Button</LButton>
-  <LButton size="lg">Large Button</LButton>
+<div class="size-display">
+  <LButton size="sm">Small</LButton>
+  <LButton size="md">Default</LButton>
+  <LButton size="lg">Large</LButton>
 </div>
 `
 
 const variants = `
-<div class="button-display">
+<div class="grid-4">
   <LButton variant="primary">Primary</LButton>
   <LButton variant="secondary">Secondary</LButton>
   <LButton variant="error">Error</LButton>
@@ -72,7 +76,7 @@ const variants = `
 </div>
 `
 const outline = `
-<div class="button-display">
+<div class="grid-4">
   <LButton variant="primary" outline>Primary</LButton>
   <LButton variant="secondary" outline>Secondary</LButton>
   <LButton variant="error" outline>Error</LButton>
@@ -106,7 +110,12 @@ export default {
 
 const loadingSnippet2 = `
 <template>
-  <LButton :loading="loading" @click="loading = !loading">Click me to toggle loading state!</LButton>
+  <LButton 
+    :loading="loading"
+    @click="loading = !loading"
+  >
+    Click to toggle loading state!
+  </LButton>
 </template>
 
 <script>

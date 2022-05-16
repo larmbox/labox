@@ -1,14 +1,9 @@
-export { default } from './tooltip.vue';
-import { Placement } from '@popperjs/core';
+import { LComponent } from '~/create-labox';
+import type { Props as LTooltipProps } from './src/props';
 
-export interface LTooltipConfig {
-  variant: string;
-  placement: Placement;
-  delay: number;
-  trigger: 'click' | 'hover';
-  offset: [number, number];
-  arrow: {
-    padding: number;
-  };
-  disableTouch: boolean;
-}
+interface LTooltipOptions {}
+
+export interface LTooltipComponent
+  extends LComponent<LTooltipOptions, LTooltipProps> {}
+
+export { default } from './src/tooltip.vue';

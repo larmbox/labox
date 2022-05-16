@@ -1,104 +1,87 @@
 @use 'sass:math';
 @import '../../theme/imports';
 
-$lb-textarea-border-radius: $lb-border-radius !default;
-$lb-textarea-focus-shadow-size: $lb-focus-shadow-size !default;
-$lb-textarea-text-color: $lb-text-color !default;
-$lb-textarea-text-color--disabled: color('gray', 5) !default;
-$lb-textarea-placeholder-color: color('gray', 9) !default;
-$lb-textarea-placeholder-color--focus: color('gray', 10) !default;
-$lb-textarea-placeholder-color--disabled: color('gray', 3) !default;
-$lb-textarea-border-color: $lb-border-color !default;
-$lb-textarea-background-color--disabled: color('gray', 1) !default;
+@mixin highlight($color) {
+  textarea {
+    border-color: color($color, 8);
+    &:disabled {
+      border-color: color($color, 3);
+    }
+  }
+}
 
-$lb-textarea-padding-x: $lb-spacing * 0.75 !default;
-$lb-textarea-padding-y: $lb-spacing * 0.4375 !default;
-$lb-textarea-font-size: $lb-text-md !default;
-$lb-textarea-line-height: $lb-line-height !default;
-
-$lb-textarea-padding-x-sm: $lb-spacing * 0.5 !default;
-$lb-textarea-padding-y-sm: $lb-spacing * 0.28125 !default;
-$lb-textarea-font-size-sm: $lb-text-sm !default;
-$lb-textarea-line-height-sm: $lb-line-height-sm !default;
-
-$lb-textarea-padding-x-lg: $lb-spacing !default;
-$lb-textarea-padding-y-lg: $lb-spacing * 0.59375 !default;
-$lb-textarea-font-size-lg: $lb-text-lg !default;
-$lb-textarea-line-height-lg: $lb-line-height-lg !default;
-
-@mixin textarea-color($color, $theme: $lb-default-theme) {
-  border-color: color($color, 8, $theme);
-
-  &:focus {
-    border-color: color($color, 6, $theme);
+@mixin color($color) {
+  &.#{c('LTextarea')}-highlight {
+    @include highlight($color);
   }
 
-  &:not(:disabled):active {
-    border-color: color($color, 8, $theme);
-  }
+  textarea {
+    &:focus {
+      border-color: color($color, 6);
+    }
 
-  &:focus {
-    box-shadow: 0 0 0 $lb-input-focus-shadow-size color($color, 'T25', $theme);
-  }
+    &:not(:disabled):active {
+      border-color: color($color, 8);
+    }
 
-  &:disabled {
-    border-color: color($color, 3, $theme);
-    color: color($color, 4, $theme);
+    &:focus {
+      box-shadow: 0 0 0 v(focus-shadow-size) color($color, 'T20');
+    }
+
+    &:disabled {
+      border-color: v(textarea-border-color--disabled);
+      color: v(textarea-text-color--disabled);
+    }
   }
 }
 
 .#{c('LTextarea')} {
-  margin-bottom: $lb-spacing;
+  margin-bottom: v(spacing);
   display: inline-flex;
   flex-direction: column;
-  background-color: transparent;
-  max-width: 100%;
 
   &.#{c('LTextarea')}-block {
+    width: 100%;
     display: flex;
   }
 
   textarea {
-    max-width: 100%;
-    margin: 0;
-    appearance: none;
-    flex: 1;
-    transition: border-color $lb-animation-time ease-in-out,
-      box-shadow $lb-animation-time ease-in-out;
-
     position: relative;
-    padding: $lb-textarea-padding-y $lb-textarea-padding-x;
-    border-style: solid;
-    border-width: $lb-border-width;
+    width: 100%;
     display: inline-flex;
-    line-height: $lb-textarea-line-height;
-    border-radius: $lb-textarea-border-radius;
-    border-color: $lb-textarea-border-color;
+    flex: 1;
     outline: none;
-    font-size: $lb-textarea-font-size;
-    color: inherit;
-    font-family: inherit;
-    font-size: inherit;
+    background-color: v(textarea-background-color);
+    transition: border-color v(transition-time) v(transition-type),
+      box-shadow v(transition-time) v(transition-type);
+    padding: v(textarea-padding-y) v(textarea-padding-x);
+    border-style: solid;
+    border-width: v(textarea-border-width);
+    line-height: v(textarea-line-height);
+    border-radius: v(textarea-border-radius);
+    border-color: v(textarea-border-color);
+    font-size: v(textarea-font-size);
+    color: v(textarea-text-color);
 
-    @include textarea-color('primary');
-    border-color: $lb-textarea-border-color;
+    font-family: inherit;
 
     &:focus {
+      background-color: v(textarea-background-color--focus);
       &::placeholder {
-        color: $lb-textarea-placeholder-color--focus;
+        color: v(textarea-placeholder-color--focus);
       }
     }
 
     &::placeholder {
-      color: $lb-textarea-placeholder-color;
+      color: v(textarea-placeholder-color);
     }
 
     &:disabled {
-      color: $lb-textarea-text-color--disabled;
-      background-color: $lb-textarea-background-color--disabled;
-      border-color: $lb-textarea-border-color;
+      color: v(textarea-text-color--disabled);
+      background-color: v(textarea-background-color--disabled);
+      border-color: v(textarea-border-color--disabled);
       &::placeholder {
-        color: $lb-textarea-placeholder-color--disabled;
+        color: v(textarea-placeholder-color--disabled);
       }
     }
 
@@ -107,33 +90,58 @@ $lb-textarea-line-height-lg: $lb-line-height-lg !default;
     }
   }
 
-  &.form-feedback-error textarea {
-    @include textarea-color('error');
-  }
-
-  &.form-feedback-success textarea {
-    @include textarea-color('success');
-  }
-
-  .#{c('LTextarea')}-inner {
-    display: flex;
-  }
-
-  &.#{c('LTextarea')}-sm textarea {
-    font-size: $lb-textarea-font-size-sm;
-
-    textarea {
-      padding: $lb-textarea-padding-y-sm $lb-textarea-padding-x-sm;
-      line-height: $lb-textarea-line-height-sm;
+  @mixin variants($variant) {
+    &.#{c('LTextarea')}-#{$variant} {
+      @include color($variant);
     }
   }
 
-  &.#{c('LTextarea')}-lg textarea {
-    font-size: $lb-textarea-font-size-lg;
+  @each $variant in $lx-palettes {
+    @include variants($variant);
+  }
+
+  &.form-feedback-error {
+    @include color('error');
+
+    &.#{c(LInput)}-highlight {
+      @include highlight('error');
+    }
+  }
+
+  &.form-feedback-success {
+    @include color('success');
+
+    &.#{c(LInput)}-highlight {
+      @include highlight('success');
+    }
+  }
+
+  .#{c('LInput')}-inner {
+    display: flex;
+
+    .#{c('LInput')}-element {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+  }
+
+  &.#{c('LTextarea')}-sm {
+    font-size: v(textarea-font-size-sm);
 
     textarea {
-      padding: $lb-textarea-padding-y-lg $lb-textarea-padding-x-lg;
-      line-height: $lb-textarea-line-height-lg;
+      padding: v(textarea-padding-y-sm) v(textarea-padding-x-sm);
+      line-height: v(textarea-line-height-sm);
+    }
+  }
+
+  &.#{c('LTextarea')}-lg {
+    font-size: v(textarea-font-size-lg);
+
+    textarea {
+      padding: v(textarea-padding-y-lg) v(textarea-padding-x-lg);
+      line-height: v(textarea-line-height-lg);
     }
   }
 }

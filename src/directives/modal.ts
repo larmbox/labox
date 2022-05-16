@@ -1,8 +1,8 @@
-import { useLabox } from '../composables/use-labox';
+import { useLabox } from '~/composables/use-labox/use-labox';
 import { DirectiveBinding } from 'vue';
-import { LModalConfig } from '../components';
+import { Props } from '~/components/modal/src/props';
 
-export interface ModalOptions extends LModalConfig {
+export interface ModalOptions extends Props {
   name: string;
   data?: any;
 }

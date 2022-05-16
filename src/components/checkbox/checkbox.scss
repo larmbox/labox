@@ -1,30 +1,27 @@
 @use 'sass:math';
 @import '../../theme/imports';
 
-$lb-checkbox-border-radius: $lb-border-radius !default;
-$lb-checkbox-focus-shadow-size: $lb-focus-shadow-size !default;
-$lb-checkbox-text-color: $lb-text-color !default;
-$lb-checkbox-border-color: $lb-border-color !default;
-$lb-checkbox-border-width: $lb-border-width !default;
+@mixin highlight($color) {
+  .#{c('LCheckbox')}-box {
+    border-color: color($color, 8);
+  }
+  input:disabled .#{c('LCheckbox')}-box {
+    border-color: color($color, 3);
+  }
+}
 
-$lb-checkbox-size: 1.5rem !default;
-
-$lb-checkbox-size-sm: 1.25rem !default;
-
-$lb-checkbox-size-lg: 1.75rem !default;
-
-@mixin checkbox-size($suffix, $size) {
+@mixin size($suffix, $size) {
   &.#{c('LCheckbox')}-#{$suffix} {
-    .#{c('LCheckbox')}-inner .#{c('LCheckbox')}-descriptors {
-      label {
-        margin-top: math.div($size, 2) - math.div($lb-line-height, 2);
-      }
+    .#{c('LCheckbox')}-inner .#{c('LCheckbox')}-context {
+      margin-left: calc($size + v(spacing-xs));
     }
+
     .#{c('LCheckbox')}-box {
       width: $size;
       height: $size;
-      font-size: $size - 0.2rem;
+      font-size: $size;
     }
+
     input {
       width: $size;
       height: $size;
@@ -32,34 +29,38 @@ $lb-checkbox-size-lg: 1.75rem !default;
   }
 }
 
-@mixin checkbox-color($color, $theme: $lb-default-theme) {
+@mixin color($color) {
+  &.#{c('LCheckbox')}-highlight {
+    @include highlight($color);
+  }
+
   input {
     &:checked {
       + .#{c('LCheckbox')}-box {
-        background-color: color($color, 8, $theme);
-        border-color: color($color, 9, $theme);
-        color: $lb-body-color;
+        background-color: color($color, 8);
+        border-color: color($color, 9);
+        color: v(contrast-color);
       }
     }
 
     &:focus {
       + .#{c('LCheckbox')}-box {
-        border-color: color($color, 8, $theme);
-        box-shadow: 0 0 0 $lb-checkbox-focus-shadow-size
-          color($color, 'T25', $theme);
+        border-color: color($color, 8);
+        box-shadow: 0 0 0 v(checkbox-focus-shadow-size) color($color, 'T20');
       }
     }
 
     &:disabled:checked {
       + .#{c('LCheckbox')}-box {
-        border-color: color($color, 4, $theme);
-        background-color: color($color, 4, $theme);
+        border-color: color($color, 5);
+        background-color: color($color, 4);
+        color: v(contrast-color--disabled);
       }
     }
 
     &:disabled:not(:checked) {
       + .#{c('LCheckbox')}-box {
-        background-color: color('gray', 1, $theme);
+        background-color: v(background-color--disabled);
       }
     }
   }
@@ -68,7 +69,7 @@ $lb-checkbox-size-lg: 1.75rem !default;
 .#{c('LCheckbox')} {
   display: inline-flex;
   position: relative;
-  margin-bottom: $lb-spacing;
+  margin-bottom: v(spacing);
   align-items: center;
 
   &.#{c('LCheckbox')}-block {
@@ -76,89 +77,76 @@ $lb-checkbox-size-lg: 1.75rem !default;
     display: flex;
   }
 
-  @mixin checkbox-variants($variant, $theme: $lb-default-theme) {
-    &.#{c(LCheckbox)}-#{$variant} {
-      @include checkbox-color($variant, $theme);
-    }
-  }
-
-  @each $name, $variant-map in lb-themes() {
-    @if css-vars() {
-      @include checkbox-variants($name);
-    } @else {
-      &.#{$lb-theme-prefix}#{$name} {
-        @each $variant, $_ in $variant-map {
-          @include checkbox-variants($variant, $name);
-        }
-      }
-    }
-  }
-
   .#{c('LCheckbox')}-box {
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: $lb-checkbox-border-width solid $lb-checkbox-border-color;
-    border-radius: $lb-checkbox-border-radius;
-    box-shadow: 0 0 0 $lb-button-focus-shadow-size transparent;
-    transition: border-color $lb-animation-time ease-in-out,
-      background-color $lb-animation-time ease-in-out,
-      box-shadow $lb-animation-time ease-in-out;
+    border: v(checkbox-border-width) solid v(checkbox-border-color);
+    background-color: v(background-color);
+    border-radius: v(checkbox-border-radius);
+    box-shadow: 0 0 0 v(focus-shadow-size) transparent;
+    transition: border-color v(transition-time) v(transition-type),
+      background-color v(transition-time) v(transition-type),
+      box-shadow v(transition-time) v(transition-type);
 
     color: transparent;
+
     .#{c('LCheckbox')}-icon {
-      transition: color $lb-animation-time ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color v(transition-time) v(transition-type);
     }
   }
 
   .#{c('LCheckbox')}-inner {
-    display: flex;
-    .#{c('LCheckbox')}-descriptors {
-      margin-left: $lb-spacing-xs * 2;
-      display: inline-flex;
-      flex-direction: column;
-      justify-content: center;
-      .#{c('LCheckbox')}-label {
+    > div:first-of-type {
+      display: flex;
+      align-items: center;
+
+      .form-label {
         display: block;
-        line-height: $lb-line-height;
-      }
-      .#{c('LCheckbox')}-feedback {
-        display: block;
-      }
-      .#{c('LCheckbox')}-description {
         margin-bottom: 0;
-        display: block;
+        padding-left: v(spacing-xs);
       }
     }
   }
 
   input {
     position: absolute;
-    left: 0;
-    top: 0;
     margin: 0;
     opacity: 0;
     z-index: 1;
   }
 
-  &.form-feedback-error {
-    @include checkbox-color('error');
+  @mixin variants($variant) {
+    &.#{c('LCheckbox')}-#{$variant} {
+      @include color($variant);
+    }
+  }
 
-    .#{c('LCheckbox')}-box {
-      border-color: color('error', 8);
+  @each $variant in $lx-palettes {
+    @include variants($variant);
+  }
+
+  &.form-feedback-error {
+    @include color('error');
+
+    &.#{c('LCheckbox')}-highlight {
+      @include highlight('error');
     }
   }
 
   &.form-feedback-success {
-    @include checkbox-color('success');
+    @include color('success');
 
-    .#{c('LCheckbox')}-box {
-      border-color: color('success', 8);
+    &.#{c('LCheckbox')}-highlight {
+      @include highlight('success');
     }
   }
 
-  @include checkbox-size('md', $lb-checkbox-size);
-  @include checkbox-size('sm', $lb-checkbox-size-sm);
-  @include checkbox-size('lg', $lb-checkbox-size-lg);
+  @include size('md', v(checkbox-size));
+  @include size('sm', v(checkbox-size-sm));
+  @include size('lg', v(checkbox-size-lg));
 }

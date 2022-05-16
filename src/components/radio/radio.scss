@@ -1,34 +1,22 @@
 @use 'sass:math';
 @import '../../theme/imports';
 
-$lb-radio-border-radius: 19rem !default;
-$lb-radio-focus-shadow-size: $lb-focus-shadow-size !default;
-$lb-radio-text-color: $lb-text-color !default;
-$lb-radio-border-color: $lb-border-color !default;
-$lb-radio-border-width: $lb-border-width !default;
-
-$lb-radio-size: 1.5rem !default;
-
-$lb-radio-size-sm: 1.25rem !default;
-
-$lb-radio-size-lg: 1.75rem !default;
-
-@mixin checkbox-size($suffix, $size) {
+@mixin size($suffix, $size) {
   &.#{c('LRadio')}-#{$suffix} {
-    .#{c('LRadio')}-inner .#{c('LRadio')}-descriptors {
-      label {
-        margin-top: math.div($size, 2) - math.div($lb-line-height, 2);
-      }
+    .#{c('LRadio')}-inner .#{c('LRadio')}-context {
+      margin-left: calc($size + v(spacing-xs));
     }
+
     .#{c('LRadio')}-box {
       width: $size;
       height: $size;
-      .#{c('LRadio')}-box2 {
-        border-width: $size * 0.25;
+      .#{c('LRadio')}-inner-box {
+        border-width: calc($size * 0.25);
         min-width: $size;
         min-height: $size;
       }
     }
+
     input {
       width: $size;
       height: $size;
@@ -36,37 +24,50 @@ $lb-radio-size-lg: 1.75rem !default;
   }
 }
 
-@mixin checkbox-color($color, $theme: $lb-default-theme) {
+@mixin highlight($color) {
+  .#{c('LRadio')}-box {
+    border-color: color($color, 8);
+  }
+
+  input:disabled + .#{c('LRadio')}-box {
+    border-color: color($color, 8);
+  }
+}
+
+@mixin color($color) {
+  &.#{c('LRadio')}-highlight {
+    @include highlight($color);
+  }
+
   input {
     &:checked {
       + .#{c('LRadio')}-box {
-        border-color: color($color, 8, $theme);
-        .#{c('LRadio')}-box2 {
-          border-color: color($color, 8, $theme);
+        border-color: color($color, 8);
+        .#{c('LRadio')}-inner-box {
+          border-color: color($color, 8);
         }
       }
     }
 
     &:focus {
       + .#{c('LRadio')}-box {
-        border-color: color($color, 8, $theme);
-        box-shadow: 0 0 0 $lb-radio-focus-shadow-size
-          color($color, 'T25', $theme);
+        border-color: color($color, 8);
+        box-shadow: 0 0 0 v(radio-focus-shadow-size) color($color, 'T20');
       }
     }
 
     &:disabled:checked {
       + .#{c('LRadio')}-box {
-        border-color: color($color, 4, $theme);
-        .#{c('LRadio')}-box2 {
-          border-color: color($color, 4, $theme);
+        border-color: color($color, 4);
+        .#{c('LRadio')}-inner-box {
+          border-color: color($color, 4);
         }
       }
     }
 
     &:disabled:not(:checked) {
       + .#{c('LRadio')}-box {
-        background-color: color('gray', 1, $theme);
+        background-color: v(background-color--disabled);
       }
     }
   }
@@ -75,7 +76,7 @@ $lb-radio-size-lg: 1.75rem !default;
 .#{c('LRadio')} {
   display: inline-flex;
   position: relative;
-  margin-bottom: $lb-spacing;
+  margin-bottom: v(spacing);
   align-items: center;
 
   &.#{c('LRadio')}-block {
@@ -83,60 +84,47 @@ $lb-radio-size-lg: 1.75rem !default;
     display: flex;
   }
 
-  @mixin checkbox-variants($variant, $theme: $lb-default-theme) {
-    &.#{c(LRadio)}-#{$variant} {
-      @include checkbox-color($variant, $theme);
-    }
-  }
-
-  @each $name, $variant-map in lb-themes() {
-    @if css-vars() {
-      @include checkbox-variants($name);
-    } @else {
-      &.#{$lb-theme-prefix}#{$name} {
-        @each $variant, $_ in $variant-map {
-          @include checkbox-variants($variant, $name);
-        }
-      }
-    }
-  }
-
   .#{c('LRadio')}-box {
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: $lb-radio-border-width solid $lb-radio-border-color;
-    border-radius: $lb-radio-border-radius;
-    box-shadow: 0 0 0 $lb-button-focus-shadow-size transparent;
-    transition: border-color $lb-animation-time ease-in-out,
-      background-color $lb-animation-time ease-in-out,
-      box-shadow $lb-animation-time ease-in-out;
+    border: v(radio-border-width) solid v(radio-border-color);
+    background-color: v(background-color);
+    border-radius: v(radio-border-radius);
+    box-shadow: 0 0 0 v(focus-shadow-size) transparent;
+    transition: border-color v(transition-time) v(transition-type),
+      background-color v(transition-time) v(transition-type),
+      box-shadow v(transition-time) v(transition-type);
 
-    .#{c('LRadio')}-box2 {
-      transition: border-color $lb-animation-time ease-in-out;
+    color: transparent;
+
+    .#{c('LRadio')}-inner-box {
+      transition: border-color v(transition-time) v(transition-type);
       background-color: transparent;
-      border-radius: $lb-radio-border-radius;
+      border-radius: v(radio-border-radius);
       border: 4px solid transparent;
     }
   }
 
   .#{c('LRadio')}-inner {
-    display: flex;
-    flex: 1;
-    .#{c('LRadio')}-descriptors {
-      display: inline-flex;
-      flex-direction: column;
-      justify-content: center;
-      margin-left: $lb-spacing-xs * 2;
-      .#{c('LRadio')}-label {
+    > div:first-of-type {
+      display: flex;
+      align-items: center;
+
+      .form-label {
         display: block;
-      }
-      .#{c('LRadio')}-feedback {
-        display: block;
-      }
-      .#{c('LRadio')}-description {
         margin-bottom: 0;
+        padding-left: v(spacing-xs);
+      }
+    }
+
+    .#{c('LRadio')}-context {
+      .form-feedback {
+        display: block;
+      }
+
+      .form-description {
         display: block;
       }
     }
@@ -144,15 +132,23 @@ $lb-radio-size-lg: 1.75rem !default;
 
   input {
     position: absolute;
-    left: 0;
-    top: 0;
     margin: 0;
     opacity: 0;
     z-index: 1;
   }
 
+  @mixin variants($variant) {
+    &.#{c('LRadio')}-#{$variant} {
+      @include color($variant);
+    }
+  }
+
+  @each $variant in $lx-palettes {
+    @include variants($variant);
+  }
+
   &.form-feedback-error {
-    @include checkbox-color('error');
+    @include color('error');
 
     .#{c('LRadio')}-box {
       border-color: color('error', 8);
@@ -160,14 +156,14 @@ $lb-radio-size-lg: 1.75rem !default;
   }
 
   &.form-feedback-success {
-    @include checkbox-color('success');
+    @include color('success');
 
     .#{c('LRadio')}-box {
-      border-color: color('error', 8);
+      border-color: color('success', 8);
     }
   }
 
-  @include checkbox-size('md', $lb-radio-size);
-  @include checkbox-size('sm', $lb-radio-size-sm);
-  @include checkbox-size('lg', $lb-radio-size-lg);
+  @include size('md', v(radio-size));
+  @include size('sm', v(radio-size-sm));
+  @include size('lg', v(radio-size-lg));
 }
