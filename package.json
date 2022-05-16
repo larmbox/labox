@@ -1,6 +1,6 @@
 {
   "name": "@larmbox/labox",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "Labox is a component library.",
   "license": "MIT",
   "main": "dist/labox.umd.js",
@@ -39,7 +39,7 @@
     "build:vuepress": "vuepress build docs",
     "deploy": "build/deploy-docs.sh",
     "start:dev": "vuepress dev docs",
-    "publish:npm": "npm i && npm run prebuild && npm publish --access public",
+    "publish:npm": "npm i && npm run build && npm publish --access public",
     "lint": "eslint --fix .",
     "test": "vitest --config ./build/vite.config.js",
     "coverage": "vitest run --coverage --config ./build/vite.config.js"
