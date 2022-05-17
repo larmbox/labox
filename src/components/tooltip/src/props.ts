@@ -3,10 +3,8 @@ import {
   disabledProps,
   variantProps,
 } from '~/composables/component';
-import { ExtractPropTypes, PropType, Ref } from 'vue';
+import { ExtractPropTypes, PropType } from 'vue';
 import { Placement } from '@popperjs/core';
-import { TooltipOptions } from '~/directives/tooltip';
-import { PartialBy } from '~/common/types';
 
 export const props = {
   ...componentProps,
@@ -20,8 +18,6 @@ export const props = {
   arrow: Object as PropType<{ padding: number }>,
   disableTouch: { type: Boolean, default: undefined },
   interactive: { type: Boolean, default: undefined },
-  element: { type: Object as PropType<HTMLElement>, default: null },
-  binding: Object as PropType<Ref<TooltipOptions>>,
 };
 
-export type Props = PartialBy<ExtractPropTypes<typeof props>, 'element'>;
+export type Props = ExtractPropTypes<typeof props>;

@@ -1,8 +1,8 @@
 import { ref } from 'vue';
-import { LCreateOptions } from '~/create-labox';
+import { LConfig } from '~/create-labox';
 import { TeleportTarget } from './init';
 
-export const useModal = (_options?: LCreateOptions) => {
+export const useModal = (_config?: LConfig) => {
   const stack = ref<{ id: string; data: any }[]>([]);
 
   /**

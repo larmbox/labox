@@ -1,6 +1,6 @@
-import { LCreateOptions } from '~/create-labox';
+import { LConfig } from '~/create-labox';
 
-export const useToast = (_options?: LCreateOptions) => {
+export const useToast = (_config?: LConfig) => {
   const pop = (name: string) => {
     const event = new CustomEvent('create', {
       bubbles: true,

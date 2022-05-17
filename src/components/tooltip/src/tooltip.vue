@@ -41,6 +41,8 @@ import {
   nextTick,
   onMounted,
   onUnmounted,
+  PropType,
+  Ref,
   ref,
   Teleport,
   watch,
@@ -61,7 +63,14 @@ const name = 'LTooltip';
 
 export default defineComponent({
   name,
-  props,
+  props: {
+    ...props,
+    element: { type: Object as PropType<HTMLElement>, default: null },
+    binding: {
+      type: Object as PropType<Ref<TooltipOptions>>,
+      default: undefined,
+    },
+  },
   setup(props, _context) {
     const component = useComponent<LTooltipComponent>(name, props);
     const {
