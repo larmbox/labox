@@ -107,7 +107,6 @@ export const useTheme = (config: LConfig) => {
     name: string,
     variables: Record<string, string>
   ) => {
-    console.log('Register', prefix(variables, name));
     if (!components.value[name]) {
       components.value[name] = prefix(variables, name);
       render();
@@ -131,8 +130,6 @@ export const useTheme = (config: LConfig) => {
 
     // Add user defined variables.
     variables = { ...variables, ...currentTheme?.variables };
-
-    console.log(variables);
 
     const variablesAsString = () => {
       const selector = id === GLOBAL_THEME_ID ? `:root` : `#${id}`;
