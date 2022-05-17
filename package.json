@@ -34,7 +34,7 @@
   "sideEffects": false,
   "scripts": {
     "build-nuxt-module": "nuxt-module-build ./nuxt",
-    "build": "cross-env NODE_ENV=production ts-node build/pre-build && vite build --config build/vite.config.js && tsc --declaration --emitDeclarationOnly && tsc-alias -p tsconfig.json && npm run build:sass && ts-node -r tsconfig-paths/register build/post-build",
+    "build": "cross-env NODE_ENV=production ts-node build/pre-build && vite build --config build/vite.config.js && tsc --p tsconfig.build.json --declaration --emitDeclarationOnly && tsc-alias -p tsconfig.build.json && npm run build:sass && ts-node -r tsconfig-paths/register build/post-build",
     "build:sass": "sass ./dist:./dist",
     "build:vuepress": "vuepress build docs",
     "deploy": "build/deploy-docs.sh",
