@@ -10,7 +10,10 @@
   <!-- Error not relevant for Teleport components! -->
   <!-- eslint-disable-next-line vue/no-multiple-template-root -->
   <Teleport :to="TELEPORT_TARGET">
-    <div :id="id" :class="[name, classComponentName(options.variant)]">
+    <div
+      :id="id"
+      :class="[className(name), classComponentName(options.variant)]"
+    >
       <Transition name="lb-tooltip-animation" appear>
         <div
           v-show="active && !disabled && (hasText || !isDirective)"
@@ -52,7 +55,7 @@ import { PartialBy } from '~/common/types';
 import { props } from './props';
 import { LTooltipCSSVariables } from './css-variables';
 import { TeleportTarget } from '~/composables/use-labox/init';
-import { useUtil } from '~/composables/component/use-util';
+import { useContextUtil } from '~/composables/component/use-context-util';
 
 const name = 'LTooltip';
 
@@ -334,7 +337,7 @@ export default defineComponent({
 
     return {
       ...component,
-      ...useUtil(component),
+      ...useContextUtil(component),
       variantClass,
       options,
       el,

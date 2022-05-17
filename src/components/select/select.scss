@@ -34,8 +34,8 @@ $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
     }
 
     &:disabled {
-      border-color: v(select-border-color--disabled);
-      color: v(select-text-color--disabled);
+      border-color: v(border-color--disabled, c('LSelect'));
+      color: v(text-color--disabled, c('LSelect'));
     }
   }
 }
@@ -55,11 +55,11 @@ $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
       > span {
         display: flex;
         align-items: center;
-        border: v(border-width) solid v(select-border-color);
+        border: v(border-width) solid v(border-color, c('LSelect'));
         padding: 0 v(spacing);
         border-left: none;
-        border-top-right-radius: v(select-border-radius);
-        border-bottom-right-radius: v(select-border-radius);
+        border-top-right-radius: v(border-radius, c('LSelect'));
+        border-bottom-right-radius: v(border-radius, c('LSelect'));
       }
       button {
         border-top-left-radius: 0;
@@ -99,7 +99,7 @@ $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
   .#{c('LSelect')}-icon {
     position: absolute;
     z-index: 5;
-    right: v(select-padding-x);
+    right: v(padding-x, c('LSelect'));
     color: color('gray', 5);
     pointer-events: none;
   }
@@ -111,32 +111,34 @@ $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
     flex: 1;
     outline: none;
     appearance: none;
-    background-color: v(select-background-color);
+    background-color: v(background-color, c('LSelect'));
     transition: border-color v(transition-time) v(transition-type),
       box-shadow v(transition-time) v(transition-type);
-    padding: v(select-padding-y) v(select-padding-x);
+    padding: v(padding-y, c('LSelect')) v(padding-x, c('LSelect'));
     border-style: solid;
-    border-width: v(select-border-width);
-    line-height: v(select-line-height);
-    border-radius: v(select-border-radius);
-    border-color: v(select-border-color);
-    font-size: v(select-font-size);
-    color: v(select-text-color);
+    border-width: v(border-width, c('LSelect'));
+    line-height: v(line-height, c('LSelect'));
+    border-radius: v(border-radius, c('LSelect'));
+    border-color: v(border-color, c('LSelect'));
+    font-size: v(sfont-size, c('LSelect'));
+    color: v(text-color, c('LSelect'));
 
     font-family: inherit;
 
-    padding-right: calc(v(select-padding-x) * 1.5 + v(select-font-size));
+    padding-right: calc(
+      v(padding-x, c('LSelect')) * 1.5 + v(font-size, c('LSelect'))
+    );
 
     @-moz-document url-prefix() {
-      padding-left: calc(v(select-padding-x) - 0.25rem);
+      padding-left: calc(v(padding-x, c('LSelect')) - 0.25rem);
     }
 
     &:disabled {
-      color: v(select-text-color--disabled);
-      background-color: v(select-background-color--disabled);
-      border-color: v(select-border-color--disabled);
+      color: v(text-color--disabled, c('LSelect'));
+      background-color: v(background-color--disabled, c('LSelect'));
+      border-color: v(border-color--disabled, c('LSelect'));
       + .#{c('LSelect')}-icon {
-        color: v(select-placeholder-color--disabled);
+        color: v(placeholder-color--disabled, c('LSelect'));
       }
     }
 
@@ -155,15 +157,17 @@ $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
     @include variants($variant);
   }
 
-  &.form-feedback-error {
+  &.#{p('form-feedback-error')} {
     @include color('error');
+
     &.#{c('LSelect')}-highlight {
       @include highlight('error');
     }
   }
 
-  &.form-feedback-success {
+  &.#{p('form-feedback-success')} {
     @include color('success');
+
     &.#{c('LSelect')}-highlight {
       @include highlight('success');
     }
@@ -181,42 +185,42 @@ $select-gap-x_ie: calc(#{$select-base-gap-x} - 2px);
   }
 
   &.#{c('LSelect')}-sm {
-    font-size: v(select-font-size-sm);
+    font-size: v(font-size-sm, c('LSelect'));
 
     select {
-      padding: v(select-padding-y-sm) v(select-padding-x-sm);
+      padding: v(padding-y-sm, c('LSelect')) v(padding-x-sm, c('LSelect'));
       padding-right: calc(
-        v(select-padding-x-sm) * 1.5 + v(select-font-size-sm)
+        v(padding-x-sm, c('LSelect')) * 1.5 + v(font-size-sm, c('LSelect'))
       );
-      line-height: v(select-line-height-sm);
+      line-height: v(line-height-sm, c('LSelect'));
 
       @-moz-document url-prefix() {
-        padding-left: calc(v(select-padding-x-sm) - 0.25rem);
+        padding-left: calc(v(padding-x-sm, c('LSelect')) - 0.25rem);
       }
     }
 
     .#{c('LSelect')}-icon {
-      right: v(select-padding-x-sm);
+      right: v(padding-x-sm, c('LSelect'));
     }
   }
 
   &.#{c('LSelect')}-lg {
-    font-size: v(select-font-size-lg);
+    font-size: v(font-size-lg, c('LSelect'));
 
     select {
-      padding: v(select-padding-y-lg) v(select-padding-x-lg);
+      padding: v(padding-y-lg, c('LSelect')) v(padding-x-lg, c('LSelect'));
       padding-right: calc(
-        v(select-padding-x-lg) * 1.5 + v(select-font-size-lg)
+        v(padding-x-lg, c('LSelect')) * 1.5 + v(font-size-lg, c('LSelect'))
       );
-      line-height: v(select-line-height-lg);
+      line-height: v(line-height-lg, c('LSelect'));
 
       @-moz-document url-prefix() {
-        padding-left: calc(v(select-padding-x-lg) - 0.25rem);
+        padding-left: calc(v(padding-x-lg, c('LSelect')) - 0.25rem);
       }
     }
 
     .#{c('LSelect')}-icon {
-      right: v(select-padding-x-lg);
+      right: v(padding-x-lg, c('LSelect'));
     }
   }
 }

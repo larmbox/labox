@@ -93,7 +93,7 @@ import LFormLabel from '~/common/shared-components/form-control/form-label.vue';
 import LFormDescription from '~/common/shared-components/form-control/form-description.vue';
 import LFormFeedback from '~/common/shared-components/form-control/form-feedback.vue';
 import { LIcon } from '~/components';
-import { useUtil } from '~/composables/component/use-util';
+import { useContextUtil } from '~/composables/component/use-context-util';
 import { _useLabox } from '~/composables/use-labox/use-labox';
 
 const name = 'LSwitch';
@@ -137,7 +137,7 @@ export default defineComponent({
 
     return {
       ...component,
-      ...useUtil(component),
+      ...useContextUtil(component),
 
       blockClass,
       feedbackClass,

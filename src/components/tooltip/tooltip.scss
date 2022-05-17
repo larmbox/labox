@@ -18,8 +18,8 @@
 
 .#{c('LTooltip')} {
   display: inline-flex;
-  border-radius: v(tooltip-border-radius);
-  color: v(tooltip-text-color);
+  border-radius: v(border-radius, c('LTooltip'));
+  color: v(text-color, c('LTooltip'));
 
   @mixin variants($variant) {
     &.#{c('LTooltip')}-#{$variant} {
@@ -33,17 +33,17 @@
 
   .#{c('LTooltip')}-inner {
     .#{c('LTooltip')}-content {
-      border-radius: v(tooltip-border-radius);
-      padding: v(tooltip-padding-y) v(tooltip-padding-x);
-      font-size: v(tooltip-font-size);
-      max-width: v(tooltip-max-width);
+      border-radius: v(border-radius, c('LTooltip'));
+      padding: v(padding-y, c('LTooltip')) v(padding-x, c('LTooltip'));
+      font-size: v(font-size, c('LTooltip'));
+      max-width: v(max-width, c('LTooltip'));
     }
 
     .#{c('LTooltip')}-arrow,
     .#{c('LTooltip')}-arrow::before {
       position: absolute;
-      width: v(tooltip-arrow-size);
-      height: v(tooltip-arrow-size);
+      width: v(arrow-size, c('LTooltip'));
+      height: v(arrow-size, c('LTooltip'));
     }
 
     .#{c('LTooltip')}-arrow::before {

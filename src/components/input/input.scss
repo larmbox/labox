@@ -29,8 +29,8 @@
     }
 
     &:disabled {
-      border-color: v(input-border-color--disabled);
-      color: v(input-text-color--disabled);
+      border-color: v(border-color--disabled, c('LInput'));
+      color: v(text-color--disabled, c('LInput'));
     }
   }
 }
@@ -50,11 +50,11 @@
       > span {
         display: flex;
         align-items: center;
-        border: v(input-border-width) solid v(input-border-color);
+        border: v(border-width, c('LInput')) solid v(border-color, c('LInput'));
         padding: 0 v(spacing-md);
         border-left: none;
-        border-top-right-radius: v(input-border-radius);
-        border-bottom-right-radius: v(input-border-radius);
+        border-top-right-radius: v(border-radius, c('LInput'));
+        border-bottom-right-radius: v(border-radius, c('LInput'));
       }
       button {
         border-top-left-radius: 0;
@@ -80,11 +80,11 @@
       > span {
         display: flex;
         align-items: center;
-        border: v(input-border-width) solid v(input-border-color);
+        border: v(border-width, c('LInput')) solid v(border-color, c('LInput'));
         padding: 0 v(spacing-md);
         border-right: none;
-        border-top-left-radius: v(input-border-radius);
-        border-bottom-left-radius: v(input-border-radius);
+        border-top-left-radius: v(border-radius, c('LInput'));
+        border-bottom-left-radius: v(border-radius, c('LInput'));
       }
       button {
         border-top-right-radius: 0;
@@ -122,35 +122,35 @@
     display: inline-flex;
     flex: 1;
     outline: none;
-    background-color: v(input-background-color);
+    background-color: v(background-color, c('LInput'));
     transition: border-color v(transition-time) v(transition-type),
       box-shadow v(transition-time) v(transition-type);
-    padding: v(input-padding-y) v(input-padding-x);
+    padding: v(padding-y, c('LInput')) v(padding-x, c('LInput'));
     border-style: solid;
-    border-width: v(input-border-width);
-    line-height: v(input-line-height);
-    border-radius: v(input-border-radius);
-    border-color: v(input-border-color);
-    font-size: v(input-font-size);
-    color: v(input-text-color);
+    border-width: v(border-width, c('LInput'));
+    line-height: v(line-height, c('LInput'));
+    border-radius: v(border-radius, c('LInput'));
+    border-color: v(border-color, c('LInput'));
+    font-size: v(font-size, c('LInput'));
+    color: v(text-color, c('LInput'));
+
+    &::placeholder {
+      color: v(placeholder-color, c('LInput'));
+    }
 
     &:focus {
-      background-color: v(input-background-color--focus);
+      background-color: v(background-color--focus, c('LInput'));
       &::placeholder {
-        color: v(input-placeholder-color--focus);
+        color: v(placeholder-color--focus, c('LInput'));
       }
     }
 
-    &::placeholder {
-      color: v(input-placeholder-color);
-    }
-
     &:disabled {
-      color: v(input-text-color--disabled);
-      background-color: v(input-background-color--disabled);
-      border-color: v(input-border-color--disabled);
+      color: v(text-color--disabled, c('LInput'));
+      background-color: v(background-color--disabled, c('LInput'));
+      border-color: v(border-color--disabled, c('LInput'));
       &::placeholder {
-        color: v(input-placeholder-color--disabled);
+        color: v(placeholder-color--disabled, c('LInput'));
       }
     }
 
@@ -162,7 +162,8 @@
     &[type='range'] {
       margin: 0;
       height: calc(
-        v(input-font-size) * v(input-line-height) + v(input-font-size)
+        v(font-size, c('LInput')) * v(line-height, c('LInput')) +
+          v(font-size, c('LInput'))
       );
     }
   }
@@ -177,7 +178,7 @@
     @include variants($variant);
   }
 
-  &.form-feedback-error {
+  &.#{p('form-feedback-error')} {
     @include color('error');
 
     &.#{c('LInput')}-highlight {
@@ -185,7 +186,7 @@
     }
   }
 
-  &.form-feedback-success {
+  &.#{p('form-feedback-success')} {
     @include color('success');
 
     &.#{c('LInput')}-highlight {
@@ -194,32 +195,32 @@
   }
 
   &.#{c('LInput')}-sm {
-    font-size: v(input-font-size-sm);
+    font-size: v(font-size-sm, c('LInput'));
 
     input {
-      padding: v(input-padding-y-sm) v(input-padding-x-sm);
-      line-height: v(input-line-height-sm);
+      padding: v(padding-y-sm, c('LInput')) v(padding-x-sm, c('LInput'));
+      line-height: v(line-height-sm, c('LInput'));
 
       &[type='color'] {
         height: calc(
-          v(input-font-size-sm) * v(input-line-height-sm) +
-            v(input-font-size-sm)
+          v(font-size-sm, c('LInput')) * v(line-height-sm, c('LInput')) +
+            v(font-size-sm, c('LInput'))
         );
       }
     }
   }
 
   &.#{c('LInput')}-lg {
-    font-size: v(input-font-size-lg);
+    font-size: v(font-size-lg, c('LInput'));
 
     input {
-      padding: v(input-padding-y-lg) v(input-padding-x-lg);
-      line-height: v(input-line-height-lg);
+      padding: v(padding-y-lg, c('LInput')) v(padding-x-lg, c('LInput'));
+      line-height: v(line-height-lg, c('LInput'));
 
       &[type='color'] {
         height: calc(
-          v(input-font-size-lg) * v(input-line-height-lg) +
-            v(input-font-size-lg)
+          v(font-size-lg, c('LInput')) * v(line-height-lg, c('LInput')) +
+            v(font-size-lg, c('LInput'))
         );
       }
     }

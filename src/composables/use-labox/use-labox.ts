@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { LCreateOptions } from '~/create-labox';
+import { LConfig, LCreateOptions } from '~/create-labox';
 
 import { useTheme } from '../component/use-theme';
 import { useModal } from './use-modal';
@@ -9,22 +9,19 @@ import { deepMerge } from '~/common/utility';
 import defaultConfig from '~/common/utility/default-config';
 import { createLaboxTeleportTarget } from './init';
 
-type LConfig = typeof defaultConfig;
-
 type LGC = ReturnType<typeof create>;
 let glc: LGC;
 
 function create(options?: LCreateOptions) {
-  const modal = useModal(options);
-  const toast = useToast(options);
-  const theming = useTheme(options);
-
-  createLaboxTeleportTarget();
-  theming.init();
-
   const config = ref<LConfig>(
     deepMerge(defaultConfig, options?.config || {}) as LConfig
   );
+
+  const modal = useModal(config.value);
+  const toast = useToast(config.value);
+  const theming = useTheme(config.value);
+
+  createLaboxTeleportTarget();
 
   /**
    * Generates a random id.

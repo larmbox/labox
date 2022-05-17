@@ -1,7 +1,7 @@
 import { computed, ComputedRef, ExtractPropTypes } from 'vue';
 import { LComponent } from '~/create-labox';
 import { LComponentInstance } from './use-component';
-import { useUtil } from './use-util';
+import { useContextUtil } from './use-context-util';
 
 export function useVariant(
   component: LComponentInstance<LComponent<unknown, VariantProps>>
@@ -9,7 +9,7 @@ export function useVariant(
   variantClass: ComputedRef<string>;
 } {
   const variantClass = computed(() =>
-    useUtil(component).classComponentName(`${component.props.value.variant}`)
+    useContextUtil(component).classComponentName(`${component.props.value.variant}`)
   );
 
   return {
@@ -25,7 +25,7 @@ export function useVariantWithOutline(
 } {
   const outlineClass = computed(() =>
     component.props.value.outline
-      ? useUtil(component).classComponentName(`outline`)
+      ? useContextUtil(component).classComponentName(`outline`)
       : null
   );
 

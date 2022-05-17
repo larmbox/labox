@@ -15,9 +15,9 @@
   display: inline-flex;
 
   &.#{c('LLoading')}-spinner {
-    width: v(loading-size);
-    height: v(loading-size);
-    border-width: calc(v(loading-size) / 5);
+    width: v(size, c('LLoading'));
+    height: v(size, c('LLoading'));
+    border-width: calc(v(size, c('LLoading')) / 5);
     border-style: solid;
     border-color: currentColor;
     border-right-color: transparent;
@@ -29,7 +29,7 @@
   &.#{c('LLoading')}-dots > div {
     display: flex;
     > div {
-      border-width: calc(v(loading-size) / 5);
+      border-width: calc(v(size, c('LLoading')) / 5);
       border-style: solid;
       border-color: currentColor;
       border-radius: 50%;
@@ -48,23 +48,23 @@
 
   &.#{c('LLoading')}-sm {
     &.#{c('LLoading')}-spinner {
-      width: v(loading-size-sm);
-      height: v(loading-size-sm);
-      border-width: calc(v(loading-size-sm) / 5);
+      width: v(size-sm, c('LLoading'));
+      height: v(size-sm, c('LLoading'));
+      border-width: calc(v(size-sm, c('LLoading')) / 5);
     }
     &.#{c('LLoading')}-dots > div > div {
-      border-width: calc(v(loading-size-sm) / 5);
+      border-width: calc(v(size-sm, c('LLoading')) / 5);
     }
   }
 
   &.#{c('LLoading')}-lg {
     &.#{c('LLoading')}-spinner {
-      width: v(loading-size-lg);
-      height: v(loading-size-lg);
-      border-width: calc(v(loading-size-lg) / 5);
+      width: v(size-lg, c('LLoading'));
+      height: v(size-lg, c('LLoading'));
+      border-width: calc(v(size-lg, c('LLoading')) / 5);
     }
     &.#{c('LLoading')}-dots > div > div {
-      border-width: calc(v(loading-size-lg) / 5);
+      border-width: calc(v(size-lg, c('LLoading')) / 5);
     }
   }
 

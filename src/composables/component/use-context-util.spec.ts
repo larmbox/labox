@@ -46,7 +46,7 @@ describe('className', async () => {
   });
 
   test('className with global style prefix', () => {
-    createLabox({ config: { stylePrefix: '_' } });
+    createLabox({ config: { classPrefix: '_' } });
     const component2 = mount(LIcon);
     expect(component2.vm.className('test')).toEqual('_test');
   });
@@ -60,7 +60,7 @@ describe('classComponentName', async () => {
 
   test('classComponentName with global style prefix', () => {
     createLabox({
-      config: { stylePrefix: '_', components: { LIcon: { name: 'i' } } },
+      config: { classPrefix: '_', components: { LIcon: { name: 'i' } } },
     });
     const component2 = mount(LIcon);
     expect(component2.vm.classComponentName('test')).toEqual('_i-test');
@@ -77,7 +77,7 @@ describe('classNameList', async () => {
 
   test('classNameList with global style prefix', () => {
     createLabox({
-      config: { stylePrefix: '_', components: { LIcon: { name: 'i' } } },
+      config: { classPrefix: '_', components: { LIcon: { name: 'i' } } },
     });
     const component2 = mount(LIcon);
     expect(component2.vm.classNameList({ test: true })).toEqual({

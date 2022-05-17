@@ -23,8 +23,8 @@
       padding: 2px;
 
       .#{c('LSwitch')}-inner-box {
-        width: calc($size - v(switch-border-width) * 2 - 2px);
-        height: calc($size - v(switch-border-width) * 2 - 2px);
+        width: calc($size - v(border-width, c('LSwitch')) * 2 - 2px);
+        height: calc($size - v(border-width, c('LSwitch')) * 2 - 2px);
         font-size: calc($size - 4px);
       }
     }
@@ -43,7 +43,7 @@
       &:active:not(:disabled) {
         + .#{c('LSwitch')}-box {
           .#{c('LSwitch')}-inner-box {
-            width: calc($size * 1.25 - v(switch-border-width) * 2);
+            width: calc($size * 1.25 - v(border-width, c('LSwitch')) * 2);
           }
         }
         &:checked {
@@ -86,7 +86,8 @@
     &:focus {
       + .#{c('LSwitch')}-box {
         border-color: color($color, 8);
-        box-shadow: 0 0 0 v(switch-focus-shadow-size) color($color, 'T20');
+        box-shadow: 0 0 0 v(focus-shadow-size, c('LSwitch'))
+          color($color, 'T20');
       }
     }
 
@@ -127,9 +128,9 @@
     flex-shrink: 0;
     display: flex;
     align-items: center;
-    border: v(switch-border-width) solid v(switch-border-color);
-    background-color: v(switch-background-color);
-    border-radius: v(switch-border-radius);
+    border: v(border-width, c('LSwitch')) solid v(border-color, c('LSwitch'));
+    background-color: v(background-color, c('LSwitch'));
+    border-radius: v(border-radius, c('LSwitch'));
     box-shadow: 0 0 0 v(focus-shadow-size) transparent;
     transition: border-color v(transition-time) v(transition-type),
       background-color v(transition-time) v(transition-type),
@@ -148,7 +149,7 @@
         color v(transition-time) v(transition-type),
         width v(transition-time) v(transition-type),
         height v(transition-time) v(transition-type);
-      border-radius: v(switch-border-radius);
+      border-radius: v(border-radius, c('LSwitch'));
       background-color: v(border-color);
 
       .#{c('LSwitch')}-icon {
@@ -165,22 +166,10 @@
       display: flex;
       align-items: center;
 
-      .form-label {
+      .#{p('form-label')} {
         display: block;
         margin-bottom: 0;
         padding-left: v(spacing-xs);
-      }
-    }
-
-    .#{c('LSwitch')}-context {
-      .form-feedback {
-        display: block;
-      }
-
-      .form-description {
-        margin-top: v(spacing-xs);
-        margin-bottom: 0;
-        display: block;
       }
     }
   }
@@ -213,7 +202,7 @@
     @include variants($variant);
   }
 
-  &.form-feedback-error {
+  &.#{p('form-feedback-error')} {
     @include color('error');
 
     &.#{c('LSwitch')}-highlight {
@@ -221,7 +210,7 @@
     }
   }
 
-  &.form-feedback-success {
+  &.#{p('form-feedback-success')} {
     @include color('success');
 
     &.#{c('LSwitch')}-highlight {
@@ -229,7 +218,7 @@
     }
   }
 
-  @include size('md', v(switch-size));
-  @include size('sm', v(switch-size-sm));
-  @include size('lg', v(switch-size-lg));
+  @include size('md', v(size, c('LSwitch')));
+  @include size('sm', v(size-sm, c('LSwitch')));
+  @include size('lg', v(size-lg, c('LSwitch')));
 }

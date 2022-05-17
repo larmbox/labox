@@ -66,18 +66,18 @@
   justify-content: center;
   display: inline-flex;
   border-style: solid;
-  border-width: v(#{c('LButton')}-border-width);
+  border-width: v(border-width, c('LButton'));
   outline: none;
   text-align: center;
   white-space: nowrap;
   position: relative;
-  padding: v(#{c('LButton')}-padding-y) v(#{c('LButton')}-padding-x);
+  padding: v(padding-y, c('LButton')) v(padding-x, c('LButton'));
   font-family: inherit;
-  font-weight: v(#{c('LButton')}-font-weight);
-  border-radius: v(#{c('LButton')}-border-radius);
+  font-weight: v(font-weight, c('LButton'));
+  border-radius: v(border-radius, c('LButton'));
 
-  line-height: v(#{c('LButton')}-line-height);
-  font-size: v(#{c('LButton')}-font-size);
+  line-height: v(line-height, c('LButton'));
+  font-size: v(font-size, c('LButton'));
 
   cursor: pointer;
   text-decoration: none;
@@ -124,15 +124,15 @@
   }
 
   &.#{c(LButton)}-sm {
-    padding: v(#{c('LButton')}-padding-y-sm) v(#{c('LButton')}-padding-x-sm);
-    font-size: v(#{c('LButton')}-font-size-sm);
-    line-height: v(#{c('LButton')}-line-height-sm);
+    padding: v(padding-y-sm, c('LButton')) v(padding-x-sm, c('LButton'));
+    font-size: v(font-size-sm, c('LButton'));
+    line-height: v(line-height-sm, c('LButton'));
   }
 
   &.#{c(LButton)}-lg {
-    padding: v(#{c('LButton')}-padding-y-lg) v(#{c('LButton')}-padding-x-lg);
-    font-size: v(#{c('LButton')}-font-size-lg);
-    line-height: v(#{c('LButton')}-line-height-lg);
+    padding: v(padding-y-lg, c('LButton')) v(padding-x-lg, c('LButton'));
+    font-size: v(font-size-lg, c('LButton'));
+    line-height: v(line-height-lg, c('LButton'));
   }
 
   &.#{c('LButton')}-loading {

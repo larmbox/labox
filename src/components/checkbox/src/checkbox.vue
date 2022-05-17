@@ -93,7 +93,7 @@ import {
   useComponent,
   useInput,
   useSize,
-  useUtil,
+  useContextUtil,
   useVariant,
 } from '~/composables/component';
 import { _useLabox } from '~/composables/use-labox/use-labox';
@@ -139,7 +139,7 @@ export default defineComponent({
 
     return {
       ...component,
-      ...useUtil(component),
+      ...useContextUtil(component),
 
       blockClass,
       feedbackClass,

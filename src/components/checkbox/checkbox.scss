@@ -46,7 +46,8 @@
     &:focus {
       + .#{c('LCheckbox')}-box {
         border-color: color($color, 8);
-        box-shadow: 0 0 0 v(checkbox-focus-shadow-size) color($color, 'T20');
+        box-shadow: 0 0 0 v(focus-shadow-size, c('LCheckbox'))
+          color($color, 'T20');
       }
     }
 
@@ -82,9 +83,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: v(checkbox-border-width) solid v(checkbox-border-color);
+    border: v(border-width, c('LCheckbox')) solid
+      v(border-color, c('LCheckbox'));
     background-color: v(background-color);
-    border-radius: v(checkbox-border-radius);
+    border-radius: v(border-radius, c('LCheckbox'));
     box-shadow: 0 0 0 v(focus-shadow-size) transparent;
     transition: border-color v(transition-time) v(transition-type),
       background-color v(transition-time) v(transition-type),
@@ -105,7 +107,7 @@
       display: flex;
       align-items: center;
 
-      .form-label {
+      .#{p('form-label')} {
         display: block;
         margin-bottom: 0;
         padding-left: v(spacing-xs);
@@ -130,7 +132,7 @@
     @include variants($variant);
   }
 
-  &.form-feedback-error {
+  &.#{p('form-feedback-error')} {
     @include color('error');
 
     &.#{c('LCheckbox')}-highlight {
@@ -138,7 +140,7 @@
     }
   }
 
-  &.form-feedback-success {
+  &.#{p('form-feedback-success')} {
     @include color('success');
 
     &.#{c('LCheckbox')}-highlight {
@@ -146,7 +148,7 @@
     }
   }
 
-  @include size('md', v(checkbox-size));
-  @include size('sm', v(checkbox-size-sm));
-  @include size('lg', v(checkbox-size-lg));
+  @include size('md', v(size, c('LCheckbox')));
+  @include size('sm', v(size-sm, c('LCheckbox')));
+  @include size('lg', v(size-lg, c('LCheckbox')));
 }

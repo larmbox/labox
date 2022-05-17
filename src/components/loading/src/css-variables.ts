@@ -1,7 +1,7 @@
 const LLoadingCSSVariables = {
-  size: `var(--lx-text)`,
-  'size-sm': `var(--lx-text-sm)`,
-  'size-lg': `var(--lx-text-lg)`,
+  size: `var(--text)`,
+  'size-sm': `var(--text-sm)`,
+  'size-lg': `var(--text-lg)`,
 };
 
 export { LLoadingCSSVariables };

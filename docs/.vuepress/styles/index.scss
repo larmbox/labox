@@ -1,6 +1,6 @@
-@import '../../../src/theme/labox.scss';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css');
+@import '../../../src/theme/labox.scss';
 
 :root {
   // brand colors
@@ -25,6 +25,8 @@
   --code-attr: #943294;
   --code-literal: #db5e0b;
   --code-function: #db5e0b;
+  --c-text-lighter: var(--lx-text-color);
+  --c-text: var(--lx-text-color);
 }
 html.dark {
   // brand colors
@@ -47,6 +49,8 @@ html.dark {
   --code-attr: #f8c555;
   --code-literal: #f08d49;
   --code-function: #f08d49;
+  --c-text-lighter: var(--lx-text-color);
+  --c-text: var(--lx-text-color);
 }
 
 body {

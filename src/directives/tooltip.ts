@@ -1,8 +1,9 @@
-import { DirectiveBinding, createApp, ref } from 'vue';
+import { DirectiveBinding, createApp, ref, VNode } from 'vue';
+import { Placement } from '@popperjs/core';
+import Tooltip, { LTooltipComponent } from '~/components/tooltip';
+import { Props } from '~/components/tooltip/src/props';
 import { useLabox } from '~/composables/use-labox/use-labox';
-import Tooltip, { LTooltipComponent } from '../components/tooltip';
 import { getComponentMeta } from '~/composables/component/use-component';
-import { Props } from '../components/tooltip/src/props';
 
 export interface TooltipOptions extends Props {
   text: string | null | undefined;
@@ -23,11 +24,11 @@ const TooltipDirective = () => {
       return console.warn('Tooltip directive missing binding value:', element);
     }
 
-    const { options: o } = getComponentMeta<LTooltipComponent>('LTooltip');
+    const meta = getComponentMeta<LTooltipComponent>('LTooltip');
 
     const options: TooltipOptions = {
-      ...o,
-      text: '',
+      ...meta.options,
+      text: undefined,
     };
     if (typeof binding.value !== 'object') {
       options.text = binding.value.toString();
@@ -36,13 +37,12 @@ const TooltipDirective = () => {
     }
 
     if (binding.arg) {
-      // v-tooltip:abc == binding.arg = 'abc'
       const arg = binding.arg;
       if (arg.includes(':')) {
-        options.trigger = arg.split(':')[0] as any;
-        options.placement = addPlacementHyphens(arg.split(':')[1]) as any;
+        options.trigger = arg.split(':')[0] as 'click' | 'hover';
+        options.placement = addPlacementHyphens(arg.split(':')[1]) as Placement;
       } else {
-        options.trigger = arg as any;
+        options.trigger = arg as 'click' | 'hover';
       }
     }
 
@@ -55,7 +55,7 @@ const TooltipDirective = () => {
       updated(
         element: HTMLElement,
         binding: DirectiveBinding<TooltipOptions | BaseType>,
-        _vnode: any
+        _vnode: VNode
       ) {
         const options = create(element, binding);
         if (options) {
@@ -65,7 +65,7 @@ const TooltipDirective = () => {
       mounted(
         element: HTMLElement,
         binding: DirectiveBinding<TooltipOptions | BaseType>,
-        _vnode: any
+        _vnode: VNode
       ) {
         const options = create(element, binding);
         if (!options) return;
@@ -90,7 +90,7 @@ const TooltipDirective = () => {
       unmounted(
         el: HTMLElement,
         _binding: DirectiveBinding<TooltipOptions | BaseType>,
-        _vnode: any
+        _vnode: VNode
       ) {
         const element = document.getElementById(
           el.getAttribute(DATA_ATTRIBUTE_NAME) as string

@@ -20,7 +20,15 @@
     "
     v-bind="{
       ...bindProps({
-        exclude: ['size', 'tag', 'variant'],
+        exclude: [
+          'size',
+          'tag',
+          'variant',
+          'icon',
+          'iconLeft',
+          'iconRight',
+          'outline',
+        ],
       }),
       ...bindAttrs(),
     }"
@@ -49,7 +57,7 @@ import {
   useBlock,
   useComponent,
   useSize,
-  useUtil,
+  useContextUtil,
   useVariantWithOutline,
 } from '~/composables/component';
 import { _useLabox } from '~/composables/use-labox/use-labox';
@@ -77,7 +85,7 @@ export default defineComponent({
 
     return {
       ...component,
-      ...useUtil(component),
+      ...useContextUtil(component),
       blockClass,
       outlineClass,
       sizeClass,

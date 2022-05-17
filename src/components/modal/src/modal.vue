@@ -127,7 +127,7 @@ import { LIcon } from '~/components';
 import { props } from './props';
 import { LModalCSSVariables } from './css-variables';
 import { TeleportTarget } from '~/composables/use-labox/init';
-import { useUtil } from '~/composables/component/use-util';
+import { useContextUtil } from '~/composables/component/use-context-util';
 
 const name = 'LModal';
 const ANIMATION_DURATION = 250;
@@ -149,7 +149,7 @@ export default defineComponent({
 
     registerComponentStyle(component.name, LModalCSSVariables);
 
-    const { classComponentName } = useUtil(component);
+    const { classComponentName } = useContextUtil(component);
     const { sizeClass } = useSize(component);
     const { enable: enableTrapFocus, disable: disableTrapFocus } =
       useTrapFocus();
@@ -303,7 +303,7 @@ export default defineComponent({
 
     return {
       ...component,
-      ...useUtil(component),
+      ...useContextUtil(component),
       sizeClass,
       teleportTarget: `#${TeleportTarget.Modal}`,
       active,

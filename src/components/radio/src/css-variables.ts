@@ -4,9 +4,9 @@ const LRadioCSSVariables = {
   'size-lg': '1.75rem',
 
   'border-radius': '50%',
-  'focus-shadow-size': 'var(--lx-focus-shadow-size)',
-  'border-width': 'var(--lx-border-width)',
-  'border-color': 'var(--lx-border-color)',
+  'focus-shadow-size': 'var(--focus-shadow-size)',
+  'border-width': 'var(--border-width)',
+  'border-color': 'var(--border-color)',
 };
 
 export { LRadioCSSVariables };

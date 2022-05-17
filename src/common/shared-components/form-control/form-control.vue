@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useUtil } from '~/composables/component/use-util';
+import { useContextUtil } from '~/composables/component/use-context-util';
 
 export default defineComponent({
   name: 'LFormControl',
@@ -19,7 +19,7 @@ export default defineComponent({
     },
   },
   setup() {
-    return { ...useUtil() };
+    return { ...useContextUtil() };
   },
 });
 </script>

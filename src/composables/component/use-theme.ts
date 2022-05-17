@@ -1,171 +1,204 @@
 import { ref, watch } from 'vue';
-import { deepMerge } from '~/common/utility';
-import { LCreateOptions } from '~/create-labox';
+import { LConfig } from '~/create-labox';
+import { createPalette } from '~/common/utility/palette';
+import { useUtil } from './use-util';
 
-const components = ref<Record<string, any>>({});
-
-const unwind = (styles: Record<string, any>, prefix?: string): string[] => {
-  return Object.entries(styles).map(([k, v]) => {
-    if (typeof v === 'object') {
-      return unwind(v, k).join('');
-    } else {
-      return (prefix ? `--lx-${prefix}-${k}` : `--lx-${k}`) + `: ${v};`;
-    }
-  });
-};
-
-export interface Theme {
+export interface LTheme {
   name: string;
-  vars: Record<string, string>;
+  variables: Record<string, string | number>;
 }
 
-const theme = ref<string | null>('default');
-const themes = ref<Theme[]>([]);
-const styles = ref<{ id: string; content: string }[]>([]);
+const GLOBAL_THEME_ID = 'global';
 
-export const useTheme = (_options?: LCreateOptions) => {
-  const init = () => {
-    theme.value = 'default';
-    styles.value = [];
-    components.value = [];
-    themes.value = [];
-  };
+export const useTheme = (config: LConfig) => {
+  const { isClient } = useUtil();
+
+  const globalName = config.globalName;
+  const PROVIDER_PREFIX = `${globalName}-theme-provider-`;
 
   /**
-   * Sets the current Labox theme.
+   * Adds the globalName prefix to variables. If componentName is defined,
+   * variables are additionally prefixed with the component name.
    *
-   * @param _theme Name of theme.
+   * @param variables Object of variables to prefix.
+   * @param componentName Optional component name prefix.
    */
-  const setTheme = (_theme: string) => {
-    theme.value = _theme;
-    render();
-  };
+  const prefix = (variables: LTheme['variables'], componentName?: string) => {
+    const defaults: LTheme['variables'] = {};
 
-  /**
-   * Registers a new component style.
-   *
-   * @param name Name of the component.
-   * @param style Style object.
-   */
-  const registerComponentStyle = (name: string, style: Record<string, any>) => {
-    if (!components.value[name]) {
-      components.value[name] = style;
-      render();
-    }
-  };
-
-  const render = (id = 'global') => {
-    const themea = themes.value.find(({ name }) => name === theme.value);
-
-    const defaults: Record<string, string | number> = {};
     // eslint-disable-next-line prefer-const
-    for (let [k, v] of Object.entries(common)) {
-      if (typeof v === 'string' && v.startsWith('var(--')) {
-        v = v.replace('var(--', 'var(--lx-');
+    for (let [_key, value] of Object.entries(variables)) {
+      let key = '--';
+      if (globalName) key += `${globalName}-`;
+      if (componentName) key += `${componentName}-`;
+      key += _key;
+      if (globalName && typeof value === 'string' && value.includes('var(--')) {
+        value = value.replaceAll('var(--', `var(--${globalName}-`);
       }
-      defaults[k] = v;
+      defaults[key] = value;
     }
 
-    const variables = deepMerge(
-      {
-        ...defaults,
-        ...components.value,
-      },
-      themea?.vars || {}
-    );
-
-    const asstring =
-      (id === 'global' ? `:root` : `#${id}`) +
-      `{${unwind(variables).join('')}}`;
-
-    const index = styles.value.findIndex(({ id: _id }) => id === _id);
-    if (index !== -1) {
-      styles.value[index].content = asstring;
-    } else {
-      styles.value.push({ id, content: asstring });
-    }
+    return defaults;
   };
 
-  watch(
-    () => styles.value,
-    () => {
-      if (typeof document !== 'undefined') {
-        for (const { id, content } of styles.value) {
-          const STYLE_ID_ATTRIBUTE = `lx-theme-provider-${id}`;
-          let style = document.getElementById(STYLE_ID_ATTRIBUTE);
-          const head = document.getElementsByTagName('head')[0];
+  /**
+   * Contains names of registered component styles.
+   * Used to prevent registration of components multiple times.
+   */
+  const components = ref<Record<string, LTheme['variables']>>({});
 
-          if (!style) {
-            style = document.createElement('style');
-            style.id = STYLE_ID_ATTRIBUTE;
-            head.appendChild(style);
-          }
+  /**
+   * The currently active theme.
+   */
+  const theme = ref<string>('default');
 
-          style.innerHTML = content;
-        }
-      }
-    },
-    { deep: true }
-  );
+  /**
+   * Array of registered themes.
+   */
+  const themes = ref<LTheme[]>([]);
 
-  const destroy = (id = 'global') => {
-    const STYLE_ID_ATTRIBUTE = `lx-theme-provider-${id}`;
-    const style = document.getElementById(STYLE_ID_ATTRIBUTE);
-    if (style) style.remove();
+  const providers = ref<{ id: string; content: string }[]>([
+    { id: GLOBAL_THEME_ID, content: '' },
+  ]);
+
+  /**
+   * Sets the active Labox theme.
+   *
+   * @param name Name of theme.
+   */
+  const setTheme = (name: string) => {
+    theme.value = name;
+    render();
   };
 
   /**
    * Registers a new Labox theme.
    *
-   * @param _theme The theme to register.
+   * @param theme The theme to register.
    */
-  const registerTheme = (_theme: Theme) => {
-    themes.value.push(_theme);
+  const registerTheme = ({ name, variables }: LTheme) => {
+    variables = prefix(variables);
+    themes.value.push({ name, variables });
   };
 
+  /**
+   * Fires on theme change.
+   */
+  if (isClient()) {
+    watch(
+      () => theme.value,
+      () => {
+        // Update the html data-theme attribute.
+        const html = document.getElementsByTagName('html')[0];
+        if (html) {
+          html.setAttribute('data-theme', theme.value);
+        }
+      }
+    );
+  }
+
+  /**
+   * Registers a new component style.
+   *
+   * @param name Name of the component.
+   * @param variables Variables to set.
+   */
+  const registerComponentStyle = (
+    name: string,
+    variables: Record<string, string>
+  ) => {
+    console.log('Register', prefix(variables, name));
+    if (!components.value[name]) {
+      components.value[name] = prefix(variables, name);
+      render();
+    }
+  };
+
+  const render = (id = GLOBAL_THEME_ID) => {
+    const currentTheme = themes.value.find(({ name }) => name === theme.value);
+    const defaultTheme = themes.value.find(
+      ({ name }) => name === config.defaultTheme
+    );
+
+    // Apply the default theme variables. These include the Labox predefined
+    // common variables.
+    let variables = defaultTheme?.variables || {};
+
+    // Iterate each registered component's variables.
+    for (const component of Object.values(components.value)) {
+      variables = { ...variables, ...component };
+    }
+
+    // Add user defined variables.
+    variables = { ...variables, ...currentTheme?.variables };
+
+    console.log(variables);
+
+    const variablesAsString = () => {
+      const selector = id === GLOBAL_THEME_ID ? `:root` : `#${id}`;
+      const str = Object.entries(variables)
+        .map(([key, value]) => {
+          return `${key}:${value}`;
+        })
+        .join(';');
+      return `${selector}{${str}}`;
+    };
+
+    const index = providers.value.findIndex((provider) => provider.id === id);
+    if (index !== -1) providers.value[index].content = variablesAsString();
+    else providers.value.push({ id, content: variablesAsString() });
+  };
+
+  /**
+   * Removes a theme provider from DOM. This function only works on the client.
+   *
+   * @param id Provider id to destroy.
+   */
+  const destroy = (id = GLOBAL_THEME_ID) => {
+    if (isClient()) {
+      const element = document.getElementById(`${PROVIDER_PREFIX}${id}`);
+      if (element) element.remove();
+    }
+  };
+
+  /**
+   * Fires after changes have been made to the provider.
+   */
+  if (isClient()) {
+    watch(
+      () => providers.value,
+      () => {
+        for (const { id, content } of providers.value) {
+          let style = document.getElementById(`${PROVIDER_PREFIX}${id}`);
+          const head = document.getElementsByTagName('head')[0];
+
+          if (!style) {
+            style = document.createElement('style');
+            style.id = `${PROVIDER_PREFIX}${id}`;
+            head.appendChild(style);
+          }
+
+          style.innerHTML = content;
+        }
+      },
+      { deep: true }
+    );
+  }
+
+  // Initially register the Labox predefined common variables.
+  registerTheme({ name: config.defaultTheme, variables: common });
+
   return {
-    registerComponentStyle,
-    components,
-    render,
-    destroy,
     theme,
+    providers,
+
+    createPalette,
+    destroy,
+    registerComponentStyle,
     registerTheme,
     setTheme,
-    styles,
-    init,
-    createPalette,
   };
 };
-
-function createPalette(name: string, color: string) {
-  return {
-    [name]: color,
-    [`${name}-1`]: lighten(color, 0.7),
-    [`${name}-2`]: lighten(color, 0.6),
-    [`${name}-3`]: lighten(color, 0.5),
-    [`${name}-4`]: lighten(color, 0.4),
-    [`${name}-5`]: lighten(color, 0.3),
-    [`${name}-6`]: lighten(color, 0.2),
-    [`${name}-7`]: lighten(color, 0.1),
-    [`${name}-8`]: color,
-    [`${name}-9`]: darken(color, 0.1),
-    [`${name}-10`]: darken(color, 0.2),
-    [`${name}-11`]: darken(color, 0.3),
-    [`${name}-12`]: darken(color, 0.4),
-    [`${name}-13`]: darken(color, 0.5),
-    [`${name}-14`]: darken(color, 0.6),
-    [`${name}-15`]: darken(color, 0.7),
-    [`${name}-T10`]: color + decimalToHex(128 - 25 * 4),
-    [`${name}-T20`]: color + decimalToHex(128 - 25 * 3),
-    [`${name}-T30`]: color + decimalToHex(128 - 25 * 2),
-    [`${name}-T40`]: color + decimalToHex(128 - 25),
-    [`${name}-T50`]: color + decimalToHex(128 - 1),
-    [`${name}-T60`]: color + decimalToHex(128 + 25),
-    [`${name}-T70`]: color + decimalToHex(128 + 25 * 2),
-    [`${name}-T80`]: color + decimalToHex(128 + 25 * 3),
-    [`${name}-T90`]: color + decimalToHex(128 + 25 * 4),
-  };
-}
 
 const spacing = 1;
 
@@ -230,54 +263,3 @@ const common = {
   ...createPalette('success', '#1d9e64'),
   ...createPalette('error', '#cb2960'),
 };
-
-function normalizeColor(originalColor: string): string {
-  const color = originalColor.replace(/^#/, '');
-  if (color.length === 3) {
-    return color[0] + color[0] + color[1] + color[1] + color[2] + color[2];
-  }
-  return color;
-}
-
-function decimalToHex(decimal: number): string {
-  return decimal.toString(16);
-}
-
-function hexToDecimal(hex: string): number {
-  return parseInt(hex, 16);
-}
-
-function mix(baseColor: string, color: string, weight = 1): string {
-  if (weight > 1 || weight < 0) {
-    throw new Error('Weight must be between 0 and 1.');
-  }
-
-  const result = [];
-
-  baseColor = normalizeColor(baseColor);
-  color = normalizeColor(color);
-
-  const characters = color.length - 1;
-
-  for (let i = 0; i <= characters; i += 2) {
-    const bColorDecimal = hexToDecimal(baseColor.slice(i, i + 2));
-    const colorDecimal = hexToDecimal(color.slice(i, i + 2));
-
-    const value = decimalToHex(
-      Math.round(
-        colorDecimal + (bColorDecimal - colorDecimal) * ((weight * 100) / 100)
-      )
-    ).padStart(2, '0');
-
-    result.push(value);
-  }
-  return `#${result.join('')}`;
-}
-
-function lighten(color: string, weight: number) {
-  return mix('#fff', color, weight);
-}
-
-function darken(color: string, weight: number) {
-  return mix('#000', color, weight);
-}

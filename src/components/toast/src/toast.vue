@@ -34,7 +34,7 @@ import { useVariant } from '~/composables/component/use-variant';
 
 import { props } from './props';
 import { TeleportTarget } from '~/composables/use-labox/init';
-import { useUtil } from '~/composables/component/use-util';
+import { useContextUtil } from '~/composables/component/use-context-util';
 
 const name = 'LToast';
 
@@ -74,7 +74,7 @@ export default defineComponent({
 
     return {
       ...component,
-      ...useUtil(component),
+      ...useContextUtil(component),
       isDirective,
       TELEPORT_TARGET: `#${TeleportTarget.Toast}`,
       active,

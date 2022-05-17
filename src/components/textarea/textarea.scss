@@ -29,8 +29,8 @@
     }
 
     &:disabled {
-      border-color: v(textarea-border-color--disabled);
-      color: v(textarea-text-color--disabled);
+      border-color: v(border-color--disabled, c('LTextarea'));
+      color: v(text-color--disabled, c('LTextarea'));
     }
   }
 }
@@ -51,37 +51,37 @@
     display: inline-flex;
     flex: 1;
     outline: none;
-    background-color: v(textarea-background-color);
+    background-color: v(background-color, c('LTextarea'));
     transition: border-color v(transition-time) v(transition-type),
       box-shadow v(transition-time) v(transition-type);
-    padding: v(textarea-padding-y) v(textarea-padding-x);
+    padding: v(padding-y, c('LTextarea')) v(padding-x, c('LTextarea'));
     border-style: solid;
-    border-width: v(textarea-border-width);
-    line-height: v(textarea-line-height);
-    border-radius: v(textarea-border-radius);
-    border-color: v(textarea-border-color);
-    font-size: v(textarea-font-size);
-    color: v(textarea-text-color);
+    border-width: v(border-width, c('LTextarea'));
+    line-height: v(line-height, c('LTextarea'));
+    border-radius: v(border-radius, c('LTextarea'));
+    border-color: v(border-color, c('LTextarea'));
+    font-size: v(font-size, c('LTextarea'));
+    color: v(text-color, c('LTextarea'));
 
     font-family: inherit;
 
     &:focus {
-      background-color: v(textarea-background-color--focus);
+      background-color: v(background-color--focus, c('LTextarea'));
       &::placeholder {
-        color: v(textarea-placeholder-color--focus);
+        color: v(placeholder-color--focus, c('LTextarea'));
       }
     }
 
     &::placeholder {
-      color: v(textarea-placeholder-color);
+      color: v(placeholder-color, c('LTextarea'));
     }
 
     &:disabled {
-      color: v(textarea-text-color--disabled);
-      background-color: v(textarea-background-color--disabled);
-      border-color: v(textarea-border-color--disabled);
+      color: v(text-color--disabled, c('LTextarea'));
+      background-color: v(background-color--disabled, c('LTextarea'));
+      border-color: v(border-color--disabled, c('LTextarea'));
       &::placeholder {
-        color: v(textarea-placeholder-color--disabled);
+        color: v(placeholder-color--disabled, c('LTextarea'));
       }
     }
 
@@ -128,20 +128,20 @@
   }
 
   &.#{c('LTextarea')}-sm {
-    font-size: v(textarea-font-size-sm);
+    font-size: v(font-size-sm, c('LTextarea'));
 
     textarea {
-      padding: v(textarea-padding-y-sm) v(textarea-padding-x-sm);
-      line-height: v(textarea-line-height-sm);
+      padding: v(padding-y-sm, c('LTextarea')) v(padding-x-sm, c('LTextarea'));
+      line-height: v(line-height-sm, c('LTextarea'));
     }
   }
 
   &.#{c('LTextarea')}-lg {
-    font-size: v(textarea-font-size-lg);
+    font-size: v(font-size-lg, c('LTextarea'));
 
     textarea {
-      padding: v(textarea-padding-y-lg) v(textarea-padding-x-lg);
-      line-height: v(textarea-line-height-lg);
+      padding: v(padding-y-lg, c('LTextarea')) v(padding-x-lg, c('LTextarea'));
+      line-height: v(line-height-lg, c('LTextarea'));
     }
   }
 }

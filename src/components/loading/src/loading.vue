@@ -32,7 +32,7 @@ import {
   useSize,
   useVariant,
 } from '../../../composables/component';
-import { useUtil } from '~/composables/component/use-util';
+import { useContextUtil } from '~/composables/component/use-context-util';
 import { _useLabox } from '~/composables/use-labox/use-labox';
 
 const name = 'LLoading';
@@ -58,7 +58,7 @@ export default defineComponent({
 
     return {
       ...component,
-      ...useUtil(component),
+      ...useContextUtil(component),
 
       screenReaderClass,
       sizeClass,

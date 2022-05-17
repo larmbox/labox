@@ -2,7 +2,7 @@ import { computed, ComputedRef, ExtractPropTypes, PropType } from 'vue';
 import { LComponentInstance } from './use-component';
 import { useLabox } from '~/composables/use-labox/use-labox';
 import { LComponent } from '~/create-labox';
-import { useUtil } from './use-util';
+import { useContextUtil } from './use-context-util';
 
 export function useInput(
   component: LComponentInstance<LComponent<unknown, InputProps>>
@@ -14,11 +14,11 @@ export function useInput(
   ariaDescribedby: string;
 } {
   const { uuid } = useLabox();
-  const { hasSlot, classComponentName } = useUtil(component);
+  const { hasSlot, className, classComponentName } = useContextUtil(component);
 
   const feedbackClass = computed(() =>
     component.props.value.feedbackType && component.props.value.feedback
-      ? `form-feedback-${component.props.value.feedbackType}`
+      ? className(`form-feedback-${component.props.value.feedbackType}`)
       : undefined
   );
 

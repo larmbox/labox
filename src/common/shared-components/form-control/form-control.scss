@@ -1,10 +1,10 @@
 @import '../../../theme/imports';
 
-.form-control {
+.#{p('form-control')} {
   line-height: v(line-height);
 }
 
-.form-label {
+.#{p('form-label')} {
   font-weight: 500;
   margin-bottom: v(spacing-xs);
   font-size: v(text-md);
@@ -13,40 +13,42 @@
   }
 }
 
-.form-description,
-.form-help,
-.form-feedback {
+.#{p('form-description')},
+.#{p('form-help')},
+.#{p('form-feedback')} {
   display: block;
   font-size: v(text-sm);
 
-  &.form-help {
+  &.#{p('form-help')} {
     color: v(text-color--light);
   }
 
-  &.form-feedback {
-    &.feedback-error {
+  &.#{p('form-feedback')} {
+    &.#{p('feedback-error')} {
       color: color('error', 9);
     }
 
-    &.feedback-success {
+    &.#{p('feedback-success')} {
       color: color('success', 9);
     }
   }
 }
 
-.form-control {
-  &:not(.form-field) {
-    .form-description + .form-feedback {
+.#{p('form-control')} {
+  &:not(.#{p('form-field')}) {
+    .#{p('form-description')} + .#{p('form-feedback')} {
       margin-top: calc(v(spacing-xs) / 2);
     }
   }
 
-  &.form-field {
-    .form-feedback,
-    .form-help {
+  &.#{p('form-field')} {
+    .#{p('form-feedback')},
+    .#{p('form-help')} {
       margin-top: calc(v(spacing-xs) / 2);
     }
-    .form-description {
+
+    .#{p('form-description')},
+    .#{p('form-feedback')} {
       margin-bottom: calc(v(spacing-xs) / 2);
     }
   }

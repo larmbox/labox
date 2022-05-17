@@ -13,7 +13,7 @@
 import { defineComponent } from 'vue';
 import { inputProps } from '~/composables/component/use-input';
 import { componentProps } from '~/composables/component/use-component';
-import { useUtil } from '~/composables/component/use-util';
+import { useContextUtil } from '~/composables/component/use-context-util';
 
 export default defineComponent({
   name: 'LFormLabel',
@@ -28,7 +28,7 @@ export default defineComponent({
     },
   },
   setup() {
-    return { ...useUtil() };
+    return { ...useContextUtil() };
   },
 });
 </script>

@@ -3,10 +3,10 @@ const LCheckboxCSSVariables = {
   'size-sm': '1.25rem',
   'size-lg': '1.75rem',
 
-  'border-radius': 'var(--lx-border-radius)',
-  'focus-shadow-size': 'var(--lx-focus-shadow-size)',
-  'border-width': 'var(--lx-border-width)',
-  'border-color': 'var(--lx-border-color)',
+  'border-radius': 'var(--border-radius)',
+  'focus-shadow-size': 'var(--focus-shadow-size)',
+  'border-width': 'var(--border-width)',
+  'border-color': 'var(--border-color)',
 };
 
 export { LCheckboxCSSVariables };

@@ -15,7 +15,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { inputProps } from '~/composables/component/use-input';
-import { useUtil } from '~/composables/component/use-util';
+import { useContextUtil } from '~/composables/component/use-context-util';
 
 export default defineComponent({
   name: 'LFormFeedback',
@@ -27,7 +27,7 @@ export default defineComponent({
     feedbackType: inputProps.feedbackType,
   },
   setup(_props, _context) {
-    return { ...useUtil() };
+    return { ...useContextUtil() };
   },
 });
 </script>

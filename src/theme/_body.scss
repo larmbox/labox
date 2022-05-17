@@ -1,4 +1,4 @@
-@import 'variables';
+@import 'imports';
 
 * {
   box-sizing: border-box;
@@ -11,17 +11,20 @@ body {
 #lx {
   position: relative;
   height: 0;
-  z-index: var(--lx-z-index-base);
+  z-index: v(z-index-base);
   #lx-md {
     width: 0;
     height: 0;
+    z-index: v(z-index-modal);
   }
   #lx-tt {
     width: 0;
     height: 0;
+    z-index: v(z-index-tooltip);
   }
   #lx-to {
     width: 0;
     height: 0;
+    z-index: v(z-index-toast);
   }
 }

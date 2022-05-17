@@ -52,7 +52,7 @@
     &:focus {
       + .#{c('LRadio')}-box {
         border-color: color($color, 8);
-        box-shadow: 0 0 0 v(radio-focus-shadow-size) color($color, 'T20');
+        box-shadow: 0 0 0 v(focus-shadow-size, c('LRadio')) color($color, 'T20');
       }
     }
 
@@ -89,9 +89,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: v(radio-border-width) solid v(radio-border-color);
+    border: v(border-width, c('LRadio')) solid v(border-color, c('LRadio'));
     background-color: v(background-color);
-    border-radius: v(radio-border-radius);
+    border-radius: v(border-radius, c('LRadio'));
     box-shadow: 0 0 0 v(focus-shadow-size) transparent;
     transition: border-color v(transition-time) v(transition-type),
       background-color v(transition-time) v(transition-type),
@@ -102,7 +102,7 @@
     .#{c('LRadio')}-inner-box {
       transition: border-color v(transition-time) v(transition-type);
       background-color: transparent;
-      border-radius: v(radio-border-radius);
+      border-radius: v(border-radius, c('LRadio'));
       border: 4px solid transparent;
     }
   }
@@ -112,20 +112,10 @@
       display: flex;
       align-items: center;
 
-      .form-label {
+      .#{p('form-label')} {
         display: block;
         margin-bottom: 0;
         padding-left: v(spacing-xs);
-      }
-    }
-
-    .#{c('LRadio')}-context {
-      .form-feedback {
-        display: block;
-      }
-
-      .form-description {
-        display: block;
       }
     }
   }
@@ -147,7 +137,7 @@
     @include variants($variant);
   }
 
-  &.form-feedback-error {
+  &.#{p('form-feedback-error')} {
     @include color('error');
 
     .#{c('LRadio')}-box {
@@ -155,7 +145,7 @@
     }
   }
 
-  &.form-feedback-success {
+  &.#{p('form-feedback-success')} {
     @include color('success');
 
     .#{c('LRadio')}-box {
@@ -163,7 +153,7 @@
     }
   }
 
-  @include size('md', v(radio-size));
-  @include size('sm', v(radio-size-sm));
-  @include size('lg', v(radio-size-lg));
+  @include size('md', v(size, c('LRadio')));
+  @include size('sm', v(size-sm, c('LRadio')));
+  @include size('lg', v(size-lg, c('LRadio')));
 }

@@ -1,5 +1,5 @@
 const LModalCSSVariables = {
-  'border-radius': 'var(--lx-border-radius)',
+  'border-radius': 'var(--border-radius)',
 
   size: '34rem',
   'size-sm': '28rem',

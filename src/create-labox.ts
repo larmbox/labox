@@ -51,7 +51,9 @@ export interface LComponents {
 }
 
 export interface LConfig {
-  stylePrefix: string;
+  defaultTheme: string;
+  classPrefix: string;
+  globalName: string;
   components: LComponents;
 }
 
@@ -61,7 +63,6 @@ export interface LCreateOptions {
     alias?: string[];
   }[];
   config?: DeepPartial<LConfig>;
-  theme?: string;
 }
 
 function createLabox(options: LCreateOptions = {}): LInstance {

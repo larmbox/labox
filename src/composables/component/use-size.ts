@@ -1,5 +1,5 @@
 import { computed, ComputedRef, ExtractPropTypes } from 'vue';
-import { useUtil } from './use-util';
+import { useContextUtil } from './use-context-util';
 import { RequiredBy } from '~/common/types';
 import { LComponentInstance } from './use-component';
 import { LComponent } from '~/create-labox';
@@ -9,7 +9,7 @@ export function useSize(
 ): { sizeClass: ComputedRef<string> } {
   return {
     sizeClass: computed(() =>
-      useUtil(component).classComponentName(component.props.value.size)
+      useContextUtil(component).classComponentName(component.props.value.size)
     ),
   };
 }

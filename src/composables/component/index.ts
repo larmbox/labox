@@ -11,7 +11,7 @@ export { useLink, linkProps } from './use-link';
 export type { LinkProps } from './use-link';
 export { useSize, sizeProps } from './use-size';
 export type { SizeProps } from './use-size';
-export { useUtil } from './use-util';
+export { useContextUtil } from './use-context-util';
 export {
   useVariant,
   useVariantWithOutline,

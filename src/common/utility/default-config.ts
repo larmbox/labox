@@ -1,7 +1,9 @@
 import { LConfig } from '~/create-labox';
 
 const config: LConfig = {
-  stylePrefix: '',
+  globalName: 'lx',
+  classPrefix: '',
+  defaultTheme: 'default',
   components: {
     LThemeProvider: {
       name: 'theme-provider',

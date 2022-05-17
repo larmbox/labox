@@ -1,5 +1,5 @@
 import { computed, ComputedRef, ExtractPropTypes, Ref, useAttrs } from 'vue';
-import { LComponent, LComponents } from '~/create-labox';
+import { LComponent, LComponents, LGenericProps } from '~/create-labox';
 import { useLabox } from '~/composables/use-labox/use-labox';
 
 export const componentProps = {
@@ -9,8 +9,6 @@ export const componentProps = {
 };
 
 export type ComponentProps = ExtractPropTypes<typeof componentProps>;
-
-type GenericProps = Record<string, any>;
 
 export type BindOptions<T> =
   | {
@@ -30,8 +28,8 @@ export interface LComponentInstance<
   globalName: keyof LComponents;
   name: T['name'];
   options: T['options'];
-  bindProps: (bindOptions?: BindOptions<keyof T['props']>) => GenericProps;
-  bindAttrs: (bindOptions?: BindOptions<string>) => GenericProps;
+  bindProps: (options?: BindOptions<keyof T['props']>) => LGenericProps;
+  bindAttrs: (options?: BindOptions<string>) => LGenericProps;
 }
 
 export interface Binds<T extends LComponent<T['options'], T['props']>> {
@@ -40,7 +38,7 @@ export interface Binds<T extends LComponent<T['options'], T['props']>> {
 }
 export function useComponent<T extends LComponent<T['options'], T['props']>>(
   name: keyof LComponents,
-  props: GenericProps
+  props: LGenericProps
 ): LComponentInstance<T> {
   return getComponentInstance<T>(name, props);
 }
@@ -50,11 +48,11 @@ export function useComponent<T extends LComponent<T['options'], T['props']>>(
  */
 export function getComponentInstance<
   T extends LComponent<T['options'], T['props']>
->(name: keyof LComponents, props: GenericProps): LComponentInstance<T> {
+>(name: keyof LComponents, props: LGenericProps): LComponentInstance<T> {
   const { uuid } = useLabox();
   const attrs = useAttrs();
 
-  const merge = (a: GenericProps, b: GenericProps) =>
+  const merge = (a: LGenericProps, b: LGenericProps) =>
     Object.assign(
       {},
       a,
@@ -66,15 +64,15 @@ export function getComponentInstance<
   const mergedProps = computed(() => merge(meta.props, props));
 
   const bind = (
-    bindings: GenericProps,
+    bindings: LGenericProps,
     options?: BindOptions<any>
-  ): GenericProps => {
+  ): LGenericProps => {
     bindings = Object.assign({}, bindings);
     if (!options || (!options.include && !options.exclude)) {
       return bindings;
     }
 
-    const isIncluded = (key: keyof typeof bindings, arr: any) => {
+    const isIncluded = (key: keyof typeof bindings, arr: string[]) => {
       if (typeof bindings[key] === 'function') {
         if (key.startsWith('on')) {
           key = key.substring(2);
@@ -125,13 +123,13 @@ export function getComponentInstance<
  *
  * @param name
  */
-export function getComponentMeta<T = LComponent<unknown, GenericProps>>(
+export function getComponentMeta<T = LComponent<unknown, LGenericProps>>(
   name: keyof LComponents
-): T & { props: ComputedRef<GenericProps> } {
+): T & { props: ComputedRef<LGenericProps> } {
   const { config } = useLabox();
 
   const component = config.value.components[name] as unknown as T & {
-    props: ComputedRef<GenericProps>;
+    props: ComputedRef<LGenericProps>;
   };
 
   if (!component) {
