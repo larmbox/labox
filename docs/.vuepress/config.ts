@@ -36,18 +36,13 @@ export default defineUserConfig<DefaultThemeOptions>({
       ],
     },
   },
-
   themeConfig: {
     logo: 'https://cdn.larmbox.com/assets/labox-logo.svg',
     sidebarDepth: 2,
+    contributors: false,
     locales: {
-      /**
-       * English locale config
-       */
-
       '/': {
         navbar: [
-          // NavbarItem
           {
             text: 'Getting Started',
             children: [
@@ -59,7 +54,6 @@ export default defineUserConfig<DefaultThemeOptions>({
               '/getting-started/changelog.md',
             ],
           },
-          // NavbarGroup
           {
             text: 'Components',
             children: [
