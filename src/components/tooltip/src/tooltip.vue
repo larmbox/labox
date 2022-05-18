@@ -92,7 +92,7 @@ export default defineComponent({
       content: { id: uuid(), element: null },
     };
 
-    let popper: Instance, listener: { onUnmounted: Function };
+    let popper: Instance, listener: { onUnmounted: any };
     const isDirective = !!props.binding?.value;
     const options: ComputedRef<PartialBy<TooltipOptions, 'text'>> = computed(
       () => {
@@ -182,7 +182,13 @@ export default defineComponent({
     watch(
       // Watch for options change.
       () => [options.value],
-      () => nextTick(() => (active.value ? popper?.forceUpdate() : undefined))
+      async () => {
+        nextTick(() => {
+          if (active.value) {
+            popper.forceUpdate();
+          }
+        });
+      }
     );
 
     const useTouchListener = () => {

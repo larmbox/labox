@@ -91,11 +91,11 @@ export const inputProps = {
     default: 'error',
   },
   value: {
-    type: [String, Number, Boolean] as PropType<any>,
+    type: [String, Number, Boolean] as PropType<string | boolean | number>,
     default: undefined,
   },
   modelValue: {
-    type: [String, Boolean, Number] as PropType<any>,
+    type: [String, Boolean, Number] as PropType<string | boolean | number>,
   },
   highlight: {
     type: Boolean,

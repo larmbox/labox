@@ -65,6 +65,7 @@ export function getComponentInstance<
 
   const bind = (
     bindings: LGenericProps,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     options?: BindOptions<any>
   ): LGenericProps => {
     bindings = Object.assign({}, bindings);

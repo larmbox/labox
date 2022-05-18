@@ -12,7 +12,9 @@ test('mount component', async () => {
   });
 
   expect(component.html()).toMatchSnapshot();
-  expect(component.html()).toContain('form-control radio radio-md radio-primary');
+  expect(component.html()).toContain(
+    'form-control radio radio-md radio-primary'
+  );
   expect(component.html()).not.toContain('form-field');
 });
 

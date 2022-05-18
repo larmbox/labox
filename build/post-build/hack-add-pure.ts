@@ -7,9 +7,9 @@ import path from 'path';
 
 const file = path.resolve(__dirname, '..', '..', 'dist', 'labox.es.js');
 
-fs.readFile(file, 'utf8', function (err: any, data: any) {
-  if (err) {
-    return console.log(err);
+fs.readFile(file, 'utf8', (error, data) => {
+  if (error) {
+    return console.log(error);
   }
 
   const result = data.replace(
@@ -17,7 +17,7 @@ fs.readFile(file, 'utf8', function (err: any, data: any) {
     '/* @__PURE__ */ defineComponent({'
   );
 
-  fs.writeFile(file, result, 'utf8', function (err: any) {
-    if (err) return console.log(err);
+  fs.writeFile(file, result, 'utf8', (error) => {
+    if (error) return console.log(error);
   });
 });

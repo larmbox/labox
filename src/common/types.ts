@@ -15,7 +15,7 @@ export interface ComponentMeta<T extends LComponent<T['options'], T['props']>> {
   props: {
     name: keyof T['props'];
     type: string;
-    default?: any;
+    default?: unknown;
     description: string;
     since?: string;
     deprecated?: true;

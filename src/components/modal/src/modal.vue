@@ -323,7 +323,7 @@ export default defineComponent({
   },
 });
 
-const useRouteObserver = (onChange: Function) => {
+const useRouteObserver = (onChange: () => void) => {
   if (typeof document === 'undefined') return;
   let previousUrl = location.pathname;
   const observer = new MutationObserver(() => {

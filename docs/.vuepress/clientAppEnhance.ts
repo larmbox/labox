@@ -17,7 +17,7 @@ import {
   LLoading,
 } from '../../src';
 
-import { createVuelr, Vuelr } from 'vuelr';
+import { createVuelr, Vuelr } from 'vuelr/dist/vuelr.es';
 
 import Snippet from './components/Snippet.vue';
 import ComponentMeta from './components/ComponentMeta.vue';

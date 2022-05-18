@@ -18,7 +18,7 @@ export const props = {
   ...blockProps,
 
   options: {
-    type: Array as PropType<{ label: string; value: any }[]>,
+    type: Array as PropType<{ label: string; value: unknown }[]>,
     default: undefined,
   },
 };

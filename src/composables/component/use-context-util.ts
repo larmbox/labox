@@ -4,7 +4,7 @@ import { LComponent } from '~/create-labox';
 import { LComponentInstance } from './use-component';
 
 export function useContextUtil(
-  component?: LComponentInstance<LComponent<unknown, Record<string, any>>>
+  component?: LComponentInstance<LComponent<unknown, Record<string, unknown>>>
 ) {
   const slots = useSlots();
 

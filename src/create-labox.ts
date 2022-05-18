@@ -26,6 +26,7 @@ export interface LInstance {
   install: (app: App) => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type LGenericProps = Record<string, any>;
 
 export interface LComponent<TOptions, TProps extends LGenericProps> {

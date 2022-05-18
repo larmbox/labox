@@ -2,7 +2,7 @@ import { ExtractPropTypes, PropType } from 'vue';
 
 interface Theme {
   name: string;
-  variables: Record<string, any>;
+  variables: Record<string, string>;
 }
 
 export const props = {

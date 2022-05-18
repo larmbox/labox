@@ -20,6 +20,7 @@ export function createLaboxTeleportTarget(): void {
     if (!target) {
       target = document.createElement('div');
       target.setAttribute('id', a);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       global!.appendChild(target);
     }
   });

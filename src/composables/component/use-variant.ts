@@ -9,7 +9,9 @@ export function useVariant(
   variantClass: ComputedRef<string>;
 } {
   const variantClass = computed(() =>
-    useContextUtil(component).classComponentName(`${component.props.value.variant}`)
+    useContextUtil(component).classComponentName(
+      `${component.props.value.variant}`
+    )
   );
 
   return {

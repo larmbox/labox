@@ -1,13 +1,9 @@
 import fs from 'fs-extra';
 import path from 'path';
+import { camelToKebabCase } from '../../src/common/utility';
 
 const dir = path.join(__dirname, '..', '..', 'src', 'components');
 const dist = path.join(__dirname, '..', '..', 'dist');
-
-const kebabify = (str: string) =>
-  str.replace(/[A-Z]/g, (letter, index) => {
-    return index == 0 ? letter.toLowerCase() : '-' + letter.toLowerCase();
-  });
 
 function findFiles(dir: string) {
   const metas: any[] = [];
@@ -58,10 +54,10 @@ function createVeturTags(metas: any[]) {
       attributes: props.map(({ name }: any) => name),
     };
     tags[name] = obj;
-    tags[kebabify(name)] = obj; // Lowercase component alias.
+    tags[camelToKebabCase(name)] = obj; // Lowercase component alias.
 
     props.forEach((element: any) => {
-      attributes[kebabify(name) + '/' + element.name] = {
+      attributes[camelToKebabCase(name) + '/' + element.name] = {
         description: element.description,
       };
     });

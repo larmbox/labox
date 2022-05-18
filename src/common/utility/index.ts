@@ -1,6 +1,7 @@
-const isObject = (item: any) =>
+const isObject = (item: unknown) =>
   typeof item === 'object' && !Array.isArray(item);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type A = Record<string, any>;
 type B = A;
 
@@ -23,16 +24,3 @@ export const deepMerge = (target: A, source: B): A & B => {
 
 export const camelToKebabCase = (str: string) =>
   str.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
-
-export const unwind = (
-  styles: Record<string, any>,
-  prefix?: string
-): string[] => {
-  return Object.entries(styles).map(([k, v]) => {
-    if (typeof v === 'object') {
-      return unwind(v, k).join('');
-    } else {
-      return (prefix ? `--lx-${prefix}-${k}` : `--lx-${k}`) + `: ${v};`;
-    }
-  });
-};
