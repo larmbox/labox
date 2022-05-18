@@ -2,7 +2,7 @@
 
 set -e
 
-npm run docs:build
+npm run build:vuepress
 
 cd docs/.vuepress/dist
 
