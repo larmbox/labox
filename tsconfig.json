@@ -42,7 +42,9 @@
   "exclude": [
     "node_modules/**/*",
     "tests",
-    "__snapshots__"
+    "dist",
+    "coverage",
+    "__snapshots__",
   ],
   "ts-node": {
     "compilerOptions": {
