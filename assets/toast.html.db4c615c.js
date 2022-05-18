@@ -1,0 +1,1 @@
+const t={key:"v-02053ab8",path:"/directives/toast.html",title:"Toast",lang:"en-US",frontmatter:{},excerpt:"",headers:[],git:{updatedTime:1652721721e3},filePathRelative:"directives/toast.md"};export{t as data};

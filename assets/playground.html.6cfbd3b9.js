@@ -1,0 +1,1 @@
+const t={key:"v-5b8010ce",path:"/getting-started/playground.html",title:"Playground",lang:"en-US",frontmatter:{},excerpt:"",headers:[],git:{updatedTime:1652721721e3},filePathRelative:"getting-started/playground.md"};export{t as data};

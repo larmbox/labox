@@ -1,0 +1,1 @@
+const t={key:"v-6c1fe086",path:"/getting-started/nuxt.html",title:"Nuxt",lang:"en-US",frontmatter:{},excerpt:"",headers:[],git:{updatedTime:1640042698e3},filePathRelative:"getting-started/nuxt.md"};export{t as data};

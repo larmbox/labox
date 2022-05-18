@@ -1,0 +1,1 @@
+const t={key:"v-3ae3b1ca",path:"/configuration/global-configuration.html",title:"Global Configuration",lang:"en-US",frontmatter:{},excerpt:"",headers:[{level:2,title:"Default configuration",slug:"default-configuration",children:[]}],git:{updatedTime:1640042013e3},filePathRelative:"configuration/global-configuration.md"};export{t as data};

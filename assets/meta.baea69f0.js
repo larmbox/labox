@@ -1,0 +1,1 @@
+const o={name:"LToast",description:"Tooltips display informative text when users hover over, focus on, or tap an element. Labox uses Popper for tooltips.",props:[],slots:[],events:[]};export{o as default};

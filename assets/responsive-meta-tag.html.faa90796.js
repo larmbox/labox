@@ -1,0 +1,1 @@
+const e={key:"v-30a4691e",path:"/getting-started/responsive-meta-tag.html",title:"Responsive Meta Tag",lang:"en-US",frontmatter:{},excerpt:"",headers:[],git:{updatedTime:1640042013e3},filePathRelative:"getting-started/responsive-meta-tag.md"};export{e as data};

@@ -1,0 +1,3 @@
+import{_,f as p,r as o,o as i,a as l,b as e,e as s,F as h,g as t}from"./app.49757a98.js";const d={id:"toast",tabindex:"-1"},m=e("a",{class:"header-anchor",href:"#toast","aria-hidden":"true"},"#",-1),f=t(" Toast "),u=t("Tooltips display informative text when users hover over, focus on, or tap an element. Labox uses "),x={href:"https://npmjs.org/package/@popperjs/core",target:"_blank",rel:"noopener noreferrer"},v=t("Popper"),g=t(" for tooltips."),k=p({setup(B){const n=`
+<LButton v-toast="'Hey there!'">Hover me!</LButton>
+`;return(L,T)=>{const a=o("Tag"),r=o("ExternalLinkIcon"),c=o("Snippet");return i(),l(h,null,[e("h1",d,[m,f,s(a,{text:"v-toast"})]),e("p",null,[u,e("a",x,[v,s(r)]),g]),s(c,{code:n})],64)}}});var E=_(k,[["__file","toast.html.vue"]]);export{E as default};

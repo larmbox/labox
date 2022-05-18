@@ -1,0 +1,1 @@
+const t={key:"v-72c25f59",path:"/configuration/theme-configuration.html",title:"Theme Configuration",lang:"en-US",frontmatter:{},excerpt:"",headers:[],git:{updatedTime:1652721721e3},filePathRelative:"configuration/theme-configuration.md"};export{t as data};

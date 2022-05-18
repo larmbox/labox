@@ -1,0 +1,1 @@
+const t={key:"v-83a35470",path:"/directives/tooltip.html",title:"Tooltip",lang:"en-US",frontmatter:{},excerpt:"",headers:[{level:2,title:"Syntax",slug:"syntax",children:[]},{level:2,title:"Reactivity",slug:"reactivity",children:[]}],git:{updatedTime:1652721721e3},filePathRelative:"directives/tooltip.md"};export{t as data};
