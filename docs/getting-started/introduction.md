@@ -18,4 +18,24 @@ Even though the project is primarily developed by Larmbox, feel free to contribu
 - Open feature requests
 - Propose improvements to the documentation
 
-Please refer to our [Larmbox Open Source Community Guidelines](https://github.com/larmbox/labox/blob/HEAD/CODE_OF_CONDUCT.md).
+Please refer to the [Larmbox Open Source Community Guidelines](https://github.com/larmbox/labox/blob/HEAD/CODE_OF_CONDUCT.md).
+
+### Development
+
+Clone the repository, then run:
+
+```bash
+# Install dependencies
+npm install
+
+# Run tests
+npm run test
+npm run test:watch
+
+# Run Vuepress
+npm run start:dev
+
+# Lint
+npm run lint
+npm run lint:fix
+```
