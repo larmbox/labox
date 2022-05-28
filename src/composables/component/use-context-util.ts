@@ -56,15 +56,15 @@ export function useContextUtil(
    *
    * @param obj
    */
-  function classNameList(
+  const classNameList = (
     obj: Record<string, boolean | undefined>
-  ): Record<string, boolean> {
+  ): Record<string, boolean> => {
     const obj2: Record<string, boolean> = {};
     Object.entries(obj).forEach(([key, value]) => {
       obj2[classComponentName(key)] = value || false;
     });
     return obj2;
-  }
+  };
 
   return {
     classComponentName,
