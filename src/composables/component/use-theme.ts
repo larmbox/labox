@@ -105,7 +105,7 @@ export const useTheme = (config: LConfig) => {
    */
   const registerComponentStyle = (
     name: string,
-    variables: Record<string, string>
+    variables: LTheme['variables']
   ) => {
     if (!components.value[name]) {
       components.value[name] = prefix(variables, name);
@@ -147,7 +147,7 @@ export const useTheme = (config: LConfig) => {
   };
 
   /**
-   * Removes a theme provider from DOM. This function only works on the client.
+   * Removes a theme provider from DOM. This function only works on client.
    *
    * @param id Provider id to destroy.
    */
@@ -197,8 +197,14 @@ export const useTheme = (config: LConfig) => {
   };
 };
 
-const spacing = 1;
-
+/**
+ * Default CSS variables.
+ * Override by registering a new theme.
+ *
+ * Variables missing from registered themes are inherited from the variables
+ * below.
+ */
+const spacing = 1; // Default spacing.
 const common = {
   spacing: `${spacing}rem`,
   'spacing-xs': `${spacing * 0.5}rem`,
