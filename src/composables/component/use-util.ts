@@ -10,7 +10,7 @@ export function useUtil() {
    * Returns true if running on server.
    */
   const isServer = () => {
-    return typeof window === 'undefined';
+    return !isClient();
   };
 
   return {
