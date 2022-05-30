@@ -266,10 +266,6 @@ export default defineComponent({
     white-space: nowrap;
   }
 
-  .tooltip-content p {
-    margin: 0;
-  }
-
   th,
   td {
     p {
@@ -277,5 +273,9 @@ export default defineComponent({
     }
     padding: 0.5rem 0.8rem;
   }
+}
+
+.tooltip-content p {
+  margin: 0;
 }
 </style>
