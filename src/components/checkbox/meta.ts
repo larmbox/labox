@@ -5,24 +5,13 @@ import {
   MetaInputProps,
   MetaInputSlots,
 } from '~/common/meta/input';
-import { InputProps } from '~/composables/component';
 
 const meta: ComponentMeta<LCheckboxComponent> = {
   name: 'LCheckbox',
   description:
     'The checkbox is shown as a square box that is ticked (checked) when activated. Checkboxes are used to let a user select one or more options of a limited number of choices.',
-  props: [
-    ...MetaInputProps.filter(
-      ({ name }) =>
-        !(<(keyof InputProps)[]>[
-          'placeholder',
-          'help',
-          'autocomplete',
-          'readonly',
-        ]).includes(name)
-    ),
-  ],
-  slots: [...MetaInputSlots.filter(({ name }) => name !== 'help')],
+  props: [...MetaInputProps],
+  slots: [...MetaInputSlots],
   events: [
     ...MetaInputEvents,
     {

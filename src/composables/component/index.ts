@@ -5,7 +5,7 @@ export { useComponent, componentProps } from './use-component';
 export type { ComponentProps } from './use-component';
 export { useDisabled, disabledProps } from './use-disabled';
 export type { DisabledProps } from './use-disabled';
-export { useInput, inputProps } from './use-input';
+export { useInput, inputProps, inputFieldProps } from './use-input';
 export type { InputProps } from './use-input';
 export { useLink, linkProps } from './use-link';
 export type { LinkProps } from './use-link';

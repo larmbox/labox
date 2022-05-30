@@ -1,7 +1,7 @@
 import { ExtractPropTypes } from 'vue';
 import {
   componentProps,
-  inputProps,
+  inputFieldProps,
   disabledProps,
   sizeProps,
   variantProps,
@@ -11,7 +11,7 @@ import { RequiredBy } from '~/common/types';
 
 export const props = {
   ...componentProps,
-  ...inputProps,
+  ...inputFieldProps,
   ...disabledProps,
   ...sizeProps,
   ...variantProps,

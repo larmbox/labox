@@ -16,30 +16,9 @@ const props: ComponentMeta<LComponent<unknown, InputProps>>['props'] = [
       'Sets the autofocus attribute value. This will only work for the initial render of the page.',
   },
   {
-    name: 'readonly',
-    type: 'boolean',
-    default: 'false',
-    description: 'Sets the input to readonly.',
-  },
-  {
-    name: 'autocomplete',
-    type: 'boolean',
-    description: 'Sets the autocomplete attribute value.',
-  },
-  {
-    name: 'placeholder',
-    type: 'string',
-    description: 'If no placeholder is set, the label will be used instead.',
-  },
-  {
     name: 'description',
     type: 'string',
     description: 'The description text to display.',
-  },
-  {
-    name: 'help',
-    type: 'string',
-    description: 'The help text to display.',
   },
   {
     name: 'name',
@@ -86,10 +65,6 @@ const slots: ComponentMeta<LComponent<unknown, InputProps>>['slots'] = [
   {
     name: 'description',
     description: 'Additionally describe the input element.',
-  },
-  {
-    name: 'help',
-    description: 'A secondary description describing the input element.',
   },
 ];
 

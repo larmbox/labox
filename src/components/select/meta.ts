@@ -1,20 +1,20 @@
 import { LSelectComponent } from '.';
 import { ComponentMeta } from '~/common/types';
-import { InputProps } from '~/composables/component';
 import {
-  MetaInputEvents,
-  MetaInputProps,
-  MetaInputSlots,
-} from '~/common/meta/input';
+  MetaInputFieldEvents,
+  MetaInputFieldProps,
+  MetaInputFieldSlots,
+} from '~/common/meta/input-field';
+import { InputFieldProps } from '~/composables/component/use-input';
 
 const meta: ComponentMeta<LSelectComponent> = {
   name: 'LSelect',
   description:
     'The button component represents a clickable button, used to submit forms or anywhere in a document for accessible, standard button functionality.',
   props: [
-    ...MetaInputProps.filter(
+    ...MetaInputFieldProps.filter(
       ({ name }) =>
-        !(<(keyof InputProps)[]>[
+        !(<(keyof InputFieldProps)[]>[
           'autocomplete',
           'placeholder', // Custom definition of placeholder for Select component. See below.
           'readonly',
@@ -32,9 +32,9 @@ const meta: ComponentMeta<LSelectComponent> = {
       description: 'The available options.',
     },
   ],
-  slots: [...MetaInputSlots],
+  slots: [...MetaInputFieldSlots],
   events: [
-    ...MetaInputEvents,
+    ...MetaInputFieldEvents,
     {
       name: 'input',
       arguments: [

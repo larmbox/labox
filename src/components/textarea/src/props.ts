@@ -4,14 +4,14 @@ import {
   componentProps,
   disabledProps,
   sizeProps,
-  inputProps,
+  inputFieldProps,
   variantProps,
 } from '~/composables/component';
 import { PartialBy, RequiredBy } from '~/common/types';
 
 export const props = {
   ...componentProps,
-  ...inputProps,
+  ...inputFieldProps,
   ...disabledProps,
   ...sizeProps,
   ...variantProps,

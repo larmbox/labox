@@ -1,8 +1,8 @@
 import {
-  MetaInputEvents,
-  MetaInputProps,
-  MetaInputSlots,
-} from '~/common/meta/input';
+  MetaInputFieldEvents,
+  MetaInputFieldProps,
+  MetaInputFieldSlots,
+} from '~/common/meta/input-field';
 import { ComponentMeta } from '~/common/types';
 import { LTextareaComponent } from '.';
 
@@ -10,10 +10,10 @@ const meta: ComponentMeta<LTextareaComponent> = {
   name: 'LTextarea',
   description:
     'The Textarea component represents a multi-line plain-text editing control, useful when you want to allow users to enter a sizeable amount of free-form text.',
-  props: [...MetaInputProps],
-  slots: [...MetaInputSlots],
+  props: [...MetaInputFieldProps],
+  slots: [...MetaInputFieldSlots],
   events: [
-    ...MetaInputEvents,
+    ...MetaInputFieldEvents,
     {
       name: 'input',
       arguments: [

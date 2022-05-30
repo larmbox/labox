@@ -1,4 +1,3 @@
-import { InputProps } from '~/composables/component';
 import { LSwitchComponent } from '.';
 import {
   MetaInputEvents,
@@ -11,18 +10,8 @@ const meta: ComponentMeta<LSwitchComponent> = {
   name: 'LSwitch',
   description:
     'The button component represents a clickable button, used to submit forms or anywhere in a document for accessible, standard button functionality.',
-  props: [
-    ...MetaInputProps.filter(
-      ({ name }) =>
-        !(<(keyof InputProps)[]>[
-          'autocomplete',
-          'help',
-          'placeholder',
-          'readonly',
-        ]).includes(name)
-    ),
-  ],
-  slots: [...MetaInputSlots.filter(({ name }) => name !== 'help')],
+  props: [...MetaInputProps],
+  slots: [...MetaInputSlots],
   events: [
     ...MetaInputEvents,
     {

@@ -5,7 +5,9 @@ import { LComponent } from '~/create-labox';
 import { useContextUtil } from './use-context-util';
 
 export function useInput(
-  component: LComponentInstance<LComponent<unknown, InputProps>>
+  component: LComponentInstance<
+    LComponent<unknown, InputProps | InputFieldProps>
+  >
 ): {
   feedbackClass: ComputedRef<string | undefined>;
   highlightClass: ComputedRef<string | undefined>;
@@ -33,12 +35,12 @@ export function useInput(
   });
 
   const hasLabels = computed(() => {
-    const { feedback, label, description, help } = component.props.value;
+    const { feedback, label, description } = component.props.value;
     return (
       !!feedback ||
       !!label ||
       !!description ||
-      !!help ||
+      !!('help' in component.props.value && component.props.value.help) ||
       hasSlot('feedback') ||
       hasSlot('label') ||
       hasSlot('description') ||
@@ -63,21 +65,7 @@ export const inputProps = {
     type: Boolean,
     default: undefined,
   },
-  readonly: {
-    type: Boolean,
-    default: undefined,
-  },
-  autocomplete: {
-    type: Boolean,
-    default: undefined,
-  },
-  placeholder: {
-    type: String,
-  },
   description: {
-    type: String,
-  },
-  help: {
     type: String,
   },
   name: {
@@ -91,11 +79,11 @@ export const inputProps = {
     default: 'error',
   },
   value: {
-    type: [String, Number, Boolean] as PropType<string | boolean | number>,
+    type: [String, Number, Boolean] as PropType<string | number | boolean>,
     default: undefined,
   },
   modelValue: {
-    type: [String, Boolean, Number] as PropType<string | boolean | number>,
+    type: [String, Number, Boolean] as PropType<string | number | boolean>,
   },
   highlight: {
     type: Boolean,
@@ -104,4 +92,30 @@ export const inputProps = {
   },
 };
 
+export const inputFieldProps = {
+  ...inputProps,
+  placeholder: {
+    type: String,
+  },
+  readonly: {
+    type: Boolean,
+    default: undefined,
+  },
+  help: {
+    type: String,
+  },
+  autocomplete: {
+    type: Boolean,
+    default: undefined,
+  },
+  value: {
+    type: [String, Number] as PropType<string | number>,
+    default: undefined,
+  },
+  modelValue: {
+    type: [String, Number] as PropType<string | number>,
+  },
+};
+
 export type InputProps = ExtractPropTypes<typeof inputProps>;
+export type InputFieldProps = ExtractPropTypes<typeof inputFieldProps>;
